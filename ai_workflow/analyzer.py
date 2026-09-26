@@ -227,12 +227,29 @@ def analyze_tweet_llm(tweet_text: str) -> Optional[Dict[str, Any]]:
     
     if gemini_key:
         try:
+            import requests
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}]
+            }
+            res = requests.post(url, json=payload, timeout=10)
+            if res.status_code == 200:
+                data = res.json()
+                content = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                if content.startswith("```"):
+                    content = re.sub(r'^```json\s*', '', content)
+                    content = re.sub(r'^```\s*', '', content)
+                    content = re.sub(r'\s*```$', '', content)
+                return json.loads(content)
+        except Exception as e:
+            logger.warning(f"Gemini REST call failed: {e}. Trying SDK or NLP engine.")
+            
+        try:
             import google.generativeai as genai
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content(prompt)
             content = response.text.strip()
-            # Clean markdown code block if returned
             if content.startswith("```"):
                 content = re.sub(r'^```json\s*', '', content)
                 content = re.sub(r'^```\s*', '', content)
