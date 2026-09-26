@@ -3,3 +3,6 @@ uvicorn[standard]==0.39.0
 python-multipart==0.0.20
 httpx==0.28.1
 python-dotenv==1.2.1
+# Used by ai_workflow/analyzer.py (Gemini / OpenAI paths). Render only installs this file.
+google-generativeai==0.8.6
+requests==2.32.5

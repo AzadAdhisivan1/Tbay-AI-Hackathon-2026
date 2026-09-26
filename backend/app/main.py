@@ -4,12 +4,15 @@ Living Flood Map — backend API.
 Run locally:  uvicorn app.main:app --reload --port 8000
 Interactive docs: http://localhost:8000/docs
 """
+import csv
+import io
 import logging
-from collections import Counter
+from collections import Counter, defaultdict
 from typing import Dict, List, Optional
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.responses import StreamingResponse
 from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
@@ -28,12 +31,18 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+SEVERITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
+
 
 @app.on_event("startup")
 def startup():
     store.load_persisted()
-    # Process the provided dataset once so the demo loads instantly afterwards.
-    if SAMPLE_DATASET_ID not in store.datasets and SAMPLE_CSV.exists():
+    sample = store.datasets.get(SAMPLE_DATASET_ID)
+    if sample and sample.get("fingerprint") != pipeline.ai_fingerprint():
+        store.datasets.pop(SAMPLE_DATASET_ID, None)  # AI code changed since it was processed
+    if SAMPLE_DATASET_ID in store.datasets or pipeline.load_sample_seed():
+        return
+    if SAMPLE_CSV.exists():
         tweets = parse_tweets_csv(SAMPLE_CSV.read_bytes())
         pipeline.start("Sample: main_contestant.csv", tweets, dataset_id=SAMPLE_DATASET_ID)
 
@@ -52,17 +61,30 @@ def _get_dataset_or_404(dataset_id: str) -> Dict:
     return ds
 
 
-def _filter(tweets: List[Dict], relevant: Optional[bool], category: Optional[str],
-            q: Optional[str], location: Optional[str], min_confidence: float,
-            has_location: Optional[bool] = None) -> List[Dict]:
+def _relevant_param(value: Optional[str]) -> Optional[bool]:
+    """"true" / "false" / "all" (or empty) -> True / False / None."""
+    v = (value or "").strip().lower()
+    return True if v in ("true", "1", "yes") else False if v in ("false", "0", "no") else None
+
+
+def _csv_set(value: Optional[str]) -> set:
+    return {v.strip() for v in (value or "").split(",") if v.strip()}
+
+
+def _filter(tweets: List[Dict], relevant: Optional[bool] = True, category: Optional[str] = None,
+            q: Optional[str] = None, location: Optional[str] = None, min_confidence: float = 0.0,
+            has_location: Optional[bool] = None, severity: Optional[str] = None) -> List[Dict]:
     q = (q or "").lower()
     location = (location or "").lower()
-    cats = {c for c in (category or "").split(",") if c}
+    cats = _csv_set(category)
+    sevs = _csv_set(severity)
     out = []
     for t in tweets:
         if relevant is not None and t["relevant"] != relevant:
             continue
         if cats and t["category"] not in cats:
+            continue
+        if sevs and t.get("severity") not in sevs:
             continue
         if t["confidence"] < min_confidence:
             continue
@@ -76,14 +98,25 @@ def _filter(tweets: List[Dict], relevant: Optional[bool], category: Optional[str
     return out
 
 
+def _sort(rows: List[Dict], sort: str) -> List[Dict]:
+    if sort == "severity":
+        return sorted(rows, key=lambda t: (SEVERITY_ORDER.get(t.get("severity"), 9), -t["confidence"]))
+    if sort == "confidence":
+        return sorted(rows, key=lambda t: -t["confidence"])
+    if sort == "time":
+        return sorted(rows, key=lambda t: t.get("ts") or "")
+    return rows
+
+
 def _public(t: Dict) -> Dict:
-    return {k: t[k] for k in ("id", "text", "created_at", "relevant", "confidence",
-                               "category", "locations", "meta")}
+    return {k: t.get(k) for k in ("id", "text", "created_at", "ts", "relevant", "confidence",
+                                   "category", "severity", "reasoning", "locations", "meta")}
 
 
 class FilterParams(BaseModel):
     relevant: Optional[bool] = True
     category: Optional[str] = None
+    severity: Optional[str] = None
     q: Optional[str] = None
     location: Optional[str] = None
     min_confidence: float = 0.0
@@ -100,7 +133,7 @@ def health():
 
 @app.get("/api/categories")
 def categories():
-    return {"categories": ai.CATEGORIES}
+    return {"categories": ai.CATEGORIES, "severities": list(SEVERITY_ORDER)}
 
 
 @app.post("/api/datasets", status_code=202)
@@ -132,17 +165,21 @@ def get_job(job_id: str):
 @app.get("/api/datasets/{dataset_id}/tweets")
 def get_tweets(
     dataset_id: str,
-    relevant: Optional[bool] = True,
+    relevant: str = Query("true", description="true | false | all"),
     category: Optional[str] = Query(None, description="Comma-separated categories"),
+    severity: Optional[str] = Query(None, description="Comma-separated: critical,high,medium,low"),
     q: Optional[str] = None,
     location: Optional[str] = None,
     min_confidence: float = 0.0,
     has_location: Optional[bool] = None,
+    sort: str = Query("original", pattern="^(original|severity|confidence|time)$"),
     limit: int = Query(100, le=1000),
     offset: int = 0,
 ):
     ds = _get_dataset_or_404(dataset_id)
-    rows = _filter(ds["tweets"], relevant, category, q, location, min_confidence, has_location)
+    rows = _filter(ds["tweets"], _relevant_param(relevant), category, q, location,
+                   min_confidence, has_location, severity)
+    rows = _sort(rows, sort)
     return {"total": len(rows), "offset": offset, "limit": limit,
             "tweets": [_public(t) for t in rows[offset:offset + limit]]}
 
@@ -153,14 +190,21 @@ def get_stats(dataset_id: str):
     tweets = ds["tweets"]
     rel = [t for t in tweets if t["relevant"]]
     places = Counter(l["name"] for t in rel for l in t["locations"])
+    job = store.find_job_for_dataset(dataset_id)
     return {
         "name": ds["name"],
+        "processing": ds.get("processing", False),  # True while map points are still being added
+        "job": job,
         "total": len(tweets),
         "relevant": len(rel),
         "unrelated": len(tweets) - len(rel),
         "with_location": sum(1 for t in rel if t["locations"]),
         "by_category": dict(Counter(t["category"] for t in rel).most_common()),
+        "by_severity": {s: n for s, n in sorted(Counter(t.get("severity") for t in rel).items(),
+                                                key=lambda kv: SEVERITY_ORDER.get(kv[0], 9))},
         "top_locations": [{"name": n, "count": c} for n, c in places.most_common(15)],
+        "has_timestamps": any(t.get("ts") for t in tweets),
+        "anchor": ds.get("anchor"),  # [lat, lon] centre of activity — good initial map view
     }
 
 
@@ -168,32 +212,90 @@ def get_stats(dataset_id: str):
 def get_geojson(
     dataset_id: str,
     category: Optional[str] = None,
+    severity: Optional[str] = None,
     q: Optional[str] = None,
     min_confidence: float = 0.0,
 ):
     """One Point feature per (tweet, location). Drop straight into Leaflet / Mapbox."""
     ds = _get_dataset_or_404(dataset_id)
-    rows = _filter(ds["tweets"], True, category, q, None, min_confidence, has_location=True)
+    rows = _filter(ds["tweets"], True, category, q, None, min_confidence, True, severity)
     features = [
         {
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [loc["lon"], loc["lat"]]},
             "properties": {"tweet_id": t["id"], "text": t["text"], "category": t["category"],
-                           "confidence": t["confidence"], "place": loc["name"],
-                           "created_at": t["created_at"]},
+                           "severity": t.get("severity"), "confidence": t["confidence"],
+                           "place": loc["name"], "created_at": t["created_at"], "ts": t.get("ts")},
         }
         for t in rows for loc in t["locations"]
     ]
     return {"type": "FeatureCollection", "features": features}
 
 
+@app.get("/api/datasets/{dataset_id}/timeline")
+def get_timeline(
+    dataset_id: str,
+    interval: str = Query("hour", pattern="^(hour|day)$"),
+    category: Optional[str] = None,
+    severity: Optional[str] = None,
+):
+    """Tweet counts per hour/day. `available` is false if the CSV had no usable dates."""
+    ds = _get_dataset_or_404(dataset_id)
+    cut = 13 if interval == "hour" else 10  # ISO prefix: "2013-06-21T10" / "2013-06-21"
+    cats, sevs = _csv_set(category), _csv_set(severity)
+    buckets: Dict[str, Dict] = defaultdict(lambda: {"total": 0, "relevant": 0, "by_category": Counter()})
+    for t in ds["tweets"]:
+        if not t.get("ts"):
+            continue
+        b = buckets[t["ts"][:cut]]
+        b["total"] += 1
+        if t["relevant"] and (not cats or t["category"] in cats) and (not sevs or t.get("severity") in sevs):
+            b["relevant"] += 1
+            b["by_category"][t["category"]] += 1
+    return {
+        "available": bool(buckets),
+        "interval": interval,
+        "buckets": [{"t": k + (":00:00Z" if interval == "hour" else "T00:00:00Z"),
+                     "total": v["total"], "relevant": v["relevant"],
+                     "by_category": dict(v["by_category"])}
+                    for k, v in sorted(buckets.items())],
+    }
+
+
+@app.get("/api/datasets/{dataset_id}/export.csv")
+def export_csv(
+    dataset_id: str,
+    relevant: str = Query("all", description="true | false | all"),
+    category: Optional[str] = None,
+    severity: Optional[str] = None,
+    q: Optional[str] = None,
+    location: Optional[str] = None,
+    min_confidence: float = 0.0,
+):
+    """Classified tweets as CSV (all tweets by default). Link to it directly for a download."""
+    ds = _get_dataset_or_404(dataset_id)
+    rows = _filter(ds["tweets"], _relevant_param(relevant), category, q, location, min_confidence, None, severity)
+    buf = io.StringIO()
+    w = csv.writer(buf)
+    w.writerow(["id", "text", "created_at", "relevant", "confidence", "category", "severity",
+                "reasoning", "places", "lat", "lon"])
+    for t in rows:
+        first = t["locations"][0] if t["locations"] else {}
+        w.writerow([t["id"], t["text"], t["created_at"] or "", t["relevant"], t["confidence"],
+                    t["category"] or "", t.get("severity") or "", t.get("reasoning") or "",
+                    "; ".join(l["name"] for l in t["locations"]), first.get("lat", ""), first.get("lon", "")])
+    filename = f"living_flood_map_{dataset_id}.csv"
+    return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv",
+                             headers={"Content-Disposition": f'attachment; filename="{filename}"'})
+
+
 @app.post("/api/datasets/{dataset_id}/summary")
 def get_summary(dataset_id: str, filters: FilterParams):
     ds = _get_dataset_or_404(dataset_id)
     rows = _filter(ds["tweets"], filters.relevant, filters.category, filters.q,
-                   filters.location, filters.min_confidence)
-    # Most confident first so the summary is based on the strongest signal.
-    rows = sorted(rows, key=lambda t: t["confidence"], reverse=True)[:MAX_SUMMARY_TWEETS]
+                   filters.location, filters.min_confidence, None, filters.severity)
+    # Most urgent and most confident first so the summary is based on the strongest signal.
+    rows = _sort(rows, "severity")[:MAX_SUMMARY_TWEETS]
     try:
         summary = ai.summarize([t["text"] for t in rows])
     except Exception as e:  # noqa: BLE001

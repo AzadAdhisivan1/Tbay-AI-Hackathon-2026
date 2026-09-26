@@ -20,9 +20,14 @@ def new_id() -> str:
     return uuid.uuid4().hex[:12]
 
 
-def save_dataset(ds: Dict):
+def publish_dataset(ds: Dict):
+    """Make a dataset queryable (in memory) before it is finished."""
     with _lock:
         datasets[ds["id"]] = ds
+
+
+def save_dataset(ds: Dict):
+    publish_dataset(ds)
     path = DATASETS_DIR / f"{ds['id']}.json"
     tmp = path.with_suffix(".tmp")
     tmp.write_text(json.dumps(ds))
@@ -36,6 +41,7 @@ def get_dataset(dataset_id: str) -> Optional[Dict]:
 def list_datasets() -> List[Dict]:
     return [
         {"id": d["id"], "name": d["name"], "created_at": d["created_at"],
+         "processing": d.get("processing", False),
          "total": len(d["tweets"]), "relevant": sum(1 for t in d["tweets"] if t.get("relevant"))}
         for d in sorted(datasets.values(), key=lambda d: d["created_at"], reverse=True)
     ]
@@ -52,7 +58,8 @@ def load_persisted():
 
 def create_job(dataset_id: str, total: int) -> Dict:
     job = {"id": new_id(), "dataset_id": dataset_id, "status": "queued", "stage": "queued",
-           "processed": 0, "total": total, "error": None, "started_at": time.time()}
+           "processed": 0, "total": total, "ai_failed": 0, "dataset_ready": False,
+           "places_done": 0, "places_total": 0, "error": None, "started_at": time.time()}
     with _lock:
         jobs[job["id"]] = job
     return job
