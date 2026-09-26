@@ -1,11 +1,11 @@
 /**
- * Category Definitions & Color Synchronizer
+ * Category Definitions & Color Synchronizer (Light Minimalist GIS Theme)
  *
  * Ensures 100% visual and logical sync between:
  *  - Map markers & popups
  *  - Map legend
  *  - Tweet Feed filter pills
- *  - Tweet Feed card badges
+ *  - Tweet Feed card rows
  *  - Backend API categories & Demo fallback categories
  *
  * Color Specification:
@@ -22,9 +22,9 @@ export const SYNCED_CATEGORIES = [
     altLabel: 'Elder / Home Water',
     colorHex: '#ef4444',
     strokeHex: '#b91c1c',
-    badgeClass: 'bg-red-500/20 text-red-300 ring-1 ring-red-500/30',
-    pillActiveClass: 'bg-red-600 text-white ring-2 ring-red-400',
-    pillInactiveClass: 'bg-slate-800/60 text-slate-300 border-slate-700 hover:border-red-500/50 hover:text-red-200',
+    badgeClass: 'bg-red-50 text-red-700 border border-red-200',
+    pillActiveClass: 'bg-zinc-900 text-white border-zinc-900',
+    pillInactiveClass: 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50 hover:border-zinc-400',
     dotBg: 'bg-red-500',
   },
   {
@@ -33,9 +33,9 @@ export const SYNCED_CATEGORIES = [
     altLabel: 'Submerged Road / Bridge',
     colorHex: '#f97316',
     strokeHex: '#c2410c',
-    badgeClass: 'bg-orange-500/20 text-orange-300 ring-1 ring-orange-500/30',
-    pillActiveClass: 'bg-orange-600 text-white ring-2 ring-orange-400',
-    pillInactiveClass: 'bg-slate-800/60 text-slate-300 border-slate-700 hover:border-orange-500/50 hover:text-orange-200',
+    badgeClass: 'bg-orange-50 text-orange-700 border border-orange-200',
+    pillActiveClass: 'bg-zinc-900 text-white border-zinc-900',
+    pillInactiveClass: 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50 hover:border-zinc-400',
     dotBg: 'bg-orange-500',
   },
   {
@@ -44,9 +44,9 @@ export const SYNCED_CATEGORIES = [
     altLabel: 'Rising Water / Evacuation',
     colorHex: '#eab308',
     strokeHex: '#a16207',
-    badgeClass: 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/30',
-    pillActiveClass: 'bg-amber-600 text-white ring-2 ring-amber-400',
-    pillInactiveClass: 'bg-slate-800/60 text-slate-300 border-slate-700 hover:border-amber-500/50 hover:text-amber-200',
+    badgeClass: 'bg-amber-50 text-amber-800 border border-amber-200',
+    pillActiveClass: 'bg-zinc-900 text-white border-zinc-900',
+    pillInactiveClass: 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50 hover:border-zinc-400',
     dotBg: 'bg-amber-500',
   },
   {
@@ -55,9 +55,9 @@ export const SYNCED_CATEGORIES = [
     altLabel: 'Weather / Water Levels',
     colorHex: '#3b82f6',
     strokeHex: '#1d4ed8',
-    badgeClass: 'bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30',
-    pillActiveClass: 'bg-blue-600 text-white ring-2 ring-blue-400',
-    pillInactiveClass: 'bg-slate-800/60 text-slate-300 border-slate-700 hover:border-blue-500/50 hover:text-blue-200',
+    badgeClass: 'bg-blue-50 text-blue-700 border border-blue-200',
+    pillActiveClass: 'bg-zinc-900 text-white border-zinc-900',
+    pillInactiveClass: 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50 hover:border-zinc-400',
     dotBg: 'bg-blue-500',
   },
 ];
@@ -89,32 +89,32 @@ export function getMarkerColor(category) {
 }
 
 /**
- * Get category display badge styling for feed cards & map popups
+ * Get category display badge styling for feed rows & map popups
  */
 export function getCategoryBadge(category) {
-  if (!category) return 'bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30';
+  if (!category) return 'bg-zinc-100 text-zinc-700 border border-zinc-200';
   const cat = category.toLowerCase().trim();
 
   if (cat.includes('rescue') || cat.includes('elder') || (cat.includes('home') && cat.includes('water'))) {
-    return 'bg-red-500/20 text-red-300 ring-1 ring-red-500/30';
+    return 'bg-red-50 text-red-700 border border-red-200';
   }
   if (cat.includes('infrastructure') || cat.includes('road') || cat.includes('bridge') || cat.includes('submerged')) {
-    return 'bg-orange-500/20 text-orange-300 ring-1 ring-orange-500/30';
+    return 'bg-orange-50 text-orange-700 border border-orange-200';
   }
   if (cat.includes('evacuation') || cat.includes('rising')) {
-    return 'bg-amber-500/20 text-amber-300 ring-1 ring-amber-500/30';
+    return 'bg-amber-50 text-amber-800 border border-amber-200';
   }
   if (cat.includes('donation') || cat.includes('volunteer')) {
-    return 'bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/30';
+    return 'bg-emerald-50 text-emerald-700 border border-emerald-200';
   }
-  return 'bg-blue-500/20 text-blue-300 ring-1 ring-blue-500/30';
+  return 'bg-blue-50 text-blue-700 border border-blue-200';
 }
 
 /**
  * Standardize label for display
  */
 export function getCategoryDisplay(category) {
-  if (!category) return 'Flood Signal';
+  if (!category) return 'Signal';
   const cat = category.toLowerCase().trim();
 
   if (cat.includes('rescue') || cat.includes('elder')) return 'Rescue / Help';
