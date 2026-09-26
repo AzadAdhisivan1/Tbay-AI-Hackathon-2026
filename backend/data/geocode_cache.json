@@ -1,4 +1,40 @@
 {
+"4804 edmonton trail ne, calgary|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.0950177,
+"lon": -114.0529461,
+"n": "Greenview Rise",
+"name": "Greenview Rise, Edmonton Trail NE, Greenview Industrial",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0947942,
+"lon": -114.0530936,
+"n": "Satori Health Centre Greenview",
+"name": "Satori Health Centre Greenview, Edmonton Trail NE, Greenview Industrial",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.094946,
+"lon": -114.0532409,
+"n": "Capsule Pharmacy Greenview",
+"name": "Capsule Pharmacy Greenview, Edmonton Trail NE, Greenview Industrial",
+"rank": 30
+}
+],
+"5th ave flyover, calgary|51.0,-114.1": [
+{
+"cat": "man_made",
+"lat": 51.0492352,
+"lon": -114.0512239,
+"n": "5th Avenue Flyover",
+"name": "5th Avenue Flyover, Dermot Baldwin Way SE, Downtown East Village",
+"rank": 30
+}
+],
 "airdrie|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -97,8 +133,19 @@
 ],
 "albertans|51.0,-114.1": [],
 "australia|51.0,-114.1": [],
+"bad scuba|51.0,-114.1": [],
 "bangaladesh|51.0,-114.1": [],
 "bangor tuesday|51.0,-114.1": [],
+"beltline, calgary|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0404978,
+"lon": -114.0725934,
+"n": "Beltline",
+"name": "Beltline, Calgary, Alberta",
+"rank": 20
+}
+],
 "beltline|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -278,7 +325,18 @@
 "rank": 30
 }
 ],
+"britannia, calgary|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0125403,
+"lon": -114.0834469,
+"n": "Britannia",
+"name": "Britannia, Calgary, Alberta",
+"rank": 20
+}
+],
 "bruce willis|51.0,-114.1": [],
+"calgarian day|51.0,-114.1": [],
 "calgarians|51.0,-114.1": [],
 "calgarian|51.0,-114.1": [],
 "calgary comfort inn|51.0,-114.1": [
@@ -357,6 +415,16 @@
 "rank": 30
 }
 ],
+"calgary farmers' market, calgary|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 50.9851189,
+"lon": -114.0515564,
+"n": "Calgary Farmers' Market",
+"name": "Calgary Farmers' Market, 77 Avenue SE, Fairview Industrial",
+"rank": 30
+}
+],
 "calgary flames|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -413,6 +481,16 @@
 "calgary north veterinary hospital|51.0,-114.1": [],
 "calgary rob ford|51.0,-114.1": [],
 "calgary super nenshi|51.0,-114.1": [],
+"calgary tower, calgary|51.0,-114.1": [
+{
+"cat": "man_made",
+"lat": 51.0442999,
+"lon": -114.0631347,
+"n": "Calgary Tower",
+"name": "Calgary Tower, 9 Avenue SE, Downtown Commercial Core",
+"rank": 30
+}
+],
 "calgary transit|51.0,-114.1": [
 {
 "cat": "landuse",
@@ -831,6 +909,7 @@
 "rank": 20
 }
 ],
+"earls 16th ave, calgary|51.0,-114.1": [],
 "east elbow park|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -1107,6 +1186,7 @@
 "rank": 30
 }
 ],
+"great idea|51.0,-114.1": [],
 "hamza|51.0,-114.1": [],
 "harvest hills|51.0,-114.1": [
 {
@@ -1206,6 +1286,7 @@
 }
 ],
 "house crashing|51.0,-114.1": [],
+"house hippo|51.0,-114.1": [],
 "india|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1485,6 +1566,16 @@
 "rank": 18
 }
 ],
+"marda loop, calgary|51.0,-114.1": [
+{
+"cat": "landuse",
+"lat": 51.0234324,
+"lon": -114.1094496,
+"n": "Marda Loop",
+"name": "Marda Loop, South Calgary, Calgary",
+"rank": 24
+}
+],
 "marina mohan|51.0,-114.1": [],
 "mcmahon|51.0,-114.1": [
 {
@@ -1702,6 +1793,7 @@
 }
 ],
 "mosquitos|51.0,-114.1": [],
+"nanaimo|51.0,-114.1": [],
 "nanton|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1712,6 +1804,7 @@
 "rank": 12
 }
 ],
+"nenshi noun|51.0,-114.1": [],
 "north american|51.0,-114.1": [
 {
 "cat": "aerialway",
@@ -1793,6 +1886,24 @@
 }
 ],
 "palm springs|51.0,-114.1": [],
+"peace bridge, calgary|51.0,-114.1": [
+{
+"cat": "man_made",
+"lat": 51.0539136,
+"lon": -114.0789104,
+"n": "Peace Bridge",
+"name": "Peace Bridge, Bow River Path (North), Sunnyside",
+"rank": 30
+},
+{
+"cat": "bridge",
+"lat": 51.0539135,
+"lon": -114.0789104,
+"n": "Peace Bridge",
+"name": "Peace Bridge, Bow River Path (North), Sunnyside",
+"rank": 30
+}
+],
 "pincher creek|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1825,6 +1936,24 @@
 "n": "Pincher Creek",
 "name": "Pincher Creek, Municipal District of Pincher Creek No. 9, Alberta",
 "rank": 18
+}
+],
+"police state|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 48.5435689,
+"lon": -117.9048912,
+"n": "Colville Police Department",
+"name": "Colville Police Department, East Astor Avenue, Colville",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 48.2778362,
+"lon": -117.713287,
+"n": "Chewelah Police Department",
+"name": "Chewelah Police Department, East Webster Avenue, Chewelah",
+"rank": 30
 }
 ],
 "possible flood relief scams|51.0,-114.1": [],
@@ -1868,6 +1997,24 @@
 "n": "Mount Prince John",
 "name": "Mount Prince John, Area F (Columbia Lake/Windermere Lake), Regional District of East Kootenay",
 "rank": 18
+}
+],
+"quarry park|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.9613917,
+"lon": -114.0109842,
+"n": "Quarry Park",
+"name": "Quarry Park, Douglasdale/Douglas Glen, Calgary",
+"rank": 24
+},
+{
+"cat": "railway",
+"lat": 50.9637118,
+"lon": -114.0013482,
+"n": "Quarry Park",
+"name": "Quarry Park, 24 Street SE, Shepard Industrial",
+"rank": 30
 }
 ],
 "queensland liquor|51.0,-114.1": [
@@ -1922,6 +2069,7 @@
 "rank": 19
 }
 ],
+"red sox|51.0,-114.1": [],
 "redwood meadows|51.0,-114.1": [
 {
 "cat": "place",
@@ -2078,6 +2226,7 @@
 "rank": 30
 }
 ],
+"siska first nation|51.0,-114.1": [],
 "sobeys|51.0,-114.1": [
 {
 "cat": "shop",

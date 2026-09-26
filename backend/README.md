@@ -28,29 +28,39 @@ server doesn't reprocess on every cold start.
 
 | File | What it does | Owner |
 |---|---|---|
-| `app/ai.py` | `classify_batch()` and `summarize()` — **the AI contract**. Currently keyword placeholders. | AI teammate |
+| `app/ai.py` | Batched Gemini classification + summaries with quota guard; falls back to the ai_workflow rule engine | Backend (prompt overridable by AI teammate) |
 | `app/main.py` | API routes, filtering, CORS | Backend |
 | `app/pipeline.py` | Background job: classify in parallel batches (with retries) → publish → geocode progressively → save | Backend |
 | `app/csv_loader.py` | Parses any CSV, auto-detects the text / date / lat / lon columns | Backend |
 | `app/geocode.py` | Place name → lat/lon: ai_workflow gazetteer first, then OpenStreetMap Nominatim restricted to the area around the disaster, with junk-name filtering. Cached in `data/geocode_cache.json` | Backend |
 | `app/store.py` | In-memory store, finished datasets saved to `data/datasets/` | Backend |
 
-### For the AI teammate
+### AI: Gemini + rule-engine fallback
 
-Only edit `app/ai.py`. Keep the signatures:
+`app/ai.py` classifies tweets with the **hackathon Gemini API** (`HACKATHON_API_KEY`),
+**one request per batch of 50 tweets** using structured JSON output. Anything the LLM
+can't handle (disabled, quota guard hit, error, missing rows) falls back to the
+`ai_workflow` rule engine (`analyze_tweet_nlp`). Each tweet's `ai_source` says which
+(`gemini` / `rules`); `/api/ai/status` shows whether Gemini is live and the quota left.
 
-```python
-classify_batch(texts: List[str]) -> List[dict]
-# one dict per tweet, same order:
-# {"relevant": bool, "confidence": float, "category": str | None, "locations": [str]}
+**Quota rules (it's small, and failed requests count):**
+- No automatic retries of LLM calls.
+- The LLM stops once `requests_remaining` ≤ `LLM_MIN_REMAINING` (default 40, kept for summaries).
+- At most `LLM_MAX_REQUESTS_PER_DATASET` (default 170 ≈ 8,500 tweets) per upload.
+- Summaries are one request each, cached per identical filter result.
+- **The provided sample never spends quota on a server.** It loads from `data/sample_seed.json`.
+  If the AI/geocoding code changes, the server reprocesses it with the rule engine only.
+  To refresh the Gemini version, run locally once and commit the new seed:
+  ```bash
+  SAMPLE_USE_LLM=1 uvicorn app.main:app --port 8000   # ~160 requests, ~15 min
+  ```
+- Testing uploads locally? Set `LLM_ENABLED=0` in `.env` to avoid spending quota.
 
-summarize(texts: List[str]) -> str
-```
-
-- `category` must be one of `CATEGORIES` in `ai.py` (or `None` if not relevant).
-- `locations` should be as specific as possible (`"Mission, Calgary, Alberta"`, not `"Mission"`), and skip bare provinces/countries.
-- Put API keys in `backend/.env` and read them with `os.getenv(...)`.
-- After changing the model, delete `backend/data/datasets/sample.json` and restart to reprocess.
+**AI teammate:** the batch prompt/schema can be overridden without touching backend
+code. Add `format_batch_prompt(texts: List[str]) -> str` and `BATCH_RESPONSE_SCHEMA` to
+`ai_workflow/prompt_template.py`. The response must be a JSON array of
+`{id, is_relevant, relevance_confidence, category, severity, locations: [str], reasoning}`,
+one per tweet with `id` = index in the batch, using the ai_workflow categories.
 
 ## API (for the UI teammate)
 
@@ -59,6 +69,7 @@ Base URL: `http://localhost:8000` locally. Use `import.meta.env.VITE_API_URL` in
 | Method & path | Purpose | Returns |
 |---|---|---|
 | `GET /api/health` | Health check | `{ok: true}` |
+| `GET /api/ai/status` | Is Gemini live? (for the "Gemini Live" badge) | `{active, enabled, requests_remaining, model, ...}` |
 | `GET /api/categories` | Filter options | `{categories: [...], severities: [critical, high, medium, low]}` |
 | `POST /api/datasets` (multipart `file`) | Upload a CSV | `{dataset_id, job_id, total}` (202) |
 | `GET /api/jobs/{job_id}` | Poll progress every ~1s | `{status: queued\|running\|done\|failed, stage: classifying\|geocoding\|done, processed, total, dataset_ready, places_done, places_total, ai_failed, error}` |
@@ -105,7 +116,8 @@ Render → New → **Web Service** → **Public Git Repository** →
 | Start Command | `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
 | Instance Type | Free |
 
-Environment variables: `PYTHON_VERSION=3.11.9`, `NODE_VERSION=22`, plus any model API keys.
+Environment variables: `PYTHON_VERSION=3.11.9`, `NODE_VERSION=22`, `HACKATHON_API_KEY` (secret).
+Do NOT set `SAMPLE_USE_LLM` on Render.
 Optional tuning: `AI_CONCURRENCY` (parallel AI batches, default 4 — lower it if the model
 rate-limits), `BATCH_SIZE` (default 50), `GEOCODE_MAX_LOOKUPS` (new OpenStreetMap lookups
 per upload, default 250), `GEOCODE_COUNTRY_CODES` (country tried first, default `ca`).
