@@ -7,6 +7,7 @@ Interactive docs: http://localhost:8000/docs
 import csv
 import io
 import logging
+import re
 from collections import Counter, defaultdict
 from typing import Dict, List, Optional
 
@@ -60,6 +61,43 @@ def _relevant_param(value: Optional[str]) -> Optional[bool]:
     return True if v in ("true", "1", "yes") else False if v in ("false", "0", "no") else None
 
 
+# UI labels / synonyms -> backend category keys ("Rescue / Help" -> rescue_help).
+_CATEGORY_ALIASES = {
+    "rescue": "rescue_help", "help": "rescue_help", "rescue help": "rescue_help",
+    "request for help": "rescue_help", "medical": "rescue_help", "medical need": "rescue_help",
+    "elder home water": "rescue_help",
+    "evacuation": "evacuation", "evacuations": "evacuation", "rising water evacuation": "evacuation",
+    "infrastructure": "infrastructure_damage", "infrastructure damage": "infrastructure_damage",
+    "submerged road bridge": "infrastructure_damage", "damage": "infrastructure_damage",
+    "weather": "weather_water_levels", "water": "weather_water_levels",
+    "weather water": "weather_water_levels", "weather water levels": "weather_water_levels",
+    "official update": "weather_water_levels", "official updates": "weather_water_levels",
+    "donations": "donations_volunteering", "donation": "donations_volunteering",
+    "volunteering": "donations_volunteering", "donations volunteering": "donations_volunteering",
+    "volunteer relief effort": "donations_volunteering", "relief": "donations_volunteering",
+    "sympathy": "sympathy_support", "support": "sympathy_support",
+    "sympathy support": "sympathy_support", "general concern": "sympathy_support",
+    "other": "other_related", "other related": "other_related",
+}
+
+
+def _category_set(value: Optional[str]) -> set:
+    """Accept backend keys ("evacuation") and UI labels ("Evacuation", "Rescue / Help")."""
+    out = set()
+    for raw in _csv_set(value):
+        if raw in ai.CATEGORIES:
+            out.add(raw)
+            continue
+        key = " ".join(re.sub(r"[^a-z]+", " ", raw.lower()).split())
+        if key.replace(" ", "_") in ai.CATEGORIES:
+            out.add(key.replace(" ", "_"))
+        elif key in _CATEGORY_ALIASES:
+            out.add(_CATEGORY_ALIASES[key])
+        else:
+            out.add(raw)  # unknown: matches nothing, as before
+    return out
+
+
 def _csv_set(value: Optional[str]) -> set:
     return {v.strip() for v in (value or "").split(",") if v.strip()}
 
@@ -70,8 +108,8 @@ def _filter(tweets: List[Dict], relevant: Optional[bool] = True, category: Optio
             disaster_type: Optional[str] = None) -> List[Dict]:
     q = (q or "").lower()
     location = (location or "").lower()
-    cats = _csv_set(category)
-    sevs = _csv_set(severity)
+    cats = _category_set(category)
+    sevs = {v.lower() for v in _csv_set(severity)}
     dtypes = _csv_set(disaster_type)
     out = []
     for t in tweets:
@@ -260,7 +298,7 @@ def get_timeline(
     """Tweet counts per hour/day. `available` is false if the CSV had no usable dates."""
     ds = _get_dataset_or_404(dataset_id)
     cut = 13 if interval == "hour" else 10  # ISO prefix: "2013-06-21T10" / "2013-06-21"
-    cats, sevs = _csv_set(category), _csv_set(severity)
+    cats, sevs = _category_set(category), {v.lower() for v in _csv_set(severity)}
     buckets: Dict[str, Dict] = defaultdict(lambda: {"total": 0, "relevant": 0, "by_category": Counter()})
     for t in ds["tweets"]:
         if not t.get("ts"):
