@@ -35,10 +35,14 @@ try:
 except Exception:  # a broken analyzer.py must not take the whole backend down
     log.exception("Could not import ai_workflow/analyzer.py — every tweet will be marked unrelated")
     analyze_tweet_nlp = None
-try:  # optional: the AI teammate can override the batch prompt/schema in ai_workflow
-    from prompt_template import BATCH_RESPONSE_SCHEMA, format_batch_prompt
+try:  # the AI teammate's batch prompt in ai_workflow (optional)
+    from prompt_template import format_batch_prompt
 except Exception:
-    format_batch_prompt = BATCH_RESPONSE_SCHEMA = None
+    format_batch_prompt = None
+try:
+    from prompt_template import format_summary_prompt
+except Exception:
+    format_summary_prompt = None
 
 # Categories the UI filters on.
 CATEGORIES = [
@@ -241,10 +245,14 @@ def classify_batch(texts: List[str], use_llm: bool = True) -> List[Dict]:
     """
     llm_rows: Dict[int, Dict] = {}
     if use_llm and texts and quota.can_spend():
-        if format_batch_prompt and BATCH_RESPONSE_SCHEMA:
-            prompt, schema = format_batch_prompt(texts), BATCH_RESPONSE_SCHEMA
+        if format_batch_prompt:
+            # Explicit 0-based ids: results are matched back by position.
+            prompt = format_batch_prompt([{"id": i, "text": t} for i, t in enumerate(texts)])
         else:
-            prompt, schema = _default_batch_prompt(texts), _BATCH_SCHEMA
+            prompt = _default_batch_prompt(texts)
+        # Always our schema: the hackathon service returns HTTP 500 for JSON-schema
+        # features like "type": ["string", "null"] (ai_workflow's BATCH_RESPONSE_SCHEMA).
+        schema = _BATCH_SCHEMA
         text = _generate(prompt, schema)
         if text:
             try:
@@ -277,8 +285,11 @@ def summarize(texts: List[str]) -> str:
     key = hashlib.sha1("\n".join(texts).encode()).hexdigest()
     if key in _summary_cache:
         return _summary_cache[key]
-    body = "\n".join(f"- {t}" for t in texts)[:60000]
-    text = _generate(_SUMMARY_INSTRUCTIONS + body, timeout=60)
+    if format_summary_prompt:
+        prompt = format_summary_prompt(list(texts))
+    else:
+        prompt = _SUMMARY_INSTRUCTIONS + "\n".join(f"- {t}" for t in texts)[:60000]
+    text = _generate(prompt, timeout=60)
     if text and text.strip():
         _summary_cache[key] = text.strip()
         return _summary_cache[key]

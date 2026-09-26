@@ -133,6 +133,7 @@
 ],
 "albertans|51.0,-114.1": [],
 "australia|51.0,-114.1": [],
+"bad scuba|51.0,-114.1": [],
 "bangaladesh|51.0,-114.1": [],
 "bangor tuesday|51.0,-114.1": [],
 "beltline, calgary|51.0,-114.1": [
@@ -335,6 +336,7 @@
 }
 ],
 "bruce willis|51.0,-114.1": [],
+"calgarian day|51.0,-114.1": [],
 "calgarians|51.0,-114.1": [],
 "calgarian|51.0,-114.1": [],
 "calgary comfort inn|51.0,-114.1": [
@@ -1184,6 +1186,7 @@
 "rank": 30
 }
 ],
+"great idea|51.0,-114.1": [],
 "hamza|51.0,-114.1": [],
 "harvest hills|51.0,-114.1": [
 {
@@ -1283,6 +1286,7 @@
 }
 ],
 "house crashing|51.0,-114.1": [],
+"house hippo|51.0,-114.1": [],
 "india|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1800,6 +1804,7 @@
 "rank": 12
 }
 ],
+"nenshi noun|51.0,-114.1": [],
 "north american|51.0,-114.1": [
 {
 "cat": "aerialway",
@@ -1933,6 +1938,24 @@
 "rank": 18
 }
 ],
+"police state|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 48.5435689,
+"lon": -117.9048912,
+"n": "Colville Police Department",
+"name": "Colville Police Department, East Astor Avenue, Colville",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 48.2778362,
+"lon": -117.713287,
+"n": "Chewelah Police Department",
+"name": "Chewelah Police Department, East Webster Avenue, Chewelah",
+"rank": 30
+}
+],
 "possible flood relief scams|51.0,-114.1": [],
 "prince|51.0,-114.1": [
 {
@@ -1974,6 +1997,24 @@
 "n": "Mount Prince John",
 "name": "Mount Prince John, Area F (Columbia Lake/Windermere Lake), Regional District of East Kootenay",
 "rank": 18
+}
+],
+"quarry park|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.9613917,
+"lon": -114.0109842,
+"n": "Quarry Park",
+"name": "Quarry Park, Douglasdale/Douglas Glen, Calgary",
+"rank": 24
+},
+{
+"cat": "railway",
+"lat": 50.9637118,
+"lon": -114.0013482,
+"n": "Quarry Park",
+"name": "Quarry Park, 24 Street SE, Shepard Industrial",
+"rank": 30
 }
 ],
 "queensland liquor|51.0,-114.1": [
@@ -2028,6 +2069,7 @@
 "rank": 19
 }
 ],
+"red sox|51.0,-114.1": [],
 "redwood meadows|51.0,-114.1": [
 {
 "cat": "place",
@@ -2184,6 +2226,7 @@
 "rank": 30
 }
 ],
+"siska first nation|51.0,-114.1": [],
 "sobeys|51.0,-114.1": [
 {
 "cat": "shop",
