@@ -79,8 +79,28 @@ curl "localhost:8000/api/datasets/sample/tweets?category=evacuation&limit=5"
 curl -F "file=@my_tweets.csv" localhost:8000/api/datasets
 ```
 
-## Deploy
+## Deploy (single service on Render)
 
-Any Python host works (Render, Railway, Fly.io). On Render: root directory `backend`,
-build `pip install -r requirements.txt`, start `uvicorn app.main:app --host 0.0.0.0 --port $PORT`.
-Set `ALLOWED_ORIGINS` to the deployed frontend URL, plus any model API keys.
+The backend also serves the built React app, so the whole site is **one Render
+Web Service with one URL** — the frontend calls `/api/...` on the same origin.
+
+Render → New → **Web Service** → **Public Git Repository** →
+`https://github.com/krish-bista/Tbay-AI-Hackathon-2026`
+
+| Setting | Value |
+|---|---|
+| Branch | `main` |
+| Root Directory | *(leave blank — needs both `frontend/` and `backend/`)* |
+| Runtime | Python 3 |
+| Build Command | `cd frontend && npm ci && npm run build && cd ../backend && pip install -r requirements.txt` |
+| Start Command | `cd backend && uvicorn app.main:app --host 0.0.0.0 --port $PORT` |
+| Instance Type | Free |
+
+Environment variables: `PYTHON_VERSION=3.11.9`, `NODE_VERSION=22`, plus any model API keys.
+
+Redeploying: public-repo services don't auto-deploy. Use Settings → Deploy Hook
+and run `curl -X POST "<hook-url>"` (or Manual Deploy in the dashboard) after merging to `main`.
+
+To test the production setup locally: `cd frontend && npm run build`, then run
+uvicorn as above and open http://localhost:8000. (`npm run dev` still works as
+usual and talks to http://localhost:8000.)

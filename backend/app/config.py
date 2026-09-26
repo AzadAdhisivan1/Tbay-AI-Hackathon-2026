@@ -13,6 +13,9 @@ DATASETS_DIR.mkdir(parents=True, exist_ok=True)
 SAMPLE_CSV = BACKEND_DIR.parent / "CE Strategies" / "main_contestant.csv"
 SAMPLE_DATASET_ID = "sample"
 
+# Built React app (npm run build). Served by the backend in production.
+FRONTEND_DIST = BACKEND_DIR.parent / "frontend" / "dist"
+
 # Comma-separated list of frontend origins, e.g. "https://our-app.vercel.app,http://localhost:5173"
 ALLOWED_ORIGINS = [o.strip() for o in os.getenv("ALLOWED_ORIGINS", "*").split(",") if o.strip()]
 

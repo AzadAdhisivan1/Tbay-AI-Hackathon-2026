@@ -14,16 +14,17 @@
  *   GET  /api/datasets/{id}/geojson (GeoJSON for Leaflet, with filters)
  *   POST /api/datasets/{id}/summary (AI overview, filtered)
  *
- * Base URL comes from VITE_API_URL (defaults to http://localhost:8000).
+ * Base URL comes from VITE_API_URL. If unset: http://localhost:8000 in `npm run dev`,
+ * and same-origin in production (the backend serves the built frontend).
  * Fallback data is used only when the backend is completely unreachable.
  */
 
-const API = import.meta.env.VITE_API_URL || 'http://localhost:8000';
+const API = import.meta.env.VITE_API_URL ?? (import.meta.env.DEV ? 'http://localhost:8000' : '');
 
 // ── Low-level helpers ──────────────────────────────────────────────
 
 async function get(path, params = {}) {
-  const url = new URL(`${API}${path}`);
+  const url = new URL(`${API}${path}`, window.location.origin);
   Object.entries(params).forEach(([k, v]) => {
     if (v != null && v !== '') url.searchParams.set(k, v);
   });
