@@ -259,7 +259,15 @@ def call_hackathon_gemini_api(prompt: str, response_schema: Optional[Dict] = Non
     Headers: X-API-Key: <HACKATHON_API_KEY / GEMINI_API_KEY / GOOGLE_API_KEY>
 
     Returns (text_response, requests_remaining).
+
+    QUOTA LOCK: these calls are one request PER TWEET, and the hackathon quota is
+    small, so they only happen when ALLOW_PER_TWEET_LLM=1 is set on purpose.
+    Otherwise callers (batch_processor.py, app.py) fall back to the free NLP engine.
+    The deployed backend doesn't use this — it batches 50 tweets per request itself.
     """
+    if os.environ.get("ALLOW_PER_TWEET_LLM", "0").lower() not in ("1", "true", "yes"):
+        return None, None
+
     api_key = (
         os.environ.get("HACKATHON_API_KEY") or
         os.environ.get("GEMINI_API_KEY") or

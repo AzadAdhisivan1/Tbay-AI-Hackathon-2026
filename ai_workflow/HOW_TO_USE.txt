@@ -149,6 +149,10 @@ result = analyze_tweet("Water entering home on Elbow River in High River! Family
 2. Quota Preservation: The Hackathon Gemini quota is 1,000 total requests. Use
    `format_batch_prompt()` (50 tweets per call) to process entire datasets in
    ~20-30 API calls instead of thousands of single calls.
+   QUOTA LOCK: analyze_tweet() / analyze_tweet_llm() make ONE request PER TWEET,
+   so they only call Gemini when ALLOW_PER_TWEET_LLM=1 is set on purpose.
+   Without it, batch_processor.py and app.py use the free NLP engine. Only turn it
+   on for a handful of tweets. For whole datasets, use the backend (it batches).
 3. Geocoding Rate Limits: Nominatim geocoding defaults to 1 request/sec when
    querying OpenStreetMap. `ai_workflow` includes an offline gazetteer cache
    for major Canadian disaster locations (Calgary, High River, Fort McMurray,
