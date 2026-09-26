@@ -160,3 +160,60 @@ result = analyze_tweet("Water entering home on Elbow River in High River! Family
 4. Fallback Guarantee: `analyze_tweet()` will never throw an unhandled exception.
    If Gemini API returns an error or times out, it automatically falls back
    to the zero-shot NLP classifier.
+
+
+6. CHANGES MADE BY THE BACKEND TEAM IN THIS FOLDER (please read)
+------------------------------------------------------------------------------
+The backend team edited ai_workflow/ with the AI team's permission. Please pull
+main before changing these files, and keep the names listed in 6.2 stable.
+
+6.1 Edits to ai_workflow files
+  a) analyzer.py: QUOTA LOCK (PR #9, commit 279230d)
+     call_hackathon_gemini_api() now returns (None, None) immediately unless
+     ALLOW_PER_TWEET_LLM=1 is set. This means analyze_tweet(),
+     analyze_tweet_llm(), batch_processor.py and app.py use the free NLP engine
+     by default. Why: they make one request PER TWEET, and one run of
+     batch_processor.py on the 8,000-tweet CSV would use up the whole quota.
+     To test Gemini on a few tweets:  ALLOW_PER_TWEET_LLM=1 python app.py
+  b) analyzer.py: missing imports (earlier, now superseded)
+     An earlier commit removed `import logging`, the typing imports and the
+     prompt_template/geocoder imports, which made analyzer.py crash on import.
+     The backend re-added them; your later version also fixed this, and the
+     merge kept YOUR version. No lasting change from us here.
+  c) HOW_TO_USE.txt: added the quota-lock note in section 5 and this section.
+
+6.2 What the backend imports from ai_workflow (please don't rename these)
+  - analyzer.analyze_tweet_nlp(text)
+      Per-tweet fallback when Gemini is off, over budget or fails. The backend
+      reads: is_relevant, relevance_confidence, category, severity,
+      locations[].raw_text, reasoning. The categories must stay the same 8:
+      infrastructure_damage, evacuation, medical_need, request_for_help,
+      official_update, volunteer_relief_effort, general_concern, other.
+  - prompt_template.format_batch_prompt(tweets)
+      Used for every Gemini batch (50 tweets per request). The backend passes
+      [{"id": 0, "text": ...}, {"id": 1, ...}] with explicit 0-based ids and
+      matches results back by id, so keep supporting dict input with "id".
+  - prompt_template.format_summary_prompt(tweets)
+      Used for the AI summary button (one request per click, cached).
+  - geocoder.KNOWN_GAZETTEER
+      The backend geocoder checks this first (instant, no network), then
+      OpenStreetMap. Adding places here improves the map for free.
+
+6.3 What the backend does NOT use
+  - BATCH_RESPONSE_SCHEMA: the hackathon API returns HTTP 500 for it, so the
+    backend sends its own schema (backend/app/ai.py, _BATCH_SCHEMA) with the
+    same fields and the same 8 categories, plus "none" instead of null.
+  - analyze_tweet(), analyze_tweet_llm(), call_hackathon_gemini_api(),
+    geocoder.resolve_locations(), batch_processor.py, app.py.
+
+6.4 Things to know when you change prompts
+  - Any edit to analyzer.py, prompt_template.py or geocoder.py changes the
+    backend's "fingerprint" and makes backend/data/sample_seed.json stale.
+    The deployed server then rebuilds the sample with the free NLP engine
+    (never with Gemini, so no quota is spent), and the backend team re-runs
+    the Gemini sample once (~160 requests). Tell the backend team when a
+    prompt change is final, so this only happens once.
+  - Batch output must stay a JSON array of
+    {id, is_relevant, relevance_confidence, category, severity, locations: [str], reasoning}.
+  - Locations: specific places, city/province added when clear
+    ("Mission, Calgary, Alberta"). No bare provinces or countries.
