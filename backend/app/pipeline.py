@@ -23,7 +23,8 @@ from typing import Dict, List, Optional, Tuple
 
 from . import ai, geocode, store
 from .config import (AI_CONCURRENCY, AI_WORKFLOW_DIR, BACKEND_DIR, BATCH_SIZE,
-                     GEOCODE_MAX_LOOKUPS, SAMPLE_DATASET_ID, SAMPLE_SEED)
+                     GEOCODE_MAX_LOOKUPS, LLM_MAX_REQUESTS_PER_DATASET, SAMPLE_DATASET_ID,
+                     SAMPLE_SEED, SAMPLE_USE_LLM)
 
 log = logging.getLogger("pipeline")
 _jobs_executor = ThreadPoolExecutor(max_workers=2)
@@ -37,17 +38,14 @@ _FINGERPRINT_FILES = [
     AI_WORKFLOW_DIR / "prompt_template.py",
     AI_WORKFLOW_DIR / "geocoder.py",
 ]
-# Env vars that change AI behaviour (only their presence is hashed, never values).
-_FINGERPRINT_ENV = ["GEMINI_API_KEY", "GOOGLE_API_KEY", "OPENAI_API_KEY", "ANTHROPIC_API_KEY"]
 
 
 def ai_fingerprint() -> str:
+    """Hash of the AI/geocoding code. Whether the seed used Gemini is recorded separately."""
     h = hashlib.sha1()
     for p in _FINGERPRINT_FILES:
         if p.exists():
             h.update(p.read_bytes())
-    for var in _FINGERPRINT_ENV:
-        h.update(f"{var}={'set' if os.getenv(var) else ''}".encode())
     return h.hexdigest()[:16]
 
 
@@ -60,7 +58,9 @@ def load_sample_seed() -> bool:
     except ValueError:
         return False
     if ds.get("fingerprint") != ai_fingerprint():
-        log.info("sample seed is stale (AI code changed) — reprocessing")
+        log.warning("sample seed is stale (AI code changed) — reprocessing%s. Regenerate it "
+                    "locally with SAMPLE_USE_LLM=1 and commit data/sample_seed.json.",
+                    " with Gemini" if SAMPLE_USE_LLM else " with the rule engine (no quota)")
         return False
     store.save_dataset(ds)
     log.info("loaded precomputed sample dataset (%d tweets)", len(ds["tweets"]))
@@ -77,14 +77,16 @@ def start(name: str, tweets: List[Dict], dataset_id: str = None) -> Dict:
 # ---------------------------------------------------------------------------
 
 _NOT_RELEVANT_ON_ERROR = {"relevant": False, "confidence": 0.0, "category": None,
-                          "severity": None, "reasoning": "AI classification failed", "locations": []}
+                          "severity": None, "reasoning": "AI classification failed", "locations": [],
+                          "source": "error"}
 
 
-def _classify_with_retry(texts: List[str], attempts: int = 3) -> Tuple[List[Dict], bool]:
+def _classify_with_retry(texts: List[str], use_llm: bool, attempts: int = 3) -> Tuple[List[Dict], bool]:
     """Returns (results, ok). Never raises — a failed batch is marked unrelated."""
     for attempt in range(attempts):
         try:
-            results = ai.classify_batch(texts)
+            # Retries never use the LLM: failed requests still cost quota.
+            results = ai.classify_batch(texts, use_llm=use_llm and attempt == 0)
             if len(results) != len(texts):
                 raise RuntimeError(f"classify_batch returned {len(results)} results for {len(texts)} tweets")
             return results, True
@@ -94,20 +96,24 @@ def _classify_with_retry(texts: List[str], attempts: int = 3) -> Tuple[List[Dict
     return [dict(_NOT_RELEVANT_ON_ERROR) for _ in texts], False
 
 
-def _classify_all(job_id: str, tweets: List[Dict]):
+def _classify_all(job_id: str, tweets: List[Dict], use_llm: bool):
     batches = [tweets[i:i + BATCH_SIZE] for i in range(0, len(tweets), BATCH_SIZE)]
+    # Cap LLM requests per dataset; later batches use the rule engine.
+    llm_flags = [use_llm and i < LLM_MAX_REQUESTS_PER_DATASET for i in range(len(batches))]
     done = [0]
     failed = [0]
     lock = threading.Lock()
 
-    def work(batch):
-        results, ok = _classify_with_retry([t["text"] for t in batch])
+    def work(args):
+        batch, batch_llm = args
+        results, ok = _classify_with_retry([t["text"] for t in batch], batch_llm)
         for t, r in zip(batch, results):
             t["relevant"] = bool(r.get("relevant"))
             t["confidence"] = float(r.get("confidence") or 0)
             t["category"] = r.get("category") if t["relevant"] else None
             t["severity"] = r.get("severity") if t["relevant"] else None
             t["reasoning"] = r.get("reasoning") or ""
+            t["ai_source"] = r.get("source") or "rules"
             t["location_names"] = list(r.get("locations") or []) if t["relevant"] else []
             t["locations"] = []
         with lock:
@@ -117,7 +123,7 @@ def _classify_all(job_id: str, tweets: List[Dict]):
             store.update_job(job_id, processed=done[0], ai_failed=failed[0])
 
     with ThreadPoolExecutor(max_workers=AI_CONCURRENCY) as pool:
-        list(pool.map(work, batches))
+        list(pool.map(work, zip(batches, llm_flags)))
 
 
 def _add_location(tweets: List[Dict], loc: Dict):
@@ -191,7 +197,8 @@ def _geocode_all(job_id: str, ds: Dict):
 def _run(job_id: str, dataset_id: str, name: str, tweets: List[Dict]):
     try:
         store.update_job(job_id, status="running", stage="classifying")
-        _classify_all(job_id, tweets)
+        use_llm = SAMPLE_USE_LLM if dataset_id == SAMPLE_DATASET_ID else True
+        _classify_all(job_id, tweets, use_llm)
 
         ds = {"id": dataset_id, "name": name, "created_at": time.time(),
               "tweets": tweets, "processing": True}

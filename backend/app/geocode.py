@@ -87,13 +87,38 @@ def normalize(raw: str) -> str:
     return name
 
 
+_PROVINCES = {"alberta": "ab", "ab": "ab", "british columbia": "bc", "bc": "bc", "ontario": "on",
+               "on": "on", "manitoba": "mb", "mb": "mb", "saskatchewan": "sk", "sk": "sk",
+               "quebec": "qc", "qc": "qc"}
+
+
+def _provinces_in(text: str) -> set:
+    parts = [p.strip().lower() for p in text.split(",")[1:]]  # only qualifiers after a comma
+    return {_PROVINCES[p] for p in parts if p in _PROVINCES}
+
+
 def lookup_gazetteer(raw: str) -> Optional[Dict]:
-    key = normalize(raw).lower()
-    hit = _gaz_index.get(key) or _gaz_index.get(key.replace(" ", ""))
+    hit = _gazetteer_hit(raw)
     if not hit:
         return None
+    wanted = _provinces_in(raw)
+    have = set(re.findall(r"\b(AB|BC|ON|MB|SK|QC)\b", hit[2]))
+    if wanted and have and not ({h.lower() for h in have} & wanted):
+        return None  # "Mission, BC" is not Mission, Calgary
     lat, lon, display = hit
     return {"name": display, "lat": lat, "lon": lon}
+
+
+def _gazetteer_hit(raw: str) -> Optional[Tuple[float, float, str]]:
+    key = normalize(raw).lower()
+    hit = _gaz_index.get(key) or _gaz_index.get(key.replace(" ", ""))
+    if not hit and "," in key:
+        # "Mission, Calgary" -> gazetteer "mission" if its entry is in Calgary too.
+        first, rest = key.split(",", 1)
+        cand = _gaz_index.get(first.strip())
+        if cand and all(part.strip() in cand[2].lower() for part in rest.split(",") if part.strip()):
+            hit = cand
+    return hit
 
 
 def worth_looking_up(raw: str) -> bool:

@@ -110,7 +110,8 @@ def _sort(rows: List[Dict], sort: str) -> List[Dict]:
 
 def _public(t: Dict) -> Dict:
     return {k: t.get(k) for k in ("id", "text", "created_at", "ts", "relevant", "confidence",
-                                   "category", "severity", "reasoning", "locations", "meta")}
+                                   "category", "severity", "reasoning", "ai_source", "locations",
+                                   "meta")}
 
 
 class FilterParams(BaseModel):
@@ -129,6 +130,12 @@ class FilterParams(BaseModel):
 @app.get("/api/health")
 def health():
     return {"ok": True}
+
+
+@app.get("/api/ai/status")
+def ai_status():
+    """Is Gemini actually in use? Use this for the UI's "Gemini Live" badge."""
+    return ai.llm_status()
 
 
 @app.get("/api/categories")
@@ -204,6 +211,7 @@ def get_stats(dataset_id: str):
                                                 key=lambda kv: SEVERITY_ORDER.get(kv[0], 9))},
         "top_locations": [{"name": n, "count": c} for n, c in places.most_common(15)],
         "has_timestamps": any(t.get("ts") for t in tweets),
+        "ai_sources": dict(Counter(t.get("ai_source", "rules") for t in tweets)),  # gemini vs rules
         "anchor": ds.get("anchor"),  # [lat, lon] centre of activity — good initial map view
     }
 
