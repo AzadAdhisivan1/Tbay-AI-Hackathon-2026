@@ -1,87 +1,64 @@
 /**
- * API Service for Hackathon AI Analysis
+ * API Service for The Living Flood Map
  *
- * Supports switching between Demo Mode (instant realistic mock data)
- * and Live API (POST http://localhost:8000/api/analyze).
- *
- * Failsafe: If Live API is selected but the backend server is unreachable
- * or returns an error, it gracefully falls back to mock data with a warning flag
- * to ensure presentations to judges run flawlessly without breaking.
+ * Handles:
+ * 1. Loading the default/provided dataset from backend or fallback
+ * 2. Uploading custom CSV files to the backend for processing
+ * 3. Graceful fallback to built-in demo data when backend is unreachable
  */
 
-const API_BASE_URL = 'http://localhost:8000';
-
-export const MOCK_ANALYSIS_RESULT = {
-  kpis: {
-    timeSaved: { value: '42.8 hrs', change: '+18.4%', trend: 'up', label: 'Time Saved / Week' },
-    costReduction: { value: '$12,450', change: '+32.1%', trend: 'up', label: 'Est. Cost Reduction' },
-    confidenceScore: { value: '98.4%', change: '+4.2%', trend: 'up', label: 'Model Confidence' },
-  },
-  chartData: [
-    { period: 'Sprint 1', baseline: 120, aiOptimized: 45, savings: 75 },
-    { period: 'Sprint 2', baseline: 140, aiOptimized: 50, savings: 90 },
-    { period: 'Sprint 3', baseline: 165, aiOptimized: 55, savings: 110 },
-    { period: 'Sprint 4', baseline: 190, aiOptimized: 60, savings: 130 },
-    { period: 'Sprint 5', baseline: 210, aiOptimized: 68, savings: 142 },
-    { period: 'Sprint 6', baseline: 245, aiOptimized: 72, savings: 173 },
-  ],
-  insights: {
-    executiveSummary:
-      'The multi-modal AI model identified high-impact optimization vectors across existing workflows, projecting an immediate 62% latency cut and $12.4k monthly infrastructure savings.',
-    keyFindings: [
-      'Identified 4 critical bottlenecks in data processing pipelines that can be parallelized.',
-      'Automated semantic categorization achieved 98.4% precision against manual baseline.',
-      'Resource reallocation frees up an estimated 42.8 engineering hours per sprint.',
-    ],
-    recommendedActions: [
-      'Deploy real-time inference cache on top-tier queries to shave ~220ms per invocation.',
-      'Activate autonomous pipeline triage for edge failure detection.',
-      'Integrate webhook notification triggers for anomaly scores exceeding 0.85.',
-    ],
-    riskScore: 'Low (12/100)',
-    latencyMs: 142,
-    timestamp: new Date().toISOString(),
-  },
-};
+const API_BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:8000';
 
 /**
- * Run AI Analysis
- * @param {Object} params
- * @param {string} params.prompt - Input text/prompt
- * @param {File|null} params.file - Attached file if any
- * @param {boolean} params.isLiveApi - Whether to attempt live backend call
- * @returns {Promise<{data: Object, isFallback: boolean, source: string}>}
+ * Load the default/provided disaster dataset from the backend.
+ * Falls back to built-in data if backend is unreachable.
  */
-export async function runAIAnalysis({ prompt, file = null, isLiveApi = false }) {
-  // If Demo Mode is explicitly active, return mock data with simulated realistic network delay
-  if (!isLiveApi) {
-    await new Promise((resolve) => setTimeout(resolve, 850)); // simulate brief AI processing
-    return {
-      success: true,
-      data: {
-        ...MOCK_ANALYSIS_RESULT,
-        insights: {
-          ...MOCK_ANALYSIS_RESULT.insights,
-          timestamp: new Date().toLocaleTimeString(),
-        },
-      },
-      isFallback: false,
-      source: 'Mock Data (Demo Mode)',
-    };
-  }
-
-  // Attempt Live API call
+export async function loadProvidedDataset() {
   try {
-    const formData = new FormData();
-    formData.append('prompt', prompt || '');
-    if (file) {
-      formData.append('file', file);
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 5000);
+
+    const response = await fetch(`${API_BASE_URL}/api/process-csv`, {
+      method: 'GET',
+      signal: controller.signal,
+    });
+
+    clearTimeout(timeoutId);
+
+    if (!response.ok) {
+      throw new Error(`Server responded with status ${response.status}`);
     }
 
-    const controller = new AbortController();
-    const timeoutId = setTimeout(() => controller.abort(), 6000); // 6s timeout
+    const result = await response.json();
+    return {
+      success: true,
+      data: result,
+      source: 'backend',
+    };
+  } catch (error) {
+    console.warn('[Living Flood Map] Backend unreachable, using fallback data:', error.message);
+    return {
+      success: false,
+      data: null,
+      source: 'fallback',
+      error: error.message,
+    };
+  }
+}
 
-    const response = await fetch(`${API_BASE_URL}/api/analyze`, {
+/**
+ * Upload a custom CSV file to the backend for AI processing.
+ * @param {File} file - The CSV file to upload
+ */
+export async function uploadCustomCSV(file) {
+  try {
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 30000);
+
+    const response = await fetch(`${API_BASE_URL}/api/process-csv`, {
       method: 'POST',
       body: formData,
       signal: controller.signal,
@@ -90,35 +67,57 @@ export async function runAIAnalysis({ prompt, file = null, isLiveApi = false }) 
     clearTimeout(timeoutId);
 
     if (!response.ok) {
-      throw new Error(`Server responded with status ${response.status}: ${response.statusText}`);
+      throw new Error(`Server responded with status ${response.status}`);
     }
 
     const result = await response.json();
     return {
       success: true,
       data: result,
-      isFallback: false,
-      source: 'Live API (http://localhost:8000)',
+      source: 'upload',
     };
   } catch (error) {
-    console.warn(
-      '[Hackathon UI] Live API failed or unreachable. Seamlessly activating demo fallback:',
-      error.message
-    );
-
-    // Graceful fallback to guarantee zero demo crashes
+    console.warn('[Living Flood Map] CSV upload failed:', error.message);
     return {
-      success: true,
-      data: {
-        ...MOCK_ANALYSIS_RESULT,
-        insights: {
-          ...MOCK_ANALYSIS_RESULT.insights,
-          timestamp: new Date().toLocaleTimeString(),
-        },
-      },
-      isFallback: true,
-      source: 'Demo Fallback (Live API unreachable at localhost:8000)',
+      success: false,
+      data: null,
+      source: 'upload',
       error: error.message,
     };
   }
+}
+
+/**
+ * Export filtered tweets as GeoJSON FeatureCollection
+ * @param {Array} tweets - Array of tweet objects with lat/lng
+ * @returns {string} - GeoJSON string
+ */
+export function tweetsToGeoJSON(tweets) {
+  const features = tweets
+    .filter((t) => t.lat != null && t.lng != null)
+    .map((t) => ({
+      type: 'Feature',
+      geometry: {
+        type: 'Point',
+        coordinates: [t.lng, t.lat],
+      },
+      properties: {
+        id: t.id,
+        tweet_text: t.tweet_text,
+        location_name: t.location_name || 'Unknown',
+        impact_category: t.impact_category || 'Unknown',
+        urgency: t.urgency || 'unknown',
+        is_relevant: t.is_relevant,
+        timestamp: t.timestamp || null,
+      },
+    }));
+
+  return JSON.stringify(
+    {
+      type: 'FeatureCollection',
+      features,
+    },
+    null,
+    2
+  );
 }

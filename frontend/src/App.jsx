@@ -1,108 +1,188 @@
-import React, { useState } from 'react';
-import Navbar from './components/Navbar';
-import InputPanel from './components/InputPanel';
-import KPICards from './components/KPICards';
-import ChartSection from './components/ChartSection';
-import InsightsCard from './components/InsightsCard';
-import { runAIAnalysis, MOCK_ANALYSIS_RESULT } from './api';
-import { Sparkles, Terminal, Code2, AlertCircle } from 'lucide-react';
+import React, { useState, useMemo, useCallback } from 'react';
+import Header from './components/Header';
+import KPIStrip from './components/KPIStrip';
+import SummaryPanel from './components/SummaryPanel';
+import FloodMap from './components/FloodMap';
+import TweetFeed from './components/TweetFeed';
+import { loadProvidedDataset, uploadCustomCSV, tweetsToGeoJSON } from './api';
+import { FALLBACK_TWEETS, FALLBACK_SUMMARY } from './data/fallbackData';
+import { Sparkles, Eye, EyeOff, Layers } from 'lucide-react';
 
 export default function App() {
-  const [prompt, setPrompt] = useState(
-    'Analyze cloud infrastructure costs and identify top 3 GPU bottleneck areas.'
-  );
-  const [selectedFile, setSelectedFile] = useState(null);
-  const [isLiveApi, setIsLiveApi] = useState(false);
-  const [isAnalyzing, setIsAnalyzing] = useState(false);
-  const [result, setResult] = useState(MOCK_ANALYSIS_RESULT);
-  const [sourceInfo, setSourceInfo] = useState({
-    source: 'Demo Mode (Mock Data)',
-    isFallback: false,
-  });
+  // Core data state
+  const [tweets, setTweets] = useState(FALLBACK_TWEETS);
+  const [summary, setSummary] = useState(FALLBACK_SUMMARY);
+  const [isLoading, setIsLoading] = useState(false);
+  const [dataSource, setDataSource] = useState('fallback');
+
+  // Map state
+  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [flyTo, setFlyTo] = useState(null);
+
+  // Toast
   const [toastMessage, setToastMessage] = useState(null);
 
-  const showToast = (msg) => {
+  const showToast = useCallback((msg) => {
     setToastMessage(msg);
-    setTimeout(() => {
-      setToastMessage(null);
-    }, 4500);
+    setTimeout(() => setToastMessage(null), 4500);
+  }, []);
+
+  // Derived data
+  const relevantTweets = useMemo(() => tweets.filter((t) => t.is_relevant), [tweets]);
+  const mappedTweets = useMemo(
+    () => relevantTweets.filter((t) => t.lat != null && t.lng != null),
+    [relevantTweets]
+  );
+
+  // Location and impact breakdowns for the summary panel
+  const locationBreakdown = useMemo(() => {
+    const counts = {};
+    relevantTweets.forEach((t) => {
+      if (t.location_name) {
+        counts[t.location_name] = (counts[t.location_name] || 0) + 1;
+      }
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }, [relevantTweets]);
+
+  const impactBreakdown = useMemo(() => {
+    const counts = {};
+    relevantTweets.forEach((t) => {
+      if (t.impact_category) {
+        counts[t.impact_category] = (counts[t.impact_category] || 0) + 1;
+      }
+    });
+    return Object.entries(counts).sort((a, b) => b[1] - a[1]);
+  }, [relevantTweets]);
+
+  // ── Actions ──
+
+  /** Normalize backend response into tweet array */
+  const normalizeBackendData = (data) => {
+    if (!data) return null;
+    let tweetList = [];
+    let summaryText = FALLBACK_SUMMARY;
+
+    if (data.summary) summaryText = data.summary;
+    if (Array.isArray(data.tweets)) tweetList = data.tweets;
+    else if (Array.isArray(data.results)) tweetList = data.results;
+    else if (Array.isArray(data)) tweetList = data;
+
+    // Ensure each tweet has an id
+    tweetList = tweetList.map((t, i) => ({
+      id: t.id || i + 1,
+      tweet_text: t.tweet_text || t.text || t.content || '',
+      is_relevant: t.is_relevant ?? t.relevant ?? true,
+      location_name: t.location_name || t.location || null,
+      lat: t.lat != null ? Number(t.lat) : null,
+      lng: t.lng != null ? Number(t.lng) : null,
+      impact_category: t.impact_category || t.category || null,
+      urgency: t.urgency || null,
+      timestamp: t.timestamp || t.created_at || null,
+    }));
+
+    return { tweets: tweetList, summary: summaryText };
   };
 
-  const handleRunAnalysis = async () => {
-    if (!prompt.trim() && !selectedFile) {
-      showToast({ type: 'warning', text: 'Please enter a prompt or attach a file to analyze.' });
-      return;
-    }
-
-    setIsAnalyzing(true);
+  const handleLoadDataset = async () => {
+    setIsLoading(true);
     try {
-      const response = await runAIAnalysis({
-        prompt,
-        file: selectedFile,
-        isLiveApi,
-      });
-
-      if (response.success && response.data) {
-        setResult(response.data);
-        setSourceInfo({
-          source: response.source,
-          isFallback: response.isFallback,
-        });
-
-        if (response.isFallback) {
-          showToast({
-            type: 'warning',
-            text: 'Live backend offline (localhost:8000). Loaded verified demo data so demo continues smoothly!',
-          });
+      const res = await loadProvidedDataset();
+      if (res.success && res.data) {
+        const normalized = normalizeBackendData(res.data);
+        if (normalized && normalized.tweets.length > 0) {
+          setTweets(normalized.tweets);
+          setSummary(normalized.summary);
+          setDataSource('backend');
+          showToast({ type: 'success', text: 'Dataset loaded from backend API!' });
         } else {
-          showToast({
-            type: 'success',
-            text: `Analysis complete via ${isLiveApi ? 'Live Backend API' : 'Demo Engine'}!`,
-          });
+          // Backend returned empty data, use fallback
+          setTweets(FALLBACK_TWEETS);
+          setSummary(FALLBACK_SUMMARY);
+          setDataSource('fallback');
+          showToast({ type: 'info', text: 'Backend returned empty data. Loaded built-in demo dataset.' });
         }
+      } else {
+        // Backend unreachable, use fallback
+        setTweets(FALLBACK_TWEETS);
+        setSummary(FALLBACK_SUMMARY);
+        setDataSource('fallback');
+        showToast({
+          type: 'warning',
+          text: 'Backend offline — loaded built-in First Nations flood demo dataset.',
+        });
       }
     } catch (err) {
-      console.error('Analysis error:', err);
-      showToast({ type: 'error', text: 'Encountered unexpected error running analysis.' });
+      setTweets(FALLBACK_TWEETS);
+      setSummary(FALLBACK_SUMMARY);
+      setDataSource('fallback');
+      showToast({ type: 'error', text: 'Error loading dataset. Using fallback data.' });
     } finally {
-      setIsAnalyzing(false);
+      setIsLoading(false);
     }
   };
 
-  const handleReset = () => {
-    setPrompt('Analyze cloud infrastructure costs and identify top 3 GPU bottleneck areas.');
-    setSelectedFile(null);
-    setResult(MOCK_ANALYSIS_RESULT);
-    setSourceInfo({
-      source: isLiveApi ? 'Live API (Selected)' : 'Demo Mode (Mock Data)',
-      isFallback: false,
-    });
-    showToast({ type: 'info', text: 'Reset dashboard to initial benchmark state.' });
+  const handleUploadCSV = async (file) => {
+    setIsLoading(true);
+    try {
+      const res = await uploadCustomCSV(file);
+      if (res.success && res.data) {
+        const normalized = normalizeBackendData(res.data);
+        if (normalized && normalized.tweets.length > 0) {
+          setTweets(normalized.tweets);
+          setSummary(normalized.summary);
+          setDataSource('upload');
+          showToast({ type: 'success', text: `CSV "${file.name}" processed! ${normalized.tweets.length} tweets loaded.` });
+        } else {
+          showToast({ type: 'warning', text: 'CSV processed but no tweets returned. Check CSV format.' });
+        }
+      } else {
+        showToast({
+          type: 'error',
+          text: `CSV upload failed: ${res.error || 'Backend unreachable'}. Ensure backend is running.`,
+        });
+      }
+    } catch (err) {
+      showToast({ type: 'error', text: 'Error uploading CSV file.' });
+    } finally {
+      setIsLoading(false);
+    }
   };
+
+  const handleExportGeoJSON = () => {
+    const geojson = tweetsToGeoJSON(relevantTweets);
+    const blob = new Blob([geojson], { type: 'application/geo+json' });
+    const url = URL.createObjectURL(blob);
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = 'living_flood_map_export.geojson';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    URL.revokeObjectURL(url);
+    showToast({ type: 'success', text: 'GeoJSON exported successfully!' });
+  };
+
+  const handleFlyTo = useCallback((coords) => {
+    setFlyTo({ ...coords, _ts: Date.now() });
+  }, []);
 
   return (
     <div className="min-h-screen bg-[#0b0f19] text-slate-100 flex flex-col font-sans selection:bg-indigo-500 selection:text-white">
-      {/* Top Navbar */}
-      <Navbar
-        isLiveApi={isLiveApi}
-        setIsLiveApi={(mode) => {
-          setIsLiveApi(mode);
-          showToast({
-            type: 'info',
-            text: mode
-              ? 'Switched to Live API mode (targeting http://localhost:8000/api/analyze)'
-              : 'Switched to Demo Mode (instant high-fidelity mock data)',
-          });
-        }}
-        onReset={handleReset}
-        isAnalyzing={isAnalyzing}
+      {/* Header */}
+      <Header
+        onLoadDataset={handleLoadDataset}
+        onUploadCSV={handleUploadCSV}
+        onExportGeoJSON={handleExportGeoJSON}
+        isLoading={isLoading}
+        hasData={tweets.length > 0}
       />
 
-      {/* Floating Status Notification Toast */}
+      {/* Toast */}
       {toastMessage && (
-        <div className="fixed bottom-5 right-5 z-50 transition-all transform animate-bounce-short">
+        <div className="fixed bottom-5 right-5 z-50 animate-fade-in">
           <div
-            className={`px-4 py-3 rounded-xl shadow-2xl border flex items-center gap-2.5 text-xs font-medium backdrop-blur-xl ${
+            className={`px-4 py-3 rounded-xl shadow-2xl border flex items-center gap-2.5 text-xs font-medium backdrop-blur-xl max-w-sm ${
               toastMessage.type === 'success'
                 ? 'bg-emerald-950/90 border-emerald-500/40 text-emerald-200'
                 : toastMessage.type === 'warning'
@@ -118,61 +198,112 @@ export default function App() {
         </div>
       )}
 
-      {/* Main Container */}
-      <main className="flex-1 max-w-7xl w-full mx-auto px-4 lg:px-8 py-6 sm:py-8 flex flex-col gap-6">
-        {/* Banner with Backend Contract for Teammates */}
-        <div className="rounded-xl bg-slate-900/40 border border-slate-800 px-4 py-2.5 flex flex-col sm:flex-row sm:items-center justify-between gap-2 text-xs text-slate-400">
-          <div className="flex items-center gap-2">
-            <Code2 className="w-4 h-4 text-indigo-400 shrink-0" />
-            <span>
-              <strong className="text-slate-300">Teammate Integration Contract:</strong> Backend should listen at{' '}
-              <code className="bg-slate-950 px-1.5 py-0.5 rounded text-indigo-300 font-mono">
-                POST http://localhost:8000/api/analyze
-              </code>
-            </span>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="text-[11px] text-slate-400">Zero-crash presentation insurance active</span>
-          </div>
+      {/* Main Content */}
+      <main className="flex-1 flex flex-col gap-4 p-4 lg:px-6 max-w-[1800px] w-full mx-auto">
+        {/* Data Source Banner */}
+        <div className="rounded-lg bg-slate-900/40 border border-slate-800 px-3 py-2 flex items-center justify-between text-[11px] text-slate-400">
+          <span>
+            Data Source:{' '}
+            <strong className="text-slate-300">
+              {dataSource === 'backend'
+                ? 'Backend API'
+                : dataSource === 'upload'
+                ? 'Custom CSV Upload'
+                : 'Built-in Demo Dataset (First Nations Flood Events)'}
+            </strong>
+          </span>
+          <span className="flex items-center gap-1.5">
+            <span className={`w-2 h-2 rounded-full ${tweets.length > 0 ? 'bg-emerald-500' : 'bg-slate-600'}`} />
+            {tweets.length} tweets loaded
+          </span>
         </div>
 
-        {/* Dashboard 2-Column Layout: Left Input Panel + Right Insights Grid */}
-        <div className="flex flex-col lg:flex-row items-start gap-6">
-          {/* Left Panel: Inputs, presets, upload dropzone, CTA button */}
-          <InputPanel
-            prompt={prompt}
-            setPrompt={setPrompt}
-            selectedFile={selectedFile}
-            setSelectedFile={setSelectedFile}
-            onRunAnalysis={handleRunAnalysis}
-            isAnalyzing={isAnalyzing}
-            isLiveApi={isLiveApi}
-          />
+        {/* KPI Strip */}
+        <KPIStrip
+          tweets={tweets}
+          relevantTweets={relevantTweets}
+          mappedTweets={mappedTweets}
+        />
 
-          {/* Right Area: KPIs, Recharts Visualization, AI Insights */}
-          <section className="flex-1 w-full flex flex-col gap-6 overflow-hidden">
-            {/* 3 KPI Summary Cards */}
-            <KPICards kpis={result.kpis} />
+        {/* AI Summary Panel */}
+        <SummaryPanel
+          summary={summary}
+          filteredRelevantCount={relevantTweets.length}
+          totalRelevantCount={relevantTweets.length}
+          locationBreakdown={locationBreakdown}
+          impactBreakdown={impactBreakdown}
+        />
 
-            {/* AI Insights Output Card */}
-            <InsightsCard
-              insights={result.insights}
-              source={sourceInfo.source}
-              isFallback={sourceInfo.isFallback}
-            />
+        {/* Split Workspace: Map (60%) + Feed (40%) */}
+        <div className="flex-1 flex flex-col lg:flex-row gap-4 min-h-0" style={{ minHeight: '520px' }}>
+          {/* Map Panel */}
+          <div className="lg:w-[60%] flex flex-col gap-2 min-h-[400px] lg:min-h-0">
+            {/* Map toolbar */}
+            <div className="flex items-center justify-between">
+              <h2 className="text-xs font-semibold text-slate-300 flex items-center gap-1.5">
+                <Layers className="w-3.5 h-3.5 text-blue-400" />
+                Interactive Flood Map
+              </h2>
+              <button
+                id="btn-toggle-heatmap"
+                onClick={() => setShowHeatmap(!showHeatmap)}
+                className="flex items-center gap-1.5 text-[11px] px-2.5 py-1 rounded-lg bg-slate-800/60 border border-slate-700/50 text-slate-300 hover:border-indigo-500/40 transition-all"
+              >
+                {showHeatmap ? (
+                  <Eye className="w-3 h-3 text-indigo-400" />
+                ) : (
+                  <EyeOff className="w-3 h-3 text-slate-500" />
+                )}
+                Activity Concentration
+              </button>
+            </div>
 
-            {/* Recharts Analytics Visualization */}
-            <ChartSection data={result.chartData} />
-          </section>
+            {/* Map Legend */}
+            <div className="flex items-center gap-3 text-[10px] text-slate-400">
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-rose-500" />
+                Elder / Home
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-orange-500" />
+                Road / Bridge
+              </span>
+              <span className="flex items-center gap-1">
+                <span className="w-2.5 h-2.5 rounded-full bg-blue-500" />
+                Rising Water
+              </span>
+              {showHeatmap && (
+                <span className="flex items-center gap-1">
+                  <span className="w-2.5 h-2.5 rounded-full bg-indigo-500/40 ring-1 ring-indigo-400/40" />
+                  Concentration
+                </span>
+              )}
+            </div>
+
+            {/* Map */}
+            <div className="flex-1 min-h-0">
+              <FloodMap
+                tweets={relevantTweets}
+                showHeatmap={showHeatmap}
+                flyTo={flyTo}
+              />
+            </div>
+          </div>
+
+          {/* Tweet Feed Panel */}
+          <div className="lg:w-[40%] min-h-[400px] lg:min-h-0">
+            <TweetFeed allTweets={tweets} onFlyTo={handleFlyTo} />
+          </div>
         </div>
       </main>
 
-      {/* Clean Footer */}
-      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-4 px-4 text-center text-xs text-slate-400">
-        <div className="max-w-7xl mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
-          <p>&copy; 2026 ThunderBay AI Hackathon Team &bull; Frontend Workspace</p>
+      {/* Footer */}
+      <footer className="border-t border-slate-800/80 bg-slate-950/60 py-3 px-4 text-center text-xs text-slate-400">
+        <div className="max-w-[1800px] mx-auto flex flex-col sm:flex-row items-center justify-between gap-2">
+          <p>&copy; 2026 CE Strategies &bull; ThunderBay AI Hackathon</p>
           <p className="flex items-center gap-1.5">
-            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" /> Built with React 19 + Vite + Tailwind CSS + Recharts
+            <span className="w-2 h-2 rounded-full bg-emerald-500 inline-block" />
+            Built with React 19 + Vite + Tailwind CSS + Leaflet
           </p>
         </div>
       </footer>
