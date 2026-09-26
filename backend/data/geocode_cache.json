@@ -35,6 +35,21 @@
 "rank": 30
 }
 ],
+"a car drives out of a foamy flood in queensland, australia http|any": [],
+"a house on hacienda avenue, hacienda heights, brgy concepcion|any": [],
+"a man and his cat swim to safety in the alberta, canada, flood http|51.0,-114.1": [],
+"a man checks out flood damage to houses in bundaberg, australia|any": [],
+"a villa st, brgy batis, san juan city|any": [],
+"abflood fundraising should be donated to the government, not the red cross http|51.0,-114.1": [],
+"acting fire chief, ken uzeloc|51.0,-114.1": [],
+"adventists in melbourne, australia are collecting new underwear to help bundaberg flood victims|any": [],
+"after devastating floods, colorado residents weigh the risks of rebuilding http|any": [],
+"after heatwaves and flooding, january declared hottest month on record in australia http|any": [],
+"after hurricane sandy, google unveils public alerts|any": [],
+"after weeks of record breaking heateaves, australia really is suffering http|any": [],
+"against all odds, amazon|any": [],
+"aida street, marick subd|any": [],
+"aida street,marick subd|any": [],
 "airdrie|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -46,6 +61,9 @@
 }
 ],
 "alberta fact sheet|51.0,-114.1": [],
+"alberta flood evacuation zones, river basin advisories and road|51.0,-114.1": [],
+"alberta floods have changed the rockies forever, says scientist http|51.0,-114.1": [],
+"alberta floods, danforth shooting and guilty barrie cop round out the top|51.0,-114.1": [],
 "alberta floods|51.0,-114.1": [],
 "alberta forces|51.0,-114.1": [
 {
@@ -175,6 +193,7 @@
 "rank": 24
 }
 ],
+"alert monday, january|any": [],
 "alexandra headland|51.0,-114.1": [],
 "alexandra headland|any": [
 {
@@ -202,6 +221,42 @@
 "rank": 22
 }
 ],
+"aliens are gonna land, chief hansen|51.0,-114.1": [],
+"alluvione sardegna, gabrielli assurdo fare gratuita polemica su cosa si poteva fare|any": [],
+"alluvione sardegna, papa commosso|any": [],
+"alluvione sardegna, siddi|any": [],
+"alluvione, cappellacci|any": [],
+"alluvione, poste italiane|any": [],
+"alta farmland, ag minister said friday|51.0,-114.1": [],
+"am, infront of manila city hall|any": [],
+"am, lagusnilad|any": [
+{
+"cat": "highway",
+"lat": 14.5897019,
+"lon": 120.9808355,
+"n": "Lagusnilad Underpass",
+"name": "Lagusnilad Underpass, Barangay 657, Intramuros",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 14.5880492,
+"lon": 120.9814473,
+"n": "Taft Avenue",
+"name": "Taft Avenue, Ermita, Fifth District",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.5887234,
+"lon": 120.9810453,
+"n": "Taft Avenue",
+"name": "Taft Avenue, Intramuros, Ermita",
+"rank": 26
+}
+],
+"america gets snow days, australia should get flood|any": [],
+"amidst the flooding, calgary begins the recovery process|51.0,-114.1": [],
 "angeles city|51.0,-114.1": [],
 "angeles city|any": [
 {
@@ -229,6 +284,22 @@
 "rank": 12
 }
 ],
+"anne, vice ganda join forces to help flood victims|any": [],
+"anyone from san mateo, rizal who can rescue this person|any": [],
+"anyone know the situation in bearberry|51.0,-114.1": [],
+"apparently, connaught isn|51.0,-114.1": [],
+"are you okay, sarah|any": [],
+"army called to queensland, australia flood crisis|any": [],
+"army helps high river cleanup, premier alison redford surveys damage|51.0,-114.1": [],
+"as a british citizen in canada, i am horrified by lack of attention to floods in|51.0,-114.1": [],
+"as calgary floods, scientists warn of rising risks|51.0,-114.1": [],
+"as i try to catch up on the latest info, i leave you with this crazy video from hawcs today|51.0,-114.1": [],
+"as many as four people may have died in heavy flooding in southern alberta, rcmp say|51.0,-114.1": [],
+"as record flood waters receded in parts of southern|51.0,-114.1": [],
+"as se queensland braces for strong winds and flooding, quest new|any": [],
+"as southeast queensland braces for strong winds and flooding, quest new|any": [],
+"as the calgary flood conditions stabilize, matrix stays busy and stays safe|51.0,-114.1": [],
+"asset fire, standing by in queensland prepared to pump water, caused from cyclone flood|any": [],
 "australia queensland|51.0,-114.1": [],
 "australia queensland|any": [
 {
@@ -240,7 +311,52 @@
 "rank": 8
 }
 ],
+"australia, state of queensland|any": [
+{
+"cat": "amenity",
+"lat": -37.8207909,
+"lon": 145.1231546,
+"n": "Bank of Queensland",
+"name": "Bank of Queensland, Cambridge Street, Box Hill",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -38.1829374,
+"lon": 145.0900299,
+"n": "Bank of Queensland",
+"name": "Bank of Queensland, 72-74, Mount Eliza Way",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -37.9515469,
+"lon": 145.1527558,
+"n": "BOQ",
+"name": "BOQ, Springvale Road, Springvale",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -37.7971709,
+"lon": 145.2806606,
+"n": "BOQ",
+"name": "BOQ, 141-145, Main Street",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -37.87626,
+"lon": 145.164525,
+"n": "BOQ",
+"name": "BOQ, Springvale Road, Glen Waverley",
+"rank": 30
+}
+],
+"australia, uk http|any": [],
+"australians clean up from floods, supplies dwindle|any": [],
 "australia|51.0,-114.1": [],
+"avenues, se|51.0,-114.1": [],
 "ayala malls|51.0,-114.1": [],
 "ayala malls|any": [
 {
@@ -268,11 +384,18 @@
 "rank": 30
 }
 ],
+"bad floods in calgary|51.0,-114.1": [],
 "bad scuba|51.0,-114.1": [],
+"bad weather in qld, australia|any": [],
+"baker house, mustard seed, inn from the cold restored|51.0,-114.1": [],
+"banff, lake louise residents without power|51.0,-114.1": [],
+"banff, yoho and kootenay national parks|51.0,-114.1": [],
 "bangaladesh|51.0,-114.1": [],
 "bangladesh rubble|51.0,-114.1": [],
 "bangladesh rubble|any": [],
 "bangor tuesday|51.0,-114.1": [],
+"banjir at jakarta , queensland , newcastle nsw|any": [],
+"beauty gives back, queensland flood appeal|any": [],
 "beltline, calgary|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -293,6 +416,19 @@
 "rank": 20
 }
 ],
+"bensonhurst, brooklyn|any": [
+{
+"cat": "place",
+"lat": 40.6049772,
+"lon": -73.9934061,
+"n": "Bensonhurst",
+"name": "Bensonhurst, New Utrecht, Brooklyn",
+"rank": 24
+}
+],
+"bernard valcourt, minister of|51.0,-114.1": [],
+"bhp, qld|any": [],
+"birdies, eagles|51.0,-114.1": [],
 "bison drive|51.0,-114.1": [
 {
 "cat": "highway",
@@ -345,6 +481,7 @@
 "rank": 26
 }
 ],
+"black rd, milton behind office works is flooded|any": [],
 "blackie|51.0,-114.1": [
 {
 "cat": "place",
@@ -355,7 +492,19 @@
 "rank": 20
 }
 ],
+"bloody hell, australia is a scary place to live|any": [],
 "bonavista rec ctr|51.0,-114.1": [],
+"boston marathon, texas explosion and indiana flooding into the same category|any": [],
+"boston, davao oriental|any": [
+{
+"cat": "boundary",
+"lat": 7.8703434,
+"lon": 126.3764259,
+"n": "Boston",
+"name": "Boston, Davao Oriental, Davao Region",
+"rank": 12
+}
+],
 "boulder county|51.0,-114.1": [
 {
 "cat": "natural",
@@ -451,6 +600,24 @@
 }
 ],
 "boulder co|any": [
+{
+"cat": "boundary",
+"lat": 40.102555,
+"lon": -105.3632079,
+"n": "Boulder County",
+"name": "Boulder County, Colorado, United States",
+"rank": 12
+}
+],
+"boulder, colorado|any": [
+{
+"cat": "boundary",
+"lat": 40.0149856,
+"lon": -105.270545,
+"n": "Boulder",
+"name": "Boulder, Boulder County, Colorado",
+"rank": 16
+},
 {
 "cat": "boundary",
 "lat": 40.102555,
@@ -637,6 +804,12 @@
 "rank": 12
 }
 ],
+"brisbane, australia as we deal with another flood disaster|any": [],
+"brisbane, bundaberg brace for flood peaks|any": [],
+"brisbane, ipswich expect floods this week|any": [],
+"brisbane, logan prepare for flood|any": [],
+"brisbane,ipswich to flood this week|any": [],
+"brissie is experiencing flood waters again, i was there last time it happened|any": [],
 "britannia, calgary|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -645,6 +818,48 @@
 "n": "Britannia",
 "name": "Britannia, Calgary, Alberta",
 "rank": 20
+}
+],
+"brookside cainta, rizal|any": [
+{
+"cat": "landuse",
+"lat": 14.5890417,
+"lon": 121.1215527,
+"n": "Brookside Hills Area 6",
+"name": "Brookside Hills Area 6, Santo Domingo, Cainta",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 14.5881173,
+"lon": 121.1277615,
+"n": "Brookside Hills Subdivision Oval Park",
+"name": "Brookside Hills Subdivision Oval Park, Santo Ni\u00f1o, Cainta",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 14.5889196,
+"lon": 121.1234512,
+"n": "Brookside Hills",
+"name": "Brookside Hills, Santo Ni\u00f1o, Cainta",
+"rank": 25
+},
+{
+"cat": "highway",
+"lat": 14.5884026,
+"lon": 121.1179501,
+"n": "Brookside Drive",
+"name": "Brookside Drive, Park Place 1, Santo Domingo",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.5902323,
+"lon": 121.1198393,
+"n": "Brookside Drive Ext.",
+"name": "Brookside Drive Ext., Gruar Phase 1, Santo Domingo",
+"rank": 26
 }
 ],
 "brookside cainta|51.0,-114.1": [],
@@ -710,8 +925,30 @@
 "rank": 18
 }
 ],
+"bundaberg braces for flood, brisbane on alert as ex|any": [],
 "bundaberg queensland|51.0,-114.1": [],
 "bundaberg queensland|any": [
+{
+"cat": "place",
+"lat": -24.8653253,
+"lon": 152.3516785,
+"n": "Bundaberg",
+"name": "Bundaberg, Queensland, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -24.8677788,
+"lon": 152.35112,
+"n": "Bundaberg Central",
+"name": "Bundaberg Central, Bundaberg, Queensland",
+"rank": 18
+}
+],
+"bundaberg, australia, jan|any": [],
+"bundaberg, ipswich, lockyer valley and brisbane|any": [],
+"bundaberg, queensland early next week to help clean up|any": [],
+"bundaberg, queensland|any": [
 {
 "cat": "place",
 "lat": -24.8653253,
@@ -740,6 +977,8 @@
 "rank": 18
 }
 ],
+"busing volunteers to erlton, mission and elbow park|51.0,-114.1": [],
+"bylaw has been waived, rv|51.0,-114.1": [],
 "cactus jacks|51.0,-114.1": [],
 "cactus jacks|any": [
 {
@@ -757,6 +996,16 @@
 "n": "Cactus Jacks",
 "name": "Cactus Jacks, Calle Las Acacias, Costa Teguise",
 "rank": 30
+}
+],
+"cainta, rizal|any": [
+{
+"cat": "boundary",
+"lat": 14.5780161,
+"lon": 121.1163072,
+"n": "Cainta",
+"name": "Cainta, Rizal, Calabarzon",
+"rank": 12
 }
 ],
 "calamba city|51.0,-114.1": [],
@@ -781,6 +1030,7 @@
 "calgarian day|51.0,-114.1": [],
 "calgarians|51.0,-114.1": [],
 "calgarian|51.0,-114.1": [],
+"calgary color me rad event to saturday, aug|51.0,-114.1": [],
 "calgary comfort inn|51.0,-114.1": [
 {
 "cat": "tourism",
@@ -1009,6 +1259,20 @@
 "rank": 30
 }
 ],
+"calgary, ab http|51.0,-114.1": [],
+"calgary, alberta join forces to house high river evacuees http|51.0,-114.1": [],
+"calgary, alberta, june|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 50.8599686,
+"lon": -113.9489439,
+"n": "June Grass Green SE",
+"name": "June Grass Green SE, Logan Landing, Ricardo Ranch",
+"rank": 26
+}
+],
+"calgary, canada experiencing the flooding|51.0,-114.1": [],
+"calgary, i am so proud of you|51.0,-114.1": [],
 "california trust|51.0,-114.1": [],
 "california trust|any": [
 {
@@ -1052,6 +1316,7 @@
 "rank": 24
 }
 ],
+"camanava, manila, pasay|any": [],
 "cambodian orphanage|51.0,-114.1": [],
 "cambridge|51.0,-114.1": [
 {
@@ -1117,6 +1382,8 @@
 }
 ],
 "canmore rolling|51.0,-114.1": [],
+"caridad st,don pedrovil,valzuelacity|any": [],
+"catastrophe tests insurers, flood models http|any": [],
 "celebrity lane|51.0,-114.1": [],
 "celebrity lane|any": [
 {
@@ -1324,6 +1591,16 @@
 "rank": 30
 }
 ],
+"chris, i don|any": [
+{
+"cat": "amenity",
+"lat": 16.8034839,
+"lon": 96.1343936,
+"n": "Chris",
+"name": "Chris, Pa Don Mar Street, \u1005\u1019\u103a\u1038\u1001\u103b\u1031\u102c\u1004\u103a\u1038 (\u1019\u103c\u1031\u102c\u1000\u103a) \u101b\u1015\u103a\u1000\u103d\u1000\u103a",
+"rank": 30
+}
+],
 "city hall|51.0,-114.1": [
 {
 "cat": "railway",
@@ -1361,6 +1638,14 @@
 "rank": 20
 }
 ],
+"coastal flood warning issued for ellis island, nj http|any": [],
+"coastal flood warning issued for perth amboy, nj http|any": [],
+"coastal flood warning issued for piscataway, nj http|any": [],
+"coastal flood warning issued for spuyten duyvil, ny http|any": [],
+"colorado flooding imperils oil and gas sites, causes spill http|any": [],
+"colorado floods damage farms, oil wells, roadways http|any": [],
+"colorado floods rise, many feared dead or missing|any": [],
+"colorado foothills including colorado springs, fort collins|any": [],
 "colorado foothills|51.0,-114.1": [],
 "colorado foothills|any": [
 {
@@ -1442,6 +1727,48 @@
 "rank": 16
 }
 ],
+"colorado, new mexico|any": [
+{
+"cat": "highway",
+"lat": 34.9366616,
+"lon": -107.1479438,
+"n": "Colorado",
+"name": "Colorado, Suwanee, Valencia County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 36.6312562,
+"lon": -105.9194903,
+"n": "Colorado",
+"name": "Colorado, Taos County, New Mexico",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 34.9336023,
+"lon": -107.1479553,
+"n": "Colorado",
+"name": "Colorado, Suwanee, Valencia County",
+"rank": 27
+},
+{
+"cat": "landuse",
+"lat": 35.2325425,
+"lon": -106.189746,
+"n": "Colorado",
+"name": "Colorado, NM-344, Santa Fe County",
+"rank": 30
+},
+{
+"cat": "natural",
+"lat": 35.2714293,
+"lon": -106.6653055,
+"n": "Loma Colorado de Abajo",
+"name": "Loma Colorado de Abajo, Rio Rancho, Sandoval County",
+"rank": 18
+}
+],
 "community associations|51.0,-114.1": [],
 "compostela valley|51.0,-114.1": [],
 "compostela valley|any": [
@@ -1472,6 +1799,7 @@
 "rank": 22
 }
 ],
+"cotton outlook seen improving in australia after floods, rains http|any": [],
 "cougar creek|51.0,-114.1": [
 {
 "cat": "waterway",
@@ -1506,6 +1834,7 @@
 "rank": 22
 }
 ],
+"crackmacs for anyone doing cleanup in the coming days, how to clean up after flood|51.0,-114.1": [],
 "crangan bay|51.0,-114.1": [],
 "crangan bay|any": [
 {
@@ -1533,6 +1862,7 @@
 "rank": 24
 }
 ],
+"crazy flooding in boulder, colorado http|any": [],
 "crescent heights|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1544,8 +1874,17 @@
 }
 ],
 "criminal minds|51.0,-114.1": [],
+"criminal negligence causes queensland, australia flood crisis http|any": [],
+"criminal negligence causes queensland, australia flood crisis|any": [],
 "crisis cafe|51.0,-114.1": [],
+"cstshaw my boss is making me go back to work tomorrow, i would rather do more cleanup|51.0,-114.1": [],
 "ctown|51.0,-114.1": [],
+"currently in the middle of a flood in queensland, australia|any": [],
+"cypress village, masambong|any": [],
+"dacon homes, cainta, rizal|any": [],
+"day, how generous of them to donate|51.0,-114.1": [],
+"dead, thousands evacuated|any": [],
+"deadly high waters in northern colorado force evacuations, cause mudslides|any": [],
 "deer park|51.0,-114.1": [
 {
 "cat": "place",
@@ -1630,6 +1969,8 @@
 "rank": 16
 }
 ],
+"deer run, connaught areas|51.0,-114.1": [],
+"deer run, quarry park, riverbend and douglasdale can return home|51.0,-114.1": [],
 "deer run|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1648,6 +1989,7 @@
 "rank": 26
 }
 ],
+"design to closed until wednesday, june|51.0,-114.1": [],
 "devon|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1728,6 +2070,57 @@
 "rank": 24
 }
 ],
+"dona imelda, araneta ave|any": [
+{
+"cat": "highway",
+"lat": 14.6186998,
+"lon": 121.0140474,
+"n": "Araneta Avenue",
+"name": "Araneta Avenue, E. Rodriguez Sr. Avenue, Do\u00f1a Imelda",
+"rank": 30
+}
+],
+"dona imelda, sta|any": [
+{
+"cat": "highway",
+"lat": 14.6038107,
+"lon": 121.0169645,
+"n": "LRT V. Mapa Station",
+"name": "LRT V. Mapa Station, Magsaysay Boulevard, Do\u00f1a Imelda",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 14.6189133,
+"lon": 121.0155285,
+"n": "Galas Police Station \u2161",
+"name": "Galas Police Station \u2161, E. Rodriguez Sr. Avenue, Do\u00f1a Imelda",
+"rank": 30
+}
+],
+"dona petra, concepcion uno, marikina city|any": [],
+"downstream from calgary, medicine hat braced for its own flood crisis via|51.0,-114.1": [],
+"driving by, i had to stop|51.0,-114.1": [],
+"drumheller, canmore and high river|51.0,-114.1": [],
+"dublin, liverpool|any": [
+{
+"cat": "highway",
+"lat": 53.4198687,
+"lon": -2.9983546,
+"n": "Dublin Street",
+"name": "Dublin Street, Ten Streets, Vauxhall",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.3299383,
+"lon": -6.2693955,
+"n": "Portobello Road",
+"name": "Portobello Road, Portobello, Wood Quay B ED",
+"rank": 26
+}
+],
+"during last weekend bundaberg, queensland has suffered the largest flood|any": [],
 "earls 16th ave, calgary|51.0,-114.1": [],
 "east brisbane|51.0,-114.1": [],
 "east brisbane|any": [
@@ -2026,9 +2419,13 @@
 "rank": 18
 }
 ],
+"emergency flood alerts issued for towns in queensland, australia|any": [],
 "emergency management ron robinson|51.0,-114.1": [],
+"emergency officials in medicine hat, alta|51.0,-114.1": [],
 "emergency ops centre|51.0,-114.1": [],
 "emergency ops centre|any": [],
+"ems, cfd|51.0,-114.1": [],
+"enmax working to restore power to cliff bungalow, mission|51.0,-114.1": [],
 "enmax|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -2071,6 +2468,7 @@
 "rank": 24
 }
 ],
+"epic flooding in calgary, by the numbers http|51.0,-114.1": [],
 "erlton|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2099,6 +2497,78 @@
 "rank": 24
 }
 ],
+"espana boulevard, manila|any": [
+{
+"cat": "highway",
+"lat": 14.6135274,
+"lon": 120.9971216,
+"n": "Espa\u00f1a Boulevard",
+"name": "Espa\u00f1a Boulevard, Barangay 494, Sampaloc",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.6172598,
+"lon": 121.0010821,
+"n": "Espa\u00f1a Boulevard",
+"name": "Espa\u00f1a Boulevard, Santa Teresita, Santa Mesa Heights",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.6059987,
+"lon": 120.9888265,
+"n": "Espa\u00f1a Boulevard",
+"name": "Espa\u00f1a Boulevard, Barangay 410, Sampaloc",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.6099261,
+"lon": 120.9931281,
+"n": "Espa\u00f1a Boulevard",
+"name": "Espa\u00f1a Boulevard, Sampaloc, Fourth District",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.6058512,
+"lon": 120.9884759,
+"n": "Espa\u00f1a Boulevard",
+"name": "Espa\u00f1a Boulevard, Barangay 468, Sampaloc",
+"rank": 26
+}
+],
+"eu, canada release aid money for phl flood victims|any": [],
+"evacuated as flash flood hits queensland, australia http|any": [],
+"ever the optimist, i see the|51.0,-114.1": [],
+"everyone is drunk and your area is flooded, how is that safe|any": [],
+"everything is going to be ok, karl stefanovic will be reporting on the floods from brisbane|any": [],
+"executive homes, cainta|any": [
+{
+"cat": "leisure",
+"lat": 14.5952126,
+"lon": 121.1123241,
+"n": "Premiere Badminton Court - Cainta",
+"name": "Premiere Badminton Court - Cainta, Audi Street, Village East Executive Homes",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 14.5727289,
+"lon": 121.1224539,
+"n": "Cainta Senior High School",
+"name": "Cainta Senior High School, Sitio Victoria Street, Midland Homes Subdivision",
+"rank": 30
+}
+],
+"exodus vill,noveleta,cavite|any": [],
+"experts have determined colorado flooding was caused by tears of badger fans, fema is sending trucks loaded w|any": [],
+"explosion at transalta plant leaves banff, lake louise residents without power http|51.0,-114.1": [],
+"extremely dangerous and life threatening situation in boulder, colorado|any": [],
+"facebook in the album qld, australia flood|any": [],
+"farmers, parks canada argue over who|51.0,-114.1": [],
+"fellow speducator, jaja vagilia|any": [],
 "ferny grove|51.0,-114.1": [],
 "ferny grove|any": [
 {
@@ -2126,6 +2596,10 @@
 "rank": 19
 }
 ],
+"feu, science building|any": [],
+"feu,science building|any": [],
+"filinvest, cainta, rizal as of|any": [],
+"first heatwave, then bush fires|any": [],
 "fish creek provincial park society|51.0,-114.1": [],
 "flames|51.0,-114.1": [
 {
@@ -2169,6 +2643,25 @@
 "rank": 30
 }
 ],
+"flash flooding in boulder county, colorado has left two people dead|any": [],
+"flood alert turns to brisbane, facebook, twitter|any": [],
+"flood damage extensive on siksika nation, hidden valley resort http|51.0,-114.1": [],
+"flood debris, mowbray park, east brisbane|any": [],
+"flood in jakarta, indonesia|any": [],
+"flood relief|51.0,-114.1": [],
+"flood the desert, it d love that|any": [],
+"flood warning for the connors, isaac, don|any": [],
+"flood watch issued for perth amboy, nj http|any": [],
+"flood waters hit sunshine coast, queensland in|any": [],
+"flooding brings tales of rescues, improvisation|any": [],
+"flooding forces evacuation of downtown calgary, canada http|51.0,-114.1": [],
+"flooding in alberta ,canada forces|51.0,-114.1": [],
+"flooding in cainta town, rizal province|any": [],
+"flooding in maryborough, australia|any": [],
+"flooding may cause service delays in|51.0,-114.1": [],
+"floods clean up in canada, chinese dissident in taiwan and san juan festival in|51.0,-114.1": [],
+"floods in manila, snow in africa, volcano erupts in new zealand|any": [],
+"floods in sampaloc, manila|any": [],
 "floods|51.0,-114.1": [],
 "foothills mall|51.0,-114.1": [],
 "foothills mall|any": [
@@ -2197,6 +2690,8 @@
 "rank": 30
 }
 ],
+"for those who wish to contribute to the flood relief in queensland, vinnies has a qld flood appeal|any": [],
+"for those who wish to contribute to the flood relief in queensland, vinnies has a queensland flood appeal|any": [],
 "france|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2207,6 +2702,120 @@
 "rank": 4
 }
 ],
+"front range urban corridor, n of i|any": [],
+"garden villa|any": [
+{
+"cat": "landuse",
+"lat": 37.6614202,
+"lon": -97.3596556,
+"n": "Garden Villa",
+"name": "Garden Villa, Wichita, Sedgwick County",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 22.3943913,
+"lon": 114.1881809,
+"n": "\u7530\u79be\u82d1 Garden Villa",
+"name": "\u7530\u79be\u82d1 Garden Villa, 2-18, \u706b\u70ad\u534a\u5c71 Fo Tan Mid-Levels",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 4.6222954,
+"lon": 101.1530829,
+"n": "Garden Villa",
+"name": "Garden Villa, Tambun, Majlis Bandaraya Ipoh",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 39.7526307,
+"lon": -121.8533664,
+"n": "Garden Villa",
+"name": "Garden Villa, Chico, Butte County",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 30.8986289,
+"lon": 75.7637997,
+"n": "Garden Villa",
+"name": "Garden Villa, Ludhiana, Ludhiana (West) Tahsil",
+"rank": 24
+}
+],
+"gemini st|any": [
+{
+"cat": "highway",
+"lat": -34.0298089,
+"lon": 150.770577,
+"n": "Gemini Street",
+"name": "Gemini Street, Gregory Hills, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.6830321,
+"lon": 150.8745875,
+"n": "Gemini Street",
+"name": "Gemini Street, Riverstone, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.6543655,
+"lon": 150.9051863,
+"n": "Gemini Street",
+"name": "Gemini Street, Box Hill, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -37.5407127,
+"lon": 144.9210772,
+"n": "Gemini Street",
+"name": "Gemini Street, Mickleham, Melbourne",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 29.5573513,
+"lon": -95.1133673,
+"n": "Gemini Street",
+"name": "Gemini Street, Clear Lake City, Houston",
+"rank": 26
+}
+],
+"genevieve, panorama city|any": [
+{
+"cat": "amenity",
+"lat": 34.2219483,
+"lon": -118.4389714,
+"n": "Saint Genevieve High School",
+"name": "Saint Genevieve High School, Roscoe Boulevard, Panorama City",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 34.2222607,
+"lon": -118.4385449,
+"n": "Saint Genevieve Parish Schools",
+"name": "Saint Genevieve Parish Schools, Stansbury Avenue, Panorama City",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 34.2219744,
+"lon": -118.4401462,
+"n": "Saint Genevieve's Catholic Church",
+"name": "Saint Genevieve's Catholic Church, Roscoe Boulevard, Panorama City",
+"rank": 30
+}
+],
+"get out now, bremmer river to peak in next hour|any": [],
+"gillard should be removed from queensland, it|any": [],
+"gis layers, inundation maps http|any": [],
 "glacier view|51.0,-114.1": [
 {
 "cat": "highway",
@@ -2311,8 +2920,25 @@
 "rank": 30
 }
 ],
+"good morning everyone, if you are looking to donate here is link to|51.0,-114.1": [],
+"good morning, philippines|any": [
+{
+"cat": "shop",
+"lat": 14.2289198,
+"lon": 120.9705648,
+"n": "Good Morning",
+"name": "Good Morning, Aguinaldo Highway, San Miguel I",
+"rank": 30
+}
+],
+"government of alberta, canada pledges|51.0,-114.1": [],
 "great idea|51.0,-114.1": [],
+"guam, ut, az|any": [],
+"gujab, pinas|any": [],
 "hamza|51.0,-114.1": [],
+"hang in there, calgary|51.0,-114.1": [],
+"hangin ka lang, pilipino kami|any": [],
+"harper joins redford, nenshi to survey alberta flooding|51.0,-114.1": [],
 "harvest hills|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2365,6 +2991,34 @@
 "rank": 20
 }
 ],
+"heavy rain, strong winds, roads flooded|any": [],
+"helensvale qld, australia|any": [
+{
+"cat": "amenity",
+"lat": -27.9247462,
+"lon": 153.3365564,
+"n": "Helensvale Town Centre Post Office",
+"name": "Helensvale Town Centre Post Office, 1-29, Millaroo Drive",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -27.9247932,
+"lon": 153.336704,
+"n": "ANZ",
+"name": "ANZ, 1-29, Millaroo Drive",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": -27.9357594,
+"lon": 153.3369192,
+"n": "Golf Cars Australia",
+"name": "Golf Cars Australia, 20-22, Kingston Drive",
+"rank": 30
+}
+],
+"hell or high water, calgary stampede|51.0,-114.1": [],
 "heritage heights|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2399,6 +3053,8 @@
 "rank": 30
 }
 ],
+"hey there, bicentennial bikeway is flooding|any": [],
+"high river,canmore|51.0,-114.1": [],
 "high water tees|51.0,-114.1": [],
 "hillhurst|51.0,-114.1": [
 {
@@ -2410,8 +3066,56 @@
 "rank": 20
 }
 ],
+"holy family parish|any": [
+{
+"cat": "landuse",
+"lat": -37.7875899,
+"lon": 144.8816933,
+"n": "Holy Family Parish",
+"name": "Holy Family Parish, 12-46;46A, Maidstone",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 14.6277492,
+"lon": 121.0214168,
+"n": "Holy Family Parish",
+"name": "Holy Family Parish, Roxas, Project 1",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 14.6723177,
+"lon": 121.0284261,
+"n": "Holy Family Parish",
+"name": "Holy Family Parish, Bahay Toro, Project 8",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 14.6292687,
+"lon": 121.0232939,
+"n": "Holy Family Parish",
+"name": "Holy Family Parish, Diliman, 4th District",
+"rank": 25
+},
+{
+"cat": "boundary",
+"lat": 14.6317476,
+"lon": 121.0537273,
+"n": "Holy Family Parish",
+"name": "Holy Family Parish, Project 1, 3rd District",
+"rank": 25
+}
+],
+"home destroyed near drake, co|any": [],
+"homes in bundaberg, queensland|any": [],
+"homes of millions could face flooding, national hurricane center says http|any": [],
 "house crashing|51.0,-114.1": [],
 "house hippo|51.0,-114.1": [],
+"ht jason, trent|51.0,-114.1": [],
+"hurricane sandy destroys seaside heights, floods new york and leaves millions without power http|any": [],
+"hurricane sandy, obama declares|any": [],
 "hwy|51.0,-114.1": [],
 "hwy|any": [
 {
@@ -2455,6 +3159,14 @@
 "rank": 20
 }
 ],
+"hyundai, mazda and ford offering support to victims of colorado flooding|any": [],
+"i hope all is well, dc|any": [],
+"i know, i know|51.0,-114.1": [],
+"if anyone had some time and energy, jill and i could use a few hands to help muck out our basement|51.0,-114.1": [],
+"if co, ca, az wildfires bother you|51.0,-114.1": [],
+"if you are stranded and near sm malls, sm malls to serve as shelter for flood victims|any": [],
+"in light of colorado floods, new epa report reveals importance of wetlands and streams http|any": [],
+"in need of rescue teams sa palanza street, brgy|any": [],
 "india|51.0,-114.1": [
 {
 "cat": "highway",
@@ -2495,6 +3207,18 @@
 "n": "Gate of India Calgary East Indian Restaurant",
 "name": "Gate of India Calgary East Indian Restaurant, Country Hills Boulevard NE, Country Hills Village",
 "rank": 30
+}
+],
+"ipswich, bundy|any": [],
+"it is estimated that power will be restored to mission, cliff bungalow, beltline and victoria park by|51.0,-114.1": [],
+"jamestown, colorado|any": [
+{
+"cat": "boundary",
+"lat": 40.1155412,
+"lon": -105.388605,
+"n": "Jamestown",
+"name": "Jamestown, Boulder County, Colorado",
+"rank": 16
 }
 ],
 "jamestown|51.0,-114.1": [
@@ -2549,7 +3273,11 @@
 "rank": 16
 }
 ],
+"jarrodhoare major flood crisis hits qld, australlia|any": [],
 "jeff berg|51.0,-114.1": [],
+"just heard that brisbane, queensland is due to be hit by severe weather again|any": [],
+"just to let everyone know, i am not part of the flood ridden part of australia|any": [],
+"just two years on, queensland residents are facing yet another major flood crisis|any": [],
 "kempsey england|51.0,-114.1": [],
 "kempsey england|any": [
 {
@@ -2561,6 +3289,7 @@
 "rank": 20
 }
 ],
+"kennedy, jr|51.0,-114.1": [],
 "kensington|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2618,6 +3347,7 @@
 ],
 "labor gvt|51.0,-114.1": [],
 "labor gvt|any": [],
+"lac megantic train, sfo crash, toronto and calgary floods|any": [],
 "lac|51.0,-114.1": [],
 "lakeview|51.0,-114.1": [
 {
@@ -2661,6 +3391,17 @@
 "rank": 24
 }
 ],
+"land st, toowong flooded in|any": [],
+"larimer county, colorado|any": [
+{
+"cat": "boundary",
+"lat": 40.6810174,
+"lon": -105.4726907,
+"n": "Larimer County",
+"name": "Larimer County, Colorado, United States",
+"rank": 12
+}
+],
 "larimer county|51.0,-114.1": [],
 "larimer county|any": [
 {
@@ -2683,7 +3424,9 @@
 "rank": 12
 }
 ],
+"last time it flooded in brisbane, i was in munich|any": [],
 "laureen harper|51.0,-114.1": [],
+"like bush, harper dons military gear for photo op|51.0,-114.1": [],
 "lions campground|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -2783,6 +3526,18 @@
 "rank": 12
 }
 ],
+"logan, ut|any": [
+{
+"cat": "boundary",
+"lat": 41.7313063,
+"lon": -111.834914,
+"n": "Logan",
+"name": "Logan, Cache County, Utah",
+"rank": 16
+}
+],
+"long island sound, new york harbor http|any": [],
+"looters, calgary style|51.0,-114.1": [],
 "los angeles international airport|51.0,-114.1": [],
 "los angeles international airport|any": [
 {
@@ -2930,6 +3685,61 @@
 "rank": 30
 }
 ],
+"lpac criminal negligence causes queensland, australia flood crisis|any": [],
+"lucia, pasig|any": [
+{
+"cat": "shop",
+"lat": 14.6176133,
+"lon": 121.0996956,
+"n": "Sta. Lucia Mall",
+"name": "Sta. Lucia Mall, Marcos Highway, Dela Paz",
+"rank": 30
+},
+{
+"cat": "boundary",
+"lat": 14.5842641,
+"lon": 121.1013028,
+"n": "Santa Lucia",
+"name": "Santa Lucia, Pasig Second District, Pasig",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 14.5784761,
+"lon": 121.1009939,
+"n": "Santa Lucia BLISS",
+"name": "Santa Lucia BLISS, Santa Lucia, Pasig Second District",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 14.6166403,
+"lon": 121.0849047,
+"n": "Santa Lucia Subdivision",
+"name": "Santa Lucia Subdivision, Santolan, Pasig Second District",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 14.5817187,
+"lon": 121.1016576,
+"n": "Santa Lucia Sustainable Organic Garden",
+"name": "Santa Lucia Sustainable Organic Garden, Santa Lucia, Pasig Second District",
+"rank": 25
+}
+],
+"lyons, colo|any": [
+{
+"cat": "boundary",
+"lat": 40.224432,
+"lon": -105.270532,
+"n": "Lyons",
+"name": "Lyons, Boulder County, Colorado",
+"rank": 16
+}
+],
+"m praying, holy crap|any": [],
+"macintyre, weir|any": [],
 "macleod|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2956,6 +3766,40 @@
 "rank": 18
 }
 ],
+"mail service being restored today in okotoks, banff and black diamond but not in hardest hit areas|51.0,-114.1": [],
+"mais street, tumana, marikina|any": [
+{
+"cat": "highway",
+"lat": 14.6570838,
+"lon": 121.0979043,
+"n": "Mais Street",
+"name": "Mais Street, Tumana, District II",
+"rank": 26
+}
+],
+"malanday paradise, acasia st|any": [],
+"malanday, marikina|any": [
+{
+"cat": "boundary",
+"lat": 14.6501622,
+"lon": 121.0937457,
+"n": "Malanday",
+"name": "Malanday, District I, Marikina",
+"rank": 20
+}
+],
+"malibay, pasay|any": [
+{
+"cat": "shop",
+"lat": 14.5343474,
+"lon": 121.0092696,
+"n": "7-Eleven",
+"name": "7-Eleven, Apelo Cruz Loop, Barangay 166",
+"rank": 30
+}
+],
+"mandano fax, di|any": [],
+"manila floods, displacing tens of thousands http|any": [],
 "marda loop, calgary|51.0,-114.1": [
 {
 "cat": "landuse",
@@ -2966,7 +3810,99 @@
 "rank": 24
 }
 ],
+"mariano marcos, bgy|any": [
+{
+"cat": "highway",
+"lat": 7.0816068,
+"lon": 126.1760549,
+"n": "Don Mariano Marcos-San Isidro Road",
+"name": "Don Mariano Marcos-San Isidro Road, Sampaguita, Pangyan",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 6.9946851,
+"lon": 126.1442862,
+"n": "Don Mariano Marcos-San Isidro Road",
+"name": "Don Mariano Marcos-San Isidro Road, Licupon 2, Sanghay",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 7.2450798,
+"lon": 125.0547002,
+"n": "Don Mariano Marcos Street",
+"name": "Don Mariano Marcos Street, Purok 2-B, Poblacion",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 7.248529,
+"lon": 125.054678,
+"n": "Don Mariano Marcos Street",
+"name": "Don Mariano Marcos Street, Purok 2-B, Poblacion",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 18.2269155,
+"lon": 120.6520529,
+"n": "Mariano Marcos Avenue",
+"name": "Mariano Marcos Avenue, l, San Roque",
+"rank": 26
+}
+],
+"marietta romeo village, brgy|any": [],
+"marikina city|any": [
+{
+"cat": "landuse",
+"lat": 14.6258682,
+"lon": 121.0840561,
+"n": "SM City Marikina",
+"name": "SM City Marikina, Industrial Valley, District I",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 14.6331084,
+"lon": 121.0993541,
+"n": "Marikina",
+"name": "Marikina, Eastern Manila District, Metro Manila",
+"rank": 12
+}
+],
 "marina mohan|51.0,-114.1": [],
+"martes st|any": [
+{
+"cat": "highway",
+"lat": 14.5994223,
+"lon": 121.0232249,
+"n": "Martes Street",
+"name": "Martes Street, Landcom Village, Santa Mesa",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 29.1368988,
+"lon": -95.0614424,
+"n": "Martes Street",
+"name": "Martes Street, Terramar Beach, Bay Harbor",
+"rank": 26
+}
+],
+"massive floods hit queensland, new so|any": [],
+"mayamot, antipolo rizal needs rescue|any": [],
+"maysilo, malabon|any": [
+{
+"cat": "place",
+"lat": 14.6790514,
+"lon": 120.9627142,
+"n": "Maysilo",
+"name": "Maysilo, Malabon, Northern Manila District",
+"rank": 20
+}
+],
+"maytuna, san juan|any": [],
 "mcmahon|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -2983,6 +3919,32 @@
 "n": "McMahon Place",
 "name": "McMahon Place, Parkland County, Alberta",
 "rank": 24
+}
+],
+"melbourne, australia|any": [
+{
+"cat": "place",
+"lat": -37.8142454,
+"lon": 144.9631732,
+"n": "Melbourne",
+"name": "Melbourne, Victoria, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -37.8123825,
+"lon": 144.9482613,
+"n": "City of Melbourne",
+"name": "City of Melbourne, Melbourne, Victoria",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": -37.8141705,
+"lon": 144.9655616,
+"n": "Melbourne",
+"name": "Melbourne, Victoria, Australia",
+"rank": 18
 }
 ],
 "melissa|51.0,-114.1": [
@@ -3047,6 +4009,76 @@
 "rank": 26
 }
 ],
+"mesa, manila|any": [
+{
+"cat": "amenity",
+"lat": 14.5749505,
+"lon": 120.9842456,
+"n": "Mesa",
+"name": "Mesa, Pedro Gil Street, Barangay 669",
+"rank": 30
+},
+{
+"cat": "boundary",
+"lat": 14.5988312,
+"lon": 121.0171296,
+"n": "Santa Mesa",
+"name": "Santa Mesa, Sixth District, Manila",
+"rank": 16
+},
+{
+"cat": "highway",
+"lat": 14.6015897,
+"lon": 121.0202334,
+"n": "San Juan Bridge",
+"name": "San Juan Bridge, Landcom Village, Santa Mesa",
+"rank": 26
+}
+],
+"mesa|any": [
+{
+"cat": "boundary",
+"lat": 33.4151005,
+"lon": -111.831455,
+"n": "Mesa",
+"name": "Mesa, Maricopa County, Arizona",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 39.0589084,
+"lon": -108.565996,
+"n": "Mesa County",
+"name": "Mesa County, Colorado, United States",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 46.5762498,
+"lon": -119.006673,
+"n": "Mesa",
+"name": "Mesa, Franklin County, Washington",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -12.9551301,
+"lon": 39.4683884,
+"n": "Mesa",
+"name": "Mesa, Ancuabe, Cabo Delgado",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 43.4245985,
+"lon": 3.5988383,
+"n": "M\u00e8ze",
+"name": "M\u00e8ze, Montpellier, H\u00e9rault",
+"rank": 16
+}
+],
+"metro manila and the neighboring provinces, tzu chi|any": [],
+"metro manila, philippines http|any": [],
 "metro manila|51.0,-114.1": [],
 "metro manila|any": [
 {
@@ -3068,6 +4100,7 @@
 "rank": 30
 }
 ],
+"meycauayan,bulacan kanina pa sila humihingi ng tulong wala pa raw nag|any": [],
 "middle east|51.0,-114.1": [
 {
 "cat": "waterway",
@@ -3094,6 +4127,24 @@
 "rank": 26
 }
 ],
+"midtown subdivision|any": [
+{
+"cat": "place",
+"lat": 14.6225843,
+"lon": 121.100837,
+"n": "Midtown Subdivision",
+"name": "Midtown Subdivision, San Roque, District I",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 16.8138357,
+"lon": 121.7190529,
+"n": "Midtown Subdivision",
+"name": "Midtown Subdivision, Paddad, Isabela",
+"rank": 24
+}
+],
 "millarville|51.0,-114.1": [
 {
 "cat": "place",
@@ -3104,6 +4155,7 @@
 "rank": 20
 }
 ],
+"misericordie pronte a partire da toscana, lazio e umbria http|any": [],
 "mission safeway|51.0,-114.1": [],
 "mission safeway|any": [
 {
@@ -3149,6 +4201,7 @@
 "rank": 24
 }
 ],
+"montalban rizal, flood waters rising fast po|any": [],
 "montreal|51.0,-114.1": [
 {
 "cat": "highway",
@@ -3202,6 +4255,7 @@
 "rank": 30
 }
 ],
+"more dried clothes and blankets needed at holy family parish, roxas district|any": [],
 "morley|51.0,-114.1": [
 {
 "cat": "place",
@@ -3273,6 +4327,52 @@
 }
 ],
 "mosquitos|51.0,-114.1": [],
+"most media choosing to remain silent on climate change, calgary and the alberta floods|51.0,-114.1": [],
+"mount royal, university of calgary and sait are closed for monday and tuesday|51.0,-114.1": [],
+"moz flood update, australian flooding and egyptian protests|any": [],
+"mozambique, africa|any": [
+{
+"cat": "landuse",
+"lat": -25.6066617,
+"lon": 32.254661,
+"n": "Elevate Africa",
+"name": "Elevate Africa, Moamba, Maputo",
+"rank": 24
+},
+{
+"cat": "amenity",
+"lat": -25.9660776,
+"lon": 32.5748549,
+"n": "Cine Africa",
+"name": "Cine Africa, Avenida 24 de Julho, Central \"B\"",
+"rank": 30
+},
+{
+"cat": "landuse",
+"lat": -14.6375366,
+"lon": 40.6419105,
+"n": "Cober \u00c1frica",
+"name": "Cober \u00c1frica, Mepane, Cidade de Nacala",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": -24.7045436,
+"lon": 33.6376864,
+"n": "Minist\u00e9rio \u00c1frica em Fogo",
+"name": "Minist\u00e9rio \u00c1frica em Fogo, Chibuto, Gaza",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": -25.9576063,
+"lon": 32.4746383,
+"n": "Rua Ac\u00e7\u00f5es de \u00c1frica",
+"name": "Rua Ac\u00e7\u00f5es de \u00c1frica, Matola, Maputo",
+"rank": 26
+}
+],
+"my home town calgary, ab is flooding|51.0,-114.1": [],
 "nanaimo|51.0,-114.1": [],
 "nanton|51.0,-114.1": [
 {
@@ -3285,6 +4385,8 @@
 }
 ],
 "nenshi noun|51.0,-114.1": [],
+"new south wales, australia has her own fair share of natural disasters|any": [],
+"new south wales, australia, jan|any": [],
 "new south wales|51.0,-114.1": [],
 "new south wales|any": [
 {
@@ -3307,8 +4409,10 @@
 "rank": 4
 }
 ],
+"niallofficial  have you heard about the flooding in calgary|51.0,-114.1": [],
 "nigerian gov|51.0,-114.1": [],
 "nigerian gov|any": [],
+"no power, elanora is at risk of flooding and i live on a freaking island|any": [],
 "north american|51.0,-114.1": [
 {
 "cat": "aerialway",
@@ -3384,6 +4488,18 @@
 ],
 "northern colorado reopen|51.0,-114.1": [],
 "northern colorado reopen|any": [],
+"noveleta, imus and parts of bacoor|any": [],
+"nsw, australia|any": [
+{
+"cat": "boundary",
+"lat": -32.1629594,
+"lon": 147.0320469,
+"n": "New South Wales",
+"name": "New South Wales, Australia",
+"rank": 8
+}
+],
+"of wtf, queensland|any": [],
 "ogden road|51.0,-114.1": [
 {
 "cat": "highway",
@@ -3491,6 +4607,7 @@
 "rank": 30
 }
 ],
+"okotoks, lethbridge and every|51.0,-114.1": [],
 "olympic|51.0,-114.1": [
 {
 "cat": "highway",
@@ -3509,7 +4626,13 @@
 "rank": 26
 }
 ],
+"one dead in qld floods, st george cut off|any": [],
+"our hearts and prayers go out to everyone affected this week by the boston attacks, texas factory explosion|any": [],
+"our love and thoughts go out to those affected by the severe flooding in|51.0,-114.1": [],
+"our thoughts are with all residents of flood affected areas of nsw, victoria and queensland today|any": [],
 "palm springs|51.0,-114.1": [],
+"particularly around the brisbane river, gladstone|any": [],
+"paula newton reports on the devastating flooding in calgary, alber|51.0,-114.1": [],
 "peace bridge, calgary|51.0,-114.1": [
 {
 "cat": "man_made",
@@ -3601,6 +4724,16 @@
 "rank": 25
 }
 ],
+"people , bayabas ext|any": [],
+"people in hermosa,bataan r in roofs now|any": [],
+"people inside house, along banawe cor macopa sta|any": [],
+"people, siksika nation|51.0,-114.1": [],
+"pgh, uerm, ust hospital|any": [],
+"pgh, uerm|any": [],
+"phew, queensland can relax|any": [],
+"photo of the flood in manila, philippines|any": [],
+"pic from ingham, queensland http|any": [],
+"pinalagad, malinta val|any": [],
 "pincher creek|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -3680,6 +4813,11 @@
 "rank": 30
 }
 ],
+"please help the people of catmon, malabon|any": [],
+"please help the ust, uerm|any": [],
+"please pray for those affected by the flooding in calgary|51.0,-114.1": [],
+"please stay safe, good people of calgary|51.0,-114.1": [],
+"pls to those who read my tweets , rt pls po we super need help|any": [],
 "police state|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -3740,7 +4878,10 @@
 "rank": 30
 }
 ],
+"politics, corruption and trash http|any": [],
+"portable toilets being set up in bowness, sunnyside|51.0,-114.1": [],
 "possible flood relief scams|51.0,-114.1": [],
+"premier thanks westpac, qantas and bank of queensland for giving or pledgding|any": [],
 "prince|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -3781,6 +4922,16 @@
 "n": "Mount Prince John",
 "name": "Mount Prince John, Area F (Columbia Lake/Windermere Lake), Regional District of East Kootenay",
 "rank": 18
+}
+],
+"provident vill, marikina|any": [
+{
+"cat": "building",
+"lat": 14.6298054,
+"lon": 121.0929108,
+"n": "1 Cambridge Marikina",
+"name": "1 Cambridge Marikina, Cambridge Street, Provident Villages",
+"rank": 30
 }
 ],
 "provident village|51.0,-114.1": [],
@@ -3837,6 +4988,17 @@
 "rank": 8
 }
 ],
+"qpsmedia wait time for sandbags at redfern st, morningside is around an hour|any": [],
+"quarry park, riverbend, douglasdale|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 50.9640453,
+"lon": -114.0122142,
+"n": "Quarry Park Station (NB)",
+"name": "Quarry Park Station (NB), 18 Street SE, Quarry Park",
+"rank": 30
+}
+],
 "quarry park|51.0,-114.1": [
 {
 "cat": "place",
@@ -3855,6 +5017,17 @@
 "rank": 30
 }
 ],
+"quebec , flood in|51.0,-114.1": [],
+"queenland,australia|any": [
+{
+"cat": "tourism",
+"lat": -27.4749752,
+"lon": 153.0283926,
+"n": "Queenland Police Memorial",
+"name": "Queenland Police Memorial, Palm Avenue, Brisbane City",
+"rank": 30
+}
+],
 "queensland australia|51.0,-114.1": [],
 "queensland australia|any": [
 {
@@ -3866,6 +5039,8 @@
 "rank": 8
 }
 ],
+"queensland flood advice, chc wants meaningful plan, sleep study and much more|any": [],
+"queensland flood assistance, january|any": [],
 "queensland liquor|51.0,-114.1": [
 {
 "cat": "shop",
@@ -3887,6 +5062,46 @@
 "rank": 24
 }
 ],
+"queensland, au http|any": [
+{
+"cat": "highway",
+"lat": -27.3931132,
+"lon": 152.9477345,
+"n": "View Cr near Plucks Rd",
+"name": "View Cr near Plucks Rd, View Crescent, Arana Hills",
+"rank": 30
+},
+{
+"cat": "highway",
+"lat": -27.3917274,
+"lon": 152.9480514,
+"n": "View Cr near Eveleigh St",
+"name": "View Cr near Eveleigh St, View Crescent, Arana Hills",
+"rank": 30
+}
+],
+"queensland, australia http|any": [],
+"queensland, brisbane|any": [
+{
+"cat": "place",
+"lat": -27.4689623,
+"lon": 153.0235009,
+"n": "Brisbane",
+"name": "Brisbane, Queensland, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -27.4693645,
+"lon": 152.9687926,
+"n": "City of Brisbane",
+"name": "City of Brisbane, Queensland, Australia",
+"rank": 12
+}
+],
+"rains flood manila area, sending thousands fleeing|any": [],
+"red cross teams are on the ground in siksika, morley and eden valley|51.0,-114.1": [],
+"red deer river, drumheller now expected to crest at|51.0,-114.1": [],
 "red deer river|51.0,-114.1": [
 {
 "cat": "waterway",
@@ -3929,6 +5144,7 @@
 "rank": 19
 }
 ],
+"red hook, brooklyn http|any": [],
 "red rocks amphitheatre|51.0,-114.1": [],
 "red rocks amphitheatre|any": [
 {
@@ -3984,6 +5200,9 @@
 "rank": 26
 }
 ],
+"redford, harper have acted correctly|51.0,-114.1": [],
+"redford, harper pledge co|51.0,-114.1": [],
+"redford, nenshi to survey|51.0,-114.1": [],
 "redwood meadows|51.0,-114.1": [
 {
 "cat": "place",
@@ -3994,6 +5213,27 @@
 "rank": 19
 }
 ],
+"regina|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 49.102096,
+"lon": -116.5146009,
+"n": "Regina Street",
+"name": "Regina Street, Creston, Regional District of Central Kootenay",
+"rank": 26
+},
+{
+"cat": "building",
+"lat": 49.5707761,
+"lon": -109.8964642,
+"n": "University of Regina Field Station",
+"name": "University of Regina Field Station, Old Battle Creek Road, Maple Creek No. 111",
+"rank": 30
+}
+],
+"religion, i told you|any": [],
+"remember the last time queensland got flooded, tony abbott asked for donations|any": [],
+"residents of villamor air base,pasay city needs help|any": [],
 "restricted water use|51.0,-114.1": [],
 "rideau|51.0,-114.1": [
 {
@@ -4048,6 +5288,10 @@
 "rank": 20
 }
 ],
+"rivers fed by torrential mountain rains spilled across the prairies of southern|51.0,-114.1": [],
+"rivers receding in calgary, three dead in floods|51.0,-114.1": [],
+"riverside dr cor oxford st, provident vill, marikina|any": [],
+"road closures in banff, yoho and kootenay national parks|51.0,-114.1": [],
 "rolling hills asylum|51.0,-114.1": [],
 "rolling hills asylum|any": [
 {
@@ -4059,6 +5303,9 @@
 "rank": 30
 }
 ],
+"rosa, laguna kailangan po ng tulong|any": [],
+"rosie goodmorning ro, i live in|51.0,-114.1": [],
+"roughly a month ago, calgary had a fire ban because it was so dry|51.0,-114.1": [],
 "route 9|51.3,-97.4": [
 {
 "cat": "highway",
@@ -4195,6 +5442,8 @@
 "rank": 20
 }
 ],
+"rt feu, science building|any": [],
+"rt snow in africa, drought in usa, flood in manila|any": [],
 "saddle ridge|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -4206,6 +5455,17 @@
 }
 ],
 "safeway grocery|51.0,-114.1": [],
+"saint catherine street, provident village, marikina|any": [
+{
+"cat": "highway",
+"lat": 14.6310123,
+"lon": 121.0886691,
+"n": "Saint Catherine Street",
+"name": "Saint Catherine Street, Provident Villages, Ta\u00f1ong",
+"rank": 26
+}
+],
+"salvation army responding with flood relief in calgary, blackie, medicine hat|51.0,-114.1": [],
 "san fernando|51.0,-114.1": [
 {
 "cat": "highway",
@@ -4274,6 +5534,7 @@
 "rank": 8
 }
 ],
+"san isidro,cainta hope the rescue reach dem asap|any": [],
 "san roque dam|51.0,-114.1": [],
 "san roque dam|any": [
 {
@@ -4285,6 +5546,8 @@
 "rank": 20
 }
 ],
+"sana po magkaron ng pagrescue sa san juan, kalentong|any": [],
+"sandy beach park, discovery ridge, chinatown and downtown|51.0,-114.1": [],
 "sandy beach park|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -4355,6 +5618,17 @@
 "rank": 18
 }
 ],
+"sandy hits coast, floods new york|any": [],
+"sardegna alitalia|any": [
+{
+"cat": "building",
+"lat": 40.6340228,
+"lon": 8.2964839,
+"n": "Ex Scuola di Volo Alitalia",
+"name": "Ex Scuola di Volo Alitalia, Strada Provinciale 44 dell'Aeroporto di Fertilia, Sa Segada",
+"rank": 30
+}
+],
 "saskatoon|51.0,-114.1": [
 {
 "cat": "natural",
@@ -4397,6 +5671,7 @@
 "rank": 27
 }
 ],
+"says it doesnt exist, science is dumb|51.0,-114.1": [],
 "school camp|51.0,-114.1": [
 {
 "cat": "building",
@@ -4488,6 +5763,11 @@
 "rank": 16
 }
 ],
+"sending love to all those affected by the flooding in calgary, canmore, high river|51.0,-114.1": [],
+"sending our thoughts and prayers to everyone affected by the floods in|51.0,-114.1": [],
+"sending prayers to the people of queensland, new south wales dealing with flood waters|any": [],
+"seriously, queensland|any": [],
+"seriously, what|any": [],
 "shawnessy|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -4506,8 +5786,12 @@
 "rank": 30
 }
 ],
+"sincerely, paula|51.0,-114.1": [],
 "siska first nation|51.0,-114.1": [],
 "siska first nation|any": [],
+"snow in africa, drought in america, flood in manila|any": [],
+"snow in africa, drought in america, massive floods in manila|any": [],
+"snow in africa, drought in usa, flood in manila|any": [],
 "sobeys|51.0,-114.1": [
 {
 "cat": "shop",
@@ -4590,6 +5874,7 @@
 }
 ],
 "southern alberta caused|51.0,-114.1": [],
+"spirit of albertans during floods is what makes canada great, pm says|51.0,-114.1": [],
 "stampede ground|51.0,-114.1": [],
 "stanley park|51.0,-114.1": [
 {
@@ -4643,6 +5928,7 @@
 "rank": 20
 }
 ],
+"state of the calgary, mme president|51.0,-114.1": [],
 "staten island|51.0,-114.1": [],
 "staten island|any": [
 {
@@ -4678,6 +5964,37 @@
 "rank": 17
 }
 ],
+"stay safe, aussie friends|any": [],
+"stfu,go help|51.0,-114.1": [],
+"still verifying reports that there is a flood casualty in calamba city, laguna|any": [],
+"sto domingo, cainta rizal|any": [
+{
+"cat": "amenity",
+"lat": 14.5928655,
+"lon": 121.1244254,
+"n": "Collegio Sto. Domingo",
+"name": "Collegio Sto. Domingo, Sunset Drive, Cainta",
+"rank": 30
+}
+],
+"stone harbor, new jersey|any": [
+{
+"cat": "boundary",
+"lat": 39.0537129,
+"lon": -74.7584461,
+"n": "Stone Harbor",
+"name": "Stone Harbor, Cape May County, New Jersey",
+"rank": 16
+},
+{
+"cat": "natural",
+"lat": 39.0509467,
+"lon": -74.7659978,
+"n": "Stone Harbor",
+"name": "Stone Harbor, Cape May County, New Jersey",
+"rank": 22
+}
+],
 "stoney nakoda nation|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -4688,10 +6005,53 @@
 "rank": 25
 }
 ],
+"stop raining plz, i hope it won|51.0,-114.1": [],
+"stunning flooding images around calgary|51.0,-114.1": [],
+"summer solstice, super moon|51.0,-114.1": [],
 "sunyside|51.0,-114.1": [],
 "suzie vile|51.0,-114.1": [],
+"sydney, australia|51.0,-114.1": [],
+"sydney, australia|any": [
+{
+"cat": "place",
+"lat": -33.8698439,
+"lon": 151.2082848,
+"n": "Sydney",
+"name": "Sydney, New South Wales, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -33.8890382,
+"lon": 151.2050397,
+"n": "City of Sydney",
+"name": "City of Sydney, Inner West, Sydney",
+"rank": 12
+}
+],
+"syrians dead, egypt is about to lose their democracy|any": [],
+"t be stupid, stay out of flood waters please|any": [],
+"t buy food due to the flood, please contact|any": [],
 "tahanang walang hagdan|51.0,-114.1": [],
 "tahanang walang hagdan|any": [],
+"taipei, jan|any": [
+{
+"cat": "building",
+"lat": 25.0148157,
+"lon": 121.5365839,
+"n": "\u5c55\u66f8\u6a13",
+"name": "\u5c55\u66f8\u6a13, \u821f\u5c71\u8def, \u5b78\u5e9c\u91cc",
+"rank": 30
+},
+{
+"cat": "highway",
+"lat": 25.0121369,
+"lon": 121.9903583,
+"n": "F831/F836\u536f\u6fb3\u5e02\u6c11\u6d3b\u52d5\u4e2d\u5fc3",
+"name": "F831/F836\u536f\u6fb3\u5e02\u6c11\u6d3b\u52d5\u4e2d\u5fc3, \u798f\u8208\u8857, \u798f\u9023\u91cc",
+"rank": 30
+}
+],
 "taiwan|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -4710,6 +6070,19 @@
 "rank": 30
 }
 ],
+"takeachallenge major flood in calgary|51.0,-114.1": [],
+"teachers village catmon, malabon|any": [
+{
+"cat": "landuse",
+"lat": 14.6704131,
+"lon": 120.9617611,
+"n": "Imelda Teachers Village 1",
+"name": "Imelda Teachers Village 1, Catmon, Malabon",
+"rank": 24
+}
+],
+"texas explosion,midwest flooding|any": [],
+"thanks for being awesome, nenshi|51.0,-114.1": [],
 "the calgary|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -4752,6 +6125,8 @@
 "rank": 30
 }
 ],
+"the flooding and flow into the coral sea at gladstone, australia|any": [],
+"the next person who lectures alberta or albertans about climate change gets a punch in the face, ok|51.0,-114.1": [],
 "the pas|51.0,-114.1": [
 {
 "cat": "highway",
@@ -4762,8 +6137,24 @@
 "rank": 26
 }
 ],
+"the premier has thanked westpac, qantas and the bank of queensland for their significant donations to the qld red cross flood appeal|any": [],
+"the stampede stadium in calgary, from which we just escaped|51.0,-114.1": [],
+"thebroadwayhat good in the rosebank section of staten island, i know other parts are under water on the island|any": [],
+"there are no generators or sandbags available anywhere in ny, nj or ct|any": [],
+"there was a flood in queensland, australia|any": [],
+"these photos of the recent queensland flood tweeted from space by canadian astronaut, chris hadfield look|any": [],
+"think positive, be positive|any": [],
+"thinking of all those residents in bundaberg, queensland|any": [],
+"this is an awesome photo that gives you some idea of the flood in bundaberg, queensland|any": [],
+"this is high river, ab from the air|51.0,-114.1": [],
+"thousands of gas, oil wells may contaminate water http|any": [],
+"thunder storm system passing through moore, ok right now|any": [],
 "tim hortans|51.0,-114.1": [],
 "titanic|51.0,-114.1": [],
+"to everyone in queensland right now going through the floods and cyclones,i hope you|any": [],
+"toddler airlifted to safety amid flood deluge in queensland, australia|any": [],
+"tony igcalinos, cainta rescue|any": [],
+"trains downtown monday, june|51.0,-114.1": [],
 "travelers|51.0,-114.1": [
 {
 "cat": "office",
@@ -4780,6 +6171,41 @@
 "n": "Travelers Currency Exchange",
 "name": "Travelers Currency Exchange, Shaganappi Trail NW, Varsity",
 "rank": 30
+}
+],
+"tropical cyclone oswald has resulted in a flood of record in grafton, australia|any": [],
+"tumana, marikina|any": [
+{
+"cat": "boundary",
+"lat": 14.6604063,
+"lon": 121.100777,
+"n": "Tumana",
+"name": "Tumana, District II, Marikina",
+"rank": 20
+},
+{
+"cat": "highway",
+"lat": 14.652524,
+"lon": 121.1030835,
+"n": "Tumana",
+"name": "Tumana, J. P. Rizal Street, Amang Rodriguez Village",
+"rank": 30
+},
+{
+"cat": "waterway",
+"lat": 14.6528816,
+"lon": 121.0969859,
+"n": "Tumana Creek",
+"name": "Tumana Creek, Malanday, District I",
+"rank": 19
+},
+{
+"cat": "waterway",
+"lat": 14.6507637,
+"lon": 121.0997005,
+"n": "Tumana Creek",
+"name": "Tumana Creek, Tumana, District II",
+"rank": 19
 }
 ],
 "turner valley|51.0,-114.1": [
@@ -4825,6 +6251,17 @@
 }
 ],
 "tweets|51.0,-114.1": [],
+"two dead, hundreds evacuated, cars stranded in colorado flooding http|any": [],
+"um, no|any": [
+{
+"cat": "shop",
+"lat": 49.1960419,
+"lon": 16.6063172,
+"n": "UM",
+"name": "UM, \u010cesk\u00e1, Brno-m\u011bsto",
+"rank": 30
+}
+],
 "uni queensland|51.0,-114.1": [],
 "uni queensland|any": [
 {
@@ -4852,6 +6289,8 @@
 "rank": 30
 }
 ],
+"up until last week, calgarys residential|51.0,-114.1": [],
+"update on the impact of flooding that occurred in calgary, ab http|51.0,-114.1": [],
 "upper twp middle school|51.0,-114.1": [],
 "upper twp middle school|any": [
 {
@@ -4871,6 +6310,11 @@
 "rank": 30
 }
 ],
+"urgent rescue assistance needed, bgy manggahan rodriguez|any": [],
+"ust hospital, uerm and pgh needs urgent rescue|any": [],
+"ust hospital, uerm and philippine general hospital|any": [],
+"ust, uerm, pgh and delos santos hospital needs|any": [],
+"ust, uerm, pgh and trinity are needing immediate rescue and supply|any": [],
 "vancouver|51.0,-114.1": [
 {
 "cat": "highway",
@@ -4905,6 +6349,7 @@
 "rank": 26
 }
 ],
+"vicente cruz sampaloc, manila marie salcedo|any": [],
 "victory robinsons|51.0,-114.1": [],
 "victory robinsons|any": [
 {
@@ -4953,6 +6398,7 @@
 ],
 "villamor pls|51.0,-114.1": [],
 "villamor pls|any": [],
+"volunteers, nroc needs you|any": [],
 "walmart|51.0,-114.1": [
 {
 "cat": "shop",
@@ -4995,6 +6441,19 @@
 "rank": 30
 }
 ],
+"warwick, queensland|any": [
+{
+"cat": "boundary",
+"lat": -28.2163204,
+"lon": 152.0327039,
+"n": "Warwick",
+"name": "Warwick, Queensland, Australia",
+"rank": 18
+}
+],
+"watch the queensland flood, monday|any": [],
+"we are now accepting donations for morley, siksika and tsuu t|51.0,-114.1": [],
+"weather floods italian island, killing|any": [],
 "weld county|51.0,-114.1": [],
 "weld county|any": [
 {
@@ -5006,6 +6465,23 @@
 "rank": 12
 }
 ],
+"well said, carrie|51.0,-114.1": [],
+"west mate, sarf|any": [],
+"western australia, victoria|any": [
+{
+"cat": "amenity",
+"lat": -37.1516872,
+"lon": 142.853476,
+"n": "Great Western Australia Post",
+"name": "Great Western Australia Post, Cubitt Street, Great Western",
+"rank": 30
+}
+],
+"when the state of emergency is lifted, i feel like the flame should be lit on the calgary tower|51.0,-114.1": [],
+"where to live in brisbane, queensland, australia|any": [],
+"while queensland is in the middle of a flood, julia gillard sets an election date|any": [],
+"while the causes of floods in|51.0,-114.1": [],
+"whilst the floods cause havoc in yorkshire, colorado is burning|any": [],
 "widgee creek|51.0,-114.1": [],
 "widgee creek|any": [
 {
@@ -5094,6 +6570,7 @@
 "rank": 12
 }
 ],
+"with no flood coverage for calgary homes, insured losses|51.0,-114.1": [],
 "wivenhoe dam|51.0,-114.1": [],
 "wivenhoe dam|any": [
 {
@@ -5105,6 +6582,13 @@
 "rank": 20
 }
 ],
+"wolf tell the gop that the next grande tornado, hurricane or flood will be worst due to climate change so support pres|any": [],
+"worried medicine hat, alta|51.0,-114.1": [],
+"worst flood in a century set for bundaberg, queensland, australia http|any": [],
+"worst flood in a century set for bundaberg, queensland, australia|any": [],
+"wow first floods , the collapsing bridges now buildings on fire wtf calgary|51.0,-114.1": [],
+"wow, ms bennett just claimed colorado flooding down to climate change|any": [],
+"wtf, aussie|any": [],
 "yamnuska hall|51.0,-114.1": [
 {
 "cat": "building",
@@ -5114,5 +6598,10 @@
 "name": "Yamnuska Hall, 24 Avenue NW, University of Calgary",
 "rank": 30
 }
-]
+],
+"yeah i might not be able to get to work on tuesday, brisbane cbd might be flooded|any": [],
+"yep, fish creek park is flooded too|51.0,-114.1": [],
+"yet, and the flooding already looks like this http|any": [],
+"you may drop your donations at victory robinsons, la salle|any": [],
+"zone interessate iglesiente, campidano, logudoro e gallura http|any": []
 }
