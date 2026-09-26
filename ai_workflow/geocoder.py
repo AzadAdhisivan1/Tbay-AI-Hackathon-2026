@@ -55,6 +55,22 @@ KNOWN_GAZETTEER: Dict[str, Tuple[float, float, str]] = {
     "highway 599": (51.4667, -90.2000, "Highway 599, ON, Canada"),
     "highway 2": (51.1000, -114.0000, "Highway 2, AB, Canada"),
     "trans-canada highway": (51.0500, -114.0000, "Trans-Canada Highway, AB, Canada"),
+    # International Major Flood Locations & Cities
+    "manila": (14.5995, 120.9842, "Manila, Philippines"),
+    "tacloban": (11.2444, 125.0039, "Tacloban, Philippines"),
+    "brisbane": (-27.4698, 153.0251, "Brisbane, Queensland, Australia"),
+    "queensland": (-20.9176, 142.7028, "Queensland, Australia"),
+    "jakarta": (-6.2088, 106.8456, "Jakarta, Indonesia"),
+    "new orleans": (29.9511, -90.0715, "New Orleans, Louisiana, USA"),
+    "bangkok": (13.7563, 100.5018, "Bangkok, Thailand"),
+    "dhaka": (23.8103, 90.4125, "Dhaka, Bangladesh"),
+    "chennai": (13.0827, 80.2707, "Chennai, Tamil Nadu, India"),
+    "kerala": (10.8505, 76.2711, "Kerala, India"),
+    "manhattan": (40.7831, -73.9712, "Manhattan, New York, USA"),
+    "new york": (40.7128, -74.0060, "New York, USA"),
+    "houston": (29.7604, -95.3698, "Houston, Texas, USA"),
+    "karachi": (24.8607, 67.0011, "Karachi, Pakistan"),
+    "selkirk": (50.1436, -96.8839, "Selkirk, MB, Canada"),
     "alberta": (53.9333, -116.5765, "Alberta, Canada"),
     "western canada": (53.9333, -116.5765, "Western Canada"),
     "canada": (56.1304, -106.3468, "Canada"),
@@ -84,9 +100,9 @@ def geocode_raw_text(raw_text: str) -> Optional[Dict[str, any]]:
             "source": "gazetteer"
         }
     
-    # 2. Check substring gazetteer match
+    # 2. Check substring gazetteer match using word boundary
     for key, (lat, lng, display_name) in KNOWN_GAZETTEER.items():
-        if key in clean_text or clean_text in key:
+        if len(key) >= 3 and re.search(r'\b' + re.escape(key) + r'\b', clean_text):
             return {
                 "raw_text": raw_text,
                 "display_name": display_name,
@@ -108,7 +124,7 @@ def geocode_raw_text(raw_text: str) -> Optional[Dict[str, any]]:
         
     # 4. Fallback to OpenStreetMap Nominatim API (with timeout & retry handling)
     try:
-        query = f"{raw_text}, Canada" if "canada" not in clean_text and "ab" not in clean_text else raw_text
+        query = raw_text
         url = f"https://nominatim.openstreetmap.org/search?q={urllib.parse.quote(query)}&format=json&limit=1"
         req = urllib.request.Request(
             url,
