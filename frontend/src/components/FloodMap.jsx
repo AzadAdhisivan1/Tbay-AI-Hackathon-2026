@@ -67,6 +67,7 @@ export default function FloodMap({
   geojson,
   showHeatmap,
   flyTo,
+  onSelectLocation,
 }) {
   const [mapStyle, setMapStyle] = useState('osm');
   const features = geojson?.features || [];
@@ -237,12 +238,25 @@ export default function FloodMap({
                     {p.text || p.tweet_text || ''}
                   </p>
 
-                  {/* Timestamp */}
-                  {p.created_at && (
-                    <p className="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-100">
-                      {new Date(p.created_at).toLocaleString()}
-                    </p>
-                  )}
+                  {/* Timestamp & Location Filter Action */}
+                  <div className="pt-1 border-t border-zinc-100 flex items-center justify-between gap-1 text-[10px] font-mono">
+                    {p.created_at ? (
+                      <span className="text-zinc-400">
+                        {new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
+                      </span>
+                    ) : <span />}
+
+                    {(p.place || p.location_name) && onSelectLocation && (
+                      <button
+                        type="button"
+                        onClick={() => onSelectLocation(p.place || p.location_name)}
+                        className="text-zinc-700 hover:text-zinc-900 underline font-medium hover:bg-zinc-100 px-1 py-0.5 rounded cursor-pointer"
+                        title="Filter triage feed to this place"
+                      >
+                        Filter feed to this location
+                      </button>
+                    )}
+                  </div>
                 </div>
               </Popup>
             </CircleMarker>

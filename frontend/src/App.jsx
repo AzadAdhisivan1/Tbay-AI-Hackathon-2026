@@ -17,6 +17,7 @@ import {
 } from './api';
 import { FALLBACK_TWEETS, FALLBACK_SUMMARY } from './data/fallbackData';
 import { Loader2 } from 'lucide-react';
+import { matchesCategory } from './utils/categories';
 
 /** Default dataset id the backend auto-creates from the provided CSV. */
 const SAMPLE_DATASET_ID = 'sample';
@@ -42,11 +43,28 @@ export default function App() {
   const [categories, setCategories] = useState([]);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
 
+  // ── Active tab (signal vs noise) ──
+  const [activeTab, setActiveTab] = useState('signal');
+
   // ── Filters (shared between tweet list and map) ──
   const [filterCategory, setFilterCategory] = useState('');
   const [filterSearch, setFilterSearch] = useState('');
   const [filterLocation, setFilterLocation] = useState('');
   const [filterHasLocation, setFilterHasLocation] = useState(null);
+
+  // Auto-reset all filter states back to default
+  const resetFilters = useCallback(() => {
+    setActiveTab('signal');
+    setFilterCategory('');
+    setFilterSearch('');
+    setFilterLocation('');
+    setFilterHasLocation(null);
+  }, []);
+
+  const handleSelectLocation = useCallback((loc) => {
+    setFilterLocation((prev) => (prev === loc ? '' : loc));
+    setActiveTab('signal');
+  }, []);
 
   // ── Fallback mode data ──
   const [useFallback, setUseFallback] = useState(true);
@@ -71,10 +89,49 @@ export default function App() {
     [fallbackRelevant]
   );
 
+  const fallbackFilteredRelevant = useMemo(() => {
+    return fallbackRelevant.filter((t) => {
+      if (filterLocation && !(t.location_name || '').toLowerCase().includes(filterLocation.toLowerCase())) {
+        return false;
+      }
+      if (filterCategory && !matchesCategory(t.impact_category || '', filterCategory)) {
+        return false;
+      }
+      if (filterSearch.trim()) {
+        const q = filterSearch.toLowerCase();
+        const text = (t.tweet_text || '').toLowerCase();
+        const loc = (t.location_name || '').toLowerCase();
+        if (!text.includes(q) && !loc.includes(q)) return false;
+      }
+      if (filterHasLocation && (t.lat == null || t.lng == null)) {
+        return false;
+      }
+      return true;
+    });
+  }, [fallbackRelevant, filterLocation, filterCategory, filterSearch, filterHasLocation]);
+
+  const fallbackFilteredMapped = useMemo(() => {
+    return fallbackMapped.filter((t) => {
+      if (filterLocation && !(t.location_name || '').toLowerCase().includes(filterLocation.toLowerCase())) {
+        return false;
+      }
+      if (filterCategory && !matchesCategory(t.impact_category || '', filterCategory)) {
+        return false;
+      }
+      if (filterSearch.trim()) {
+        const q = filterSearch.toLowerCase();
+        const text = (t.tweet_text || '').toLowerCase();
+        const loc = (t.location_name || '').toLowerCase();
+        if (!text.includes(q) && !loc.includes(q)) return false;
+      }
+      return true;
+    });
+  }, [fallbackMapped, filterLocation, filterCategory, filterSearch]);
+
   // Build a client-side GeoJSON from fallback data for export / map
   const fallbackGeoJSON = useMemo(() => ({
     type: 'FeatureCollection',
-    features: fallbackMapped.map((t) => ({
+    features: fallbackFilteredMapped.map((t) => ({
       type: 'Feature',
       geometry: { type: 'Point', coordinates: [t.lng, t.lat] },
       properties: {
@@ -86,7 +143,7 @@ export default function App() {
         created_at: t.timestamp,
       },
     })),
-  }), [fallbackMapped]);
+  }), [fallbackFilteredMapped]);
 
   // ── Startup: check backend health ──
   useEffect(() => {
@@ -125,6 +182,7 @@ export default function App() {
 
   // ── Load a dataset by id from the backend ──
   const loadDataset = async (dsId, source = 'backend') => {
+    resetFilters();
     setIsLoading(true);
     setUseFallback(false);
     try {
@@ -193,6 +251,7 @@ export default function App() {
   // ── Handlers ──
 
   const handleLoadDataset = async () => {
+    resetFilters();
     if (!backendOnline) {
       setUseFallback(true);
       setDataSource('fallback');
@@ -224,6 +283,7 @@ export default function App() {
   };
 
   const handleUploadCSV = async (file) => {
+    resetFilters();
     if (!backendOnline) {
       showToast({ type: 'error', text: 'Backend is offline — cannot process CSV. Start the backend first.' });
       return;
@@ -300,7 +360,7 @@ export default function App() {
   // ── Determine what data to show in each section ──
 
   // Active tweets for the feed
-  const displaySignal = useFallback ? fallbackRelevant : signalTweets;
+  const displaySignal = useFallback ? fallbackFilteredRelevant : signalTweets;
   const displayNoise = useFallback ? fallbackNoise : noiseTweets;
   const displaySignalTotal = useFallback ? fallbackRelevant.length : (signalTotal || stats?.relevant || signalTweets.length);
   const displayNoiseTotal = useFallback ? fallbackNoise.length : (noiseTotal || stats?.noise || stats?.unrelated || noiseTweets.length);
@@ -429,6 +489,10 @@ export default function App() {
               byCategory={kpiByCategory}
               onRequestSummary={handleRequestSummary}
               isLoadingSummary={isLoadingSummary}
+              filterLocation={filterLocation}
+              setFilterLocation={handleSelectLocation}
+              filterCategory={filterCategory}
+              setFilterCategory={setFilterCategory}
             />
           </div>
         </div>
@@ -489,6 +553,7 @@ export default function App() {
                 geojson={displayGeoJSON}
                 showHeatmap={showHeatmap}
                 flyTo={flyTo}
+                onSelectLocation={handleSelectLocation}
               />
             </div>
           </div>
@@ -511,6 +576,8 @@ export default function App() {
               setFilterLocation={setFilterLocation}
               filterHasLocation={filterHasLocation}
               setFilterHasLocation={setFilterHasLocation}
+              activeTab={activeTab}
+              setActiveTab={setActiveTab}
             />
           </div>
         </div>

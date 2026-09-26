@@ -52,8 +52,12 @@ export default function TweetFeed({
   setFilterLocation,
   filterHasLocation,
   setFilterHasLocation,
+  activeTab: propActiveTab,
+  setActiveTab: propSetActiveTab,
 }) {
-  const [activeTab, setActiveTab] = useState('signal');
+  const [localActiveTab, setLocalActiveTab] = useState('signal');
+  const activeTab = propActiveTab !== undefined ? propActiveTab : localActiveTab;
+  const setActiveTab = propSetActiveTab !== undefined ? propSetActiveTab : setLocalActiveTab;
 
   // Unique locations for dropdown (from signal tweets)
   const locations = useMemo(() => {
@@ -327,8 +331,8 @@ function TweetRow({ tweet, onFlyTo }) {
         {text}
       </p>
 
-      {/* Location Link (underlined clickable link) */}
-      {loc?.name && (
+      {/* Location Link or No-Location Label */}
+      {loc?.name ? (
         <div className="mt-1.5 pt-1 flex items-center justify-between text-[11px]">
           {coordsAvailable ? (
             <button
@@ -337,13 +341,17 @@ function TweetRow({ tweet, onFlyTo }) {
               className="text-zinc-700 hover:text-zinc-900 font-medium underline inline-flex items-center gap-1 transition-colors cursor-pointer"
               title="Click to frame coordinates on map"
             >
-              <span>{loc.name}</span>
+              <span>📍 {loc.name}</span>
             </button>
           ) : (
             <span className="text-zinc-400 inline-flex items-center gap-1">
-              <span>{loc.name}</span>
+              <span>📍 {loc.name}</span>
             </span>
           )}
+        </div>
+      ) : (
+        <div className="mt-1.5 pt-1 flex items-center text-[11px] text-zinc-400 italic">
+          <span>No specific location mentioned · Feed only</span>
         </div>
       )}
     </div>

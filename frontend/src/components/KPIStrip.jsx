@@ -44,7 +44,10 @@ export default function KPIStrip({ total, relevant, noise, withLocation, topLoca
               {m.value}
             </span>
             {m.sub && (
-              <span className="text-[10px] text-zinc-400 font-mono tabular-nums truncate">
+              <span
+                className="text-[10px] text-zinc-400 font-mono tabular-nums leading-tight break-words"
+                title={m.label === 'Mapped Ground Points' ? `Top Hotspot: ${m.sub}` : m.sub}
+              >
                 {m.sub}
               </span>
             )}

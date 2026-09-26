@@ -10,6 +10,10 @@ export default function SummaryPanel({
   byCategory,
   onRequestSummary,
   isLoadingSummary,
+  filterLocation,
+  setFilterLocation,
+  filterCategory,
+  setFilterCategory,
 }) {
   const locationList = topLocations || [];
   const categoryEntries = Object.entries(byCategory || {}).sort((a, b) => b[1] - a[1]);
@@ -57,20 +61,35 @@ export default function SummaryPanel({
         </button>
       </div>
 
-      {/* Summary Text */}
-      <p className="text-xs text-zinc-800 leading-snug line-clamp-3 sm:line-clamp-2 font-normal">
-        {summary || 'Generating real-time emergency intelligence summary from active flood signals...'}
-      </p>
+      {/* Un-truncated Summary Text with Scrollable Area */}
+      <div className="max-h-24 overflow-y-auto pr-1">
+        <p className="text-xs text-zinc-800 leading-snug font-normal">
+          {summary || 'Generating real-time emergency intelligence summary from active flood signals...'}
+        </p>
+      </div>
 
-      {/* Compact Location & Category Tags */}
+      {/* Interactive Location & Category Pills */}
       <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 overflow-x-auto whitespace-nowrap pt-0.5">
         <span className="font-semibold text-zinc-600 shrink-0">Hotspots:</span>
         <div className="flex items-center gap-1 shrink-0">
-          {locationList.slice(0, 3).map((loc) => (
-            <span key={loc.name} className="px-1.5 py-0.2 rounded bg-zinc-100 text-zinc-700 border border-zinc-200">
-              {loc.name} <strong className="font-mono">({loc.count})</strong>
-            </span>
-          ))}
+          {locationList.slice(0, 4).map((loc) => {
+            const isSelected = filterLocation === loc.name;
+            return (
+              <button
+                key={loc.name}
+                type="button"
+                onClick={() => setFilterLocation?.(isSelected ? '' : loc.name)}
+                className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer text-[10px] border ${
+                  isSelected
+                    ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                    : 'bg-zinc-100 text-zinc-700 border-zinc-200 hover:bg-zinc-200 hover:border-zinc-300'
+                }`}
+                title={isSelected ? `Clear filter: ${loc.name}` : `Filter feed to ${loc.name}`}
+              >
+                {loc.name} <strong className="font-mono">({loc.count})</strong>
+              </button>
+            );
+          })}
           {locationList.length === 0 && <span className="text-zinc-400">None detected</span>}
         </div>
 
@@ -78,11 +97,25 @@ export default function SummaryPanel({
           <>
             <span className="text-zinc-300">|</span>
             <div className="flex items-center gap-1 shrink-0">
-              {categoryEntries.slice(0, 3).map(([cat, count]) => (
-                <span key={cat} className={`px-1.5 py-0.2 rounded font-mono ${getCategoryBadge(cat)}`}>
-                  {getCategoryDisplay(cat)} ({count})
-                </span>
-              ))}
+              {categoryEntries.slice(0, 4).map(([cat, count]) => {
+                const label = getCategoryDisplay(cat);
+                const isSelected = filterCategory === cat || filterCategory === label;
+                return (
+                  <button
+                    key={cat}
+                    type="button"
+                    onClick={() => setFilterCategory?.(isSelected ? '' : (label || cat))}
+                    className={`px-1.5 py-0.5 rounded transition-colors cursor-pointer text-[10px] border ${
+                      isSelected
+                        ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                        : `${getCategoryBadge(cat)} hover:opacity-80`
+                    }`}
+                    title={isSelected ? `Clear category filter: ${label}` : `Filter feed to ${label}`}
+                  >
+                    {label} ({count})
+                  </button>
+                );
+              })}
             </div>
           </>
         )}
