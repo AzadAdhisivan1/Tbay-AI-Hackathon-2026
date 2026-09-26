@@ -13,6 +13,10 @@ export default function SummaryPanel({
 }) {
   const locationList = topLocations || [];
   const categoryEntries = Object.entries(byCategory || {}).sort((a, b) => b[1] - a[1]);
+  const isPlaceholder =
+    !summary ||
+    summary.toLowerCase().includes('[placeholder') ||
+    summary.toLowerCase().includes('placeholder summary');
 
   return (
     <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 w-full">
@@ -29,9 +33,17 @@ export default function SummaryPanel({
                   <h3 className="text-xs font-bold text-white tracking-wide uppercase font-[Outfit]">
                     AI Situation Overview
                   </h3>
-                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
-                    Gemini Live
-                  </span>
+                  {!isPlaceholder ? (
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 font-semibold flex items-center gap-1 shadow-sm">
+                      <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse" />
+                      Gemini Live
+                    </span>
+                  ) : (
+                    <span className="text-[9px] px-2 py-0.5 rounded-full bg-amber-500/15 text-amber-300/90 border border-amber-500/30 font-medium flex items-center gap-1">
+                      <span className="w-1.5 h-1.5 rounded-full bg-amber-400/80" />
+                      Placeholder Summary
+                    </span>
+                  )}
                 </div>
                 <p className="text-[10px] text-slate-400">
                   Real-time disaster synthesis across verified signal tweets

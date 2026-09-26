@@ -56,6 +56,8 @@ function hasCoords(tweet) {
 export default function TweetFeed({
   signalTweets,
   noiseTweets,
+  signalTotal,
+  noiseTotal,
   categories,
   useFallback,
   onFlyTo,
@@ -159,7 +161,7 @@ export default function TweetFeed({
           <Signal className="w-3.5 h-3.5" />
           <span>Relevant Flood Reports</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/50 text-emerald-300 font-bold">
-            {signalTweets.length}
+            {(signalTotal != null ? signalTotal : signalTweets.length).toLocaleString()}
           </span>
         </button>
         <button
@@ -174,7 +176,7 @@ export default function TweetFeed({
           <ShieldOff className="w-3.5 h-3.5" />
           <span>Filtered Out (Noise)</span>
           <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-900/50 text-amber-300 font-bold">
-            {noiseTweets.length}
+            {(noiseTotal != null ? noiseTotal : noiseTweets.length).toLocaleString()}
           </span>
         </button>
       </div>
@@ -264,7 +266,22 @@ export default function TweetFeed({
 
         <div className="flex items-center justify-between text-[10px] text-slate-400">
           <span>
-            Showing <strong className="text-slate-200 font-semibold">{displayTweets.length}</strong> tweets
+            {(() => {
+              const currentTotal = activeTab === 'signal' ? (signalTotal ?? signalTweets.length) : (noiseTotal ?? noiseTweets.length);
+              if (displayTweets.length < currentTotal) {
+                return (
+                  <>
+                    Showing <strong className="text-slate-200 font-semibold">{displayTweets.length.toLocaleString()}</strong> of{' '}
+                    <strong className="text-slate-200 font-semibold">{currentTotal.toLocaleString()}</strong> tweets
+                  </>
+                );
+              }
+              return (
+                <>
+                  Showing <strong className="text-slate-200 font-semibold">{displayTweets.length.toLocaleString()}</strong> tweets
+                </>
+              );
+            })()}
           </span>
           {filterCategory && (
             <span className="text-indigo-400 font-medium flex items-center gap-1">

@@ -35,6 +35,8 @@ export default function App() {
   const [stats, setStats] = useState(null);
   const [signalTweets, setSignalTweets] = useState([]);
   const [noiseTweets, setNoiseTweets] = useState([]);
+  const [signalTotal, setSignalTotal] = useState(0);
+  const [noiseTotal, setNoiseTotal] = useState(0);
   const [geojson, setGeojson] = useState(null);
   const [summary, setSummary] = useState(FALLBACK_SUMMARY);
   const [categories, setCategories] = useState([]);
@@ -133,8 +135,10 @@ export default function App() {
         fetchGeoJSON(dsId),
       ]);
       setStats(st);
-      setSignalTweets(signalRes.tweets);
-      setNoiseTweets(noiseRes.tweets);
+      setSignalTweets(signalRes.tweets || []);
+      setNoiseTweets(noiseRes.tweets || []);
+      setSignalTotal(signalRes.total ?? st.relevant ?? (signalRes.tweets || []).length);
+      setNoiseTotal(noiseRes.total ?? st.noise ?? st.unrelated ?? (noiseRes.tweets || []).length);
       setGeojson(gj);
       setDatasetId(dsId);
       setDataSource(source);
@@ -175,7 +179,8 @@ export default function App() {
           fetchGeoJSON(datasetId, params),
         ]);
         if (cancelled) return;
-        setSignalTweets(signalRes.tweets);
+        setSignalTweets(signalRes.tweets || []);
+        setSignalTotal(signalRes.total ?? (signalRes.tweets || []).length);
         setGeojson(gj);
       } catch { /* best-effort */ }
     };
@@ -297,6 +302,8 @@ export default function App() {
   // Active tweets for the feed
   const displaySignal = useFallback ? fallbackRelevant : signalTweets;
   const displayNoise = useFallback ? fallbackNoise : noiseTweets;
+  const displaySignalTotal = useFallback ? fallbackRelevant.length : (signalTotal || stats?.relevant || signalTweets.length);
+  const displayNoiseTotal = useFallback ? fallbackNoise.length : (noiseTotal || stats?.noise || stats?.unrelated || noiseTweets.length);
   const displayGeoJSON = useFallback ? fallbackGeoJSON : geojson;
 
   // KPI values
@@ -486,6 +493,8 @@ export default function App() {
             <TweetFeed
               signalTweets={displaySignal}
               noiseTweets={displayNoise}
+              signalTotal={displaySignalTotal}
+              noiseTotal={displayNoiseTotal}
               categories={categories}
               useFallback={useFallback}
               onFlyTo={handleFlyTo}

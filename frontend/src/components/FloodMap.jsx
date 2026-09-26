@@ -1,4 +1,5 @@
 import React, { useState, useMemo, useEffect } from 'react';
+import L from 'leaflet';
 import {
   MapContainer,
   TileLayer,
@@ -16,6 +17,24 @@ function FlyToHandler({ flyTo }) {
       map.flyTo([flyTo.lat, flyTo.lng], 11, { duration: 1.2 });
     }
   }, [flyTo, map]);
+  return null;
+}
+
+/** Auto-fit bounds whenever a new dataset or GeoJSON loads */
+function FitBoundsToData({ geojson }) {
+  const map = useMap();
+  useEffect(() => {
+    if (!geojson?.features || geojson.features.length === 0) return;
+    try {
+      const geoLayer = L.geoJSON(geojson);
+      const bounds = geoLayer.getBounds();
+      if (bounds && bounds.isValid()) {
+        map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+      }
+    } catch (err) {
+      console.warn('Could not fit bounds to geojson:', err);
+    }
+  }, [geojson, map]);
   return null;
 }
 
@@ -60,20 +79,9 @@ export default function FloodMap({
   const [mapStyle, setMapStyle] = useState('dark');
   const features = geojson?.features || [];
 
-  // Compute map center of all features
-  const center = useMemo(() => {
-    if (features.length === 0) return [52.0, -88.0]; // Default: Northern Ontario & James Bay
-    let sumLat = 0, sumLng = 0;
-    features.forEach((f) => {
-      sumLng += f.geometry.coordinates[0];
-      sumLat += f.geometry.coordinates[1];
-    });
-    return [sumLat / features.length, sumLng / features.length];
-  }, [features]);
-
   // Jitter/offset markers that share identical or nearby coordinates (e.g. Kashechewan) by ±0.008 deg
   const displayMarkers = useMemo(() => {
-    // 1. Group features within ~0.012 deg of each other
+    // 1. Group features within ~0.015 deg of each other
     const clusters = [];
     features.forEach((feature, idx) => {
       const [rawLng, rawLat] = feature.geometry.coordinates;
@@ -122,7 +130,7 @@ export default function FloodMap({
   const heatmapData = useMemo(() => {
     const places = {};
     features.forEach((f) => {
-      const place = f.properties.place || f.properties.location_name || 'Northern Ontario';
+      const place = f.properties.place || f.properties.location_name || 'Location Hotspot';
       const [lng, lat] = f.geometry.coordinates;
       if (!places[place]) {
         places[place] = { lat, lng, count: 0 };
@@ -156,8 +164,9 @@ export default function FloodMap({
       </div>
 
       <MapContainer
-        center={center}
-        zoom={6}
+        center={[51.05, -114.07]}
+        zoom={10}
+        preferCanvas={true}
         className={`w-full h-full map-style-${mapStyle}`}
         scrollWheelZoom={true}
         zoomControl={true}
@@ -169,6 +178,7 @@ export default function FloodMap({
           maxZoom={currentTileConfig.maxZoom}
         />
         <FlyToHandler flyTo={flyTo} />
+        <FitBoundsToData geojson={geojson} />
 
         {/* Heatmap / Concentration Circles */}
         {showHeatmap &&
@@ -187,7 +197,7 @@ export default function FloodMap({
             />
           ))}
 
-        {/* Individual Feature Markers with ±0.008° Jitter */}
+        {/* Individual Feature Markers with ±0.008° Jitter and Canvas rendering */}
         {displayMarkers.map(({ id, lat, lng, feature }) => {
           const p = feature.properties || {};
           const colors = getMarkerColor(p.category);
