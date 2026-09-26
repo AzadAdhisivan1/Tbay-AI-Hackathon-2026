@@ -542,14 +542,6 @@ export default function App() {
               </span>
             )}
           </span>
-          <span className="flex items-center gap-1.5">
-            <span
-              className={`w-2 h-2 rounded-full ${
-                backendOnline ? 'bg-emerald-600' : backendOnline === false ? 'bg-red-600' : 'bg-amber-500'
-              }`}
-            />
-            <span>{backendOnline ? 'API Connected' : backendOnline === false ? 'API Offline (Demo Mode)' : 'Connecting...'}</span>
-          </span>
         </div>
 
         {/* Combined Horizontal Intelligence & KPI Strip */}
@@ -650,6 +642,7 @@ export default function App() {
                 flyTo={flyTo}
                 onSelectLocation={handleSelectLocation}
                 stats={stats}
+                datasetId={datasetId}
               />
             </div>
           </div>
