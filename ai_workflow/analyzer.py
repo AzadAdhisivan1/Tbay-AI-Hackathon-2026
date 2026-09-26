@@ -14,10 +14,10 @@ Supports both LLM API mode (Gemini / OpenAI) and high-accuracy offline NLP Rule 
 import os
 import re
 import json
-import logging
-from typing import Dict, Any, List, Optional
-from prompt_template import SYSTEM_PROMPT, format_tweet_prompt
-from geocoder import resolve_locations
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -220,7 +220,11 @@ def analyze_tweet_llm(tweet_text: str) -> Optional[Dict[str, Any]]:
     """
     Evaluates tweet using Gemini or OpenAI API if keys are available in environment.
     """
-    gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    gemini_key = (
+        os.environ.get("GEMINI_API_KEY") or
+        os.environ.get("GOOGLE_API_KEY") or
+        os.environ.get("HACKATHON_API_KEY")
+    )
     openai_key = os.environ.get("OPENAI_API_KEY")
     
     prompt = format_tweet_prompt(tweet_text)
