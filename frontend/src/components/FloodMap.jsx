@@ -6,7 +6,6 @@ import {
   Popup,
   useMap,
 } from 'react-leaflet';
-import { MapPin, Clock, Tag, AlertTriangle } from 'lucide-react';
 
 /** Fly the map to given coords */
 function FlyToHandler({ flyTo }) {
@@ -19,59 +18,68 @@ function FlyToHandler({ flyTo }) {
   return null;
 }
 
-/** Get marker color based on impact category */
+/**
+ * Get marker color based on backend category string.
+ * Categories: infrastructure_damage, evacuation, rescue_help,
+ *             donations_volunteering, weather_water_levels,
+ *             sympathy_support, other_related
+ * Fallback categories (from demo): Elder / Home Water, Submerged Road / Bridge, Rising Water / Evacuation
+ */
 function getMarkerColor(category) {
   if (!category) return { fill: '#3b82f6', stroke: '#1d4ed8' }; // blue
   const cat = category.toLowerCase();
-  if (cat.includes('elder') || cat.includes('home'))
+  if (cat.includes('rescue') || cat.includes('elder') || cat.includes('home'))
     return { fill: '#ef4444', stroke: '#b91c1c' }; // red
-  if (cat.includes('road') || cat.includes('bridge') || cat.includes('infrastructure'))
+  if (cat.includes('infrastructure') || cat.includes('road') || cat.includes('bridge'))
     return { fill: '#f97316', stroke: '#c2410c' }; // orange
-  return { fill: '#3b82f6', stroke: '#1d4ed8' }; // blue
+  if (cat.includes('evacuation'))
+    return { fill: '#f59e0b', stroke: '#b45309' }; // amber
+  if (cat.includes('weather') || cat.includes('water') || cat.includes('rising'))
+    return { fill: '#3b82f6', stroke: '#1d4ed8' }; // blue
+  if (cat.includes('donation') || cat.includes('volunteer'))
+    return { fill: '#10b981', stroke: '#047857' }; // emerald
+  return { fill: '#8b5cf6', stroke: '#6d28d9' }; // violet for sympathy/other
 }
 
-/** Get urgency label color */
-function getUrgencyBadge(urgency) {
-  if (urgency === 'high')
+function getUrgencyBadge(confidence) {
+  if (confidence >= 0.8)
     return 'bg-rose-500/20 text-rose-300 ring-rose-500/30';
-  if (urgency === 'medium')
+  if (confidence >= 0.5)
     return 'bg-amber-500/20 text-amber-300 ring-amber-500/30';
   return 'bg-blue-500/20 text-blue-300 ring-blue-500/30';
 }
 
 export default function FloodMap({
-  tweets,
+  geojson,
   showHeatmap,
   flyTo,
 }) {
-  // Only tweets with coords
-  const mappedTweets = useMemo(
-    () => tweets.filter((t) => t.lat != null && t.lng != null),
-    [tweets]
-  );
+  const features = geojson?.features || [];
 
-  // Compute center of all mapped tweets
+  // Compute center of all features
   const center = useMemo(() => {
-    if (mappedTweets.length === 0) return [53.0, -85.0]; // Default: Northern Ontario
-    const avgLat =
-      mappedTweets.reduce((s, t) => s + t.lat, 0) / mappedTweets.length;
-    const avgLng =
-      mappedTweets.reduce((s, t) => s + t.lng, 0) / mappedTweets.length;
-    return [avgLat, avgLng];
-  }, [mappedTweets]);
+    if (features.length === 0) return [53.0, -85.0]; // Default: Northern Ontario
+    let sumLat = 0, sumLng = 0;
+    features.forEach((f) => {
+      sumLng += f.geometry.coordinates[0];
+      sumLat += f.geometry.coordinates[1];
+    });
+    return [sumLat / features.length, sumLng / features.length];
+  }, [features]);
 
   // Cluster locations for heatmap circles
   const clusterData = useMemo(() => {
     const clusters = {};
-    mappedTweets.forEach((t) => {
-      const key = t.location_name || `${t.lat.toFixed(2)},${t.lng.toFixed(2)}`;
-      if (!clusters[key]) {
-        clusters[key] = { lat: t.lat, lng: t.lng, count: 0 };
+    features.forEach((f) => {
+      const place = f.properties.place || f.properties.location_name || 'unknown';
+      const [lng, lat] = f.geometry.coordinates;
+      if (!clusters[place]) {
+        clusters[place] = { lat, lng, count: 0 };
       }
-      clusters[key].count += 1;
+      clusters[place].count += 1;
     });
     return Object.values(clusters);
-  }, [mappedTweets]);
+  }, [features]);
 
   return (
     <div className="w-full h-full rounded-xl overflow-hidden ring-1 ring-slate-800/60">
@@ -105,13 +113,15 @@ export default function FloodMap({
             />
           ))}
 
-        {/* Individual tweet markers */}
-        {mappedTweets.map((tweet) => {
-          const colors = getMarkerColor(tweet.impact_category);
+        {/* Individual feature markers */}
+        {features.map((feature, idx) => {
+          const [lng, lat] = feature.geometry.coordinates;
+          const p = feature.properties;
+          const colors = getMarkerColor(p.category);
           return (
             <CircleMarker
-              key={tweet.id}
-              center={[tweet.lat, tweet.lng]}
+              key={p.tweet_id ?? idx}
+              center={[lat, lng]}
               radius={7}
               pathOptions={{
                 fillColor: colors.fill,
@@ -130,36 +140,36 @@ export default function FloodMap({
                       style={{ backgroundColor: colors.fill }}
                     />
                     <span className="font-semibold text-sm text-white">
-                      {tweet.location_name || 'Unknown Location'}
+                      {p.place || p.location_name || 'Unknown Location'}
                     </span>
                   </div>
 
                   {/* Badges */}
                   <div className="flex flex-wrap gap-1.5">
-                    {tweet.impact_category && (
+                    {p.category && (
                       <span className="text-[10px] px-1.5 py-0.5 rounded bg-slate-700/60 text-slate-300">
-                        {tweet.impact_category}
+                        {p.category.replace(/_/g, ' ')}
                       </span>
                     )}
-                    {tweet.urgency && (
+                    {p.confidence != null && (
                       <span
-                        className={`text-[10px] px-1.5 py-0.5 rounded ring-1 ${getUrgencyBadge(tweet.urgency)}`}
+                        className={`text-[10px] px-1.5 py-0.5 rounded ring-1 ${getUrgencyBadge(p.confidence)}`}
                       >
-                        {tweet.urgency.toUpperCase()}
+                        {(p.confidence * 100).toFixed(0)}% conf
                       </span>
                     )}
                   </div>
 
                   {/* Timestamp */}
-                  {tweet.timestamp && (
+                  {p.created_at && (
                     <p className="text-[10px] text-slate-400">
-                      {new Date(tweet.timestamp).toLocaleString()}
+                      {new Date(p.created_at).toLocaleString()}
                     </p>
                   )}
 
                   {/* Tweet text */}
                   <p className="text-xs text-slate-200 leading-relaxed border-t border-slate-700/50 pt-2">
-                    {tweet.tweet_text}
+                    {p.text || p.tweet_text || ''}
                   </p>
                 </div>
               </Popup>

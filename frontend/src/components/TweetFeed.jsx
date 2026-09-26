@@ -11,106 +11,148 @@ import {
   ChevronDown,
 } from 'lucide-react';
 
-const IMPACT_CATEGORIES = [
-  'All',
-  'Elder / Home Water',
-  'Submerged Road / Bridge',
-  'Rising Water / Evacuation',
-];
+/** Nice display labels for backend category keys */
+const CATEGORY_LABELS = {
+  infrastructure_damage: 'Infrastructure',
+  evacuation: 'Evacuation',
+  rescue_help: 'Rescue / Help',
+  donations_volunteering: 'Donations',
+  weather_water_levels: 'Weather / Water',
+  sympathy_support: 'Sympathy',
+  other_related: 'Other',
+};
 
-/** Map raw category to display pill */
-function matchCategory(tweetCat, filterCat) {
-  if (filterCat === 'All') return true;
-  if (!tweetCat) return false;
-  const tc = tweetCat.toLowerCase();
-  const fc = filterCat.toLowerCase();
-  if (fc.includes('elder') && (tc.includes('elder') || tc.includes('home'))) return true;
-  if (fc.includes('road') && (tc.includes('road') || tc.includes('bridge') || tc.includes('infrastructure')))
-    return true;
-  if (fc.includes('rising') && (tc.includes('rising') || tc.includes('evacuation') || tc.includes('general')))
-    return true;
-  return false;
+function categoryLabel(key) {
+  if (!key) return 'Unknown';
+  return CATEGORY_LABELS[key] || key.replace(/_/g, ' ');
 }
 
 function getCategoryColor(category) {
   if (!category) return 'bg-slate-700/40 text-slate-400';
   const cat = category.toLowerCase();
-  if (cat.includes('elder') || cat.includes('home'))
+  if (cat.includes('rescue') || cat.includes('elder') || cat.includes('home'))
     return 'bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30';
-  if (cat.includes('road') || cat.includes('bridge'))
+  if (cat.includes('infrastructure') || cat.includes('road') || cat.includes('bridge'))
     return 'bg-orange-500/15 text-orange-300 ring-1 ring-orange-500/30';
-  return 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30';
-}
-
-function getUrgencyColor(urgency) {
-  if (urgency === 'high') return 'bg-rose-500/15 text-rose-300';
-  if (urgency === 'medium') return 'bg-amber-500/15 text-amber-300';
+  if (cat.includes('evacuation'))
+    return 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30';
+  if (cat.includes('weather') || cat.includes('water') || cat.includes('rising'))
+    return 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30';
+  if (cat.includes('donation') || cat.includes('volunteer'))
+    return 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30';
   return 'bg-slate-700/40 text-slate-400';
 }
 
+function getConfidenceColor(confidence) {
+  if (confidence >= 0.8) return 'bg-emerald-500/15 text-emerald-300';
+  if (confidence >= 0.5) return 'bg-amber-500/15 text-amber-300';
+  return 'bg-slate-700/40 text-slate-400';
+}
+
+/**
+ * Extract the first location with coords from a tweet.
+ * Backend shape: tweet.locations = [{name, lat, lon}]
+ * Fallback shape: tweet.lat, tweet.lng, tweet.location_name
+ */
+function getFirstLocation(tweet) {
+  if (tweet.locations?.length > 0) {
+    const loc = tweet.locations[0];
+    if (loc.lat != null && loc.lon != null) {
+      return { name: loc.name, lat: loc.lat, lng: loc.lon };
+    }
+    return { name: loc.name, lat: null, lng: null };
+  }
+  // Fallback shape
+  if (tweet.location_name) {
+    return { name: tweet.location_name, lat: tweet.lat ?? null, lng: tweet.lng ?? null };
+  }
+  return null;
+}
+
+function getLocationName(tweet) {
+  const loc = getFirstLocation(tweet);
+  return loc?.name || null;
+}
+
+function hasCoords(tweet) {
+  const loc = getFirstLocation(tweet);
+  return loc?.lat != null && loc?.lng != null;
+}
+
 export default function TweetFeed({
-  allTweets,
+  signalTweets,
+  noiseTweets,
+  categories,
+  useFallback,
   onFlyTo,
+  // Lifted filter state (so App.jsx can refetch from backend)
+  filterCategory,
+  setFilterCategory,
+  filterSearch,
+  setFilterSearch,
+  filterLocation,
+  setFilterLocation,
+  filterHasLocation,
+  setFilterHasLocation,
 }) {
   const [activeTab, setActiveTab] = useState('signal');
-  const [searchQuery, setSearchQuery] = useState('');
-  const [selectedCategory, setSelectedCategory] = useState('All');
-  const [selectedLocation, setSelectedLocation] = useState('All');
-  const [mappedOnly, setMappedOnly] = useState(false);
 
-  // Split signal vs noise
-  const signalTweets = useMemo(
-    () => allTweets.filter((t) => t.is_relevant),
-    [allTweets]
-  );
-  const noiseTweets = useMemo(
-    () => allTweets.filter((t) => !t.is_relevant),
-    [allTweets]
-  );
-
-  // Unique locations for dropdown
+  // Unique locations for dropdown (from signal tweets)
   const locations = useMemo(() => {
     const locs = new Set();
     signalTweets.forEach((t) => {
-      if (t.location_name) locs.add(t.location_name);
+      const name = getLocationName(t);
+      if (name) locs.add(name);
     });
-    return ['All', ...Array.from(locs).sort()];
+    return ['', ...Array.from(locs).sort()];
   }, [signalTweets]);
 
-  // Active set for filtering
+  // Active set
   const baseTweets = activeTab === 'signal' ? signalTweets : noiseTweets;
 
-  // Apply filters
-  const filteredTweets = useMemo(() => {
+  // Client-side filtering for fallback mode or noise tab
+  const displayTweets = useMemo(() => {
+    // If in backend mode and on signal tab, tweets are already server-filtered
+    if (!useFallback && activeTab === 'signal') return baseTweets;
+
+    // Client-side filtering for fallback mode or noise tab
     let result = baseTweets;
-
-    // Search filter
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase();
-      result = result.filter(
-        (t) =>
-          t.tweet_text?.toLowerCase().includes(q) ||
-          t.location_name?.toLowerCase().includes(q)
-      );
+    if (filterSearch.trim()) {
+      const q = filterSearch.toLowerCase();
+      result = result.filter((t) => {
+        const text = (t.text || t.tweet_text || '').toLowerCase();
+        const loc = getLocationName(t)?.toLowerCase() || '';
+        return text.includes(q) || loc.includes(q);
+      });
     }
-
-    // Category filter (only for signal tab)
-    if (activeTab === 'signal' && selectedCategory !== 'All') {
-      result = result.filter((t) => matchCategory(t.impact_category, selectedCategory));
+    if (filterCategory && activeTab === 'signal') {
+      result = result.filter((t) => {
+        const cat = t.category || t.impact_category || '';
+        return cat === filterCategory;
+      });
     }
-
-    // Location filter
-    if (selectedLocation !== 'All') {
-      result = result.filter((t) => t.location_name === selectedLocation);
+    if (filterLocation) {
+      result = result.filter((t) => {
+        const name = getLocationName(t) || '';
+        return name.toLowerCase().includes(filterLocation.toLowerCase());
+      });
     }
-
-    // Mapped only
-    if (mappedOnly) {
-      result = result.filter((t) => t.lat != null && t.lng != null);
+    if (filterHasLocation) {
+      result = result.filter(hasCoords);
     }
-
     return result;
-  }, [baseTweets, searchQuery, selectedCategory, selectedLocation, mappedOnly, activeTab]);
+  }, [baseTweets, filterSearch, filterCategory, filterLocation, filterHasLocation, useFallback, activeTab]);
+
+  // Build category pills from backend categories or fallback
+  const categoryPills = useMemo(() => {
+    if (categories && categories.length > 0) return categories;
+    // Fallback categories
+    return [
+      'Elder / Home Water',
+      'Submerged Road / Bridge',
+      'Rising Water / Evacuation',
+    ];
+  }, [categories]);
 
   return (
     <div className="flex flex-col h-full glass-card rounded-xl overflow-hidden">
@@ -157,8 +199,8 @@ export default function TweetFeed({
             id="input-search"
             type="text"
             placeholder="Search by tweet text or location..."
-            value={searchQuery}
-            onChange={(e) => setSearchQuery(e.target.value)}
+            value={filterSearch}
+            onChange={(e) => setFilterSearch(e.target.value)}
             className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all"
           />
         </div>
@@ -166,17 +208,27 @@ export default function TweetFeed({
         {/* Category pills — only show for signal tab */}
         {activeTab === 'signal' && (
           <div className="flex flex-wrap gap-1.5">
-            {IMPACT_CATEGORIES.map((cat) => (
+            <button
+              onClick={() => setFilterCategory('')}
+              className={`text-[10px] px-2.5 py-1 rounded-full font-medium transition-all ${
+                filterCategory === ''
+                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
+                  : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 hover:text-slate-300'
+              }`}
+            >
+              All
+            </button>
+            {categoryPills.map((cat) => (
               <button
                 key={cat}
-                onClick={() => setSelectedCategory(cat)}
+                onClick={() => setFilterCategory(filterCategory === cat ? '' : cat)}
                 className={`text-[10px] px-2.5 py-1 rounded-full font-medium transition-all ${
-                  selectedCategory === cat
+                  filterCategory === cat
                     ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
                     : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 hover:text-slate-300'
                 }`}
               >
-                {cat}
+                {categoryLabel(cat)}
               </button>
             ))}
           </div>
@@ -187,13 +239,13 @@ export default function TweetFeed({
           <div className="relative flex-1">
             <select
               id="select-location"
-              value={selectedLocation}
-              onChange={(e) => setSelectedLocation(e.target.value)}
+              value={filterLocation}
+              onChange={(e) => setFilterLocation(e.target.value)}
               className="w-full appearance-none pl-3 pr-8 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px] text-slate-200 focus:outline-none focus:border-indigo-500/50 transition-all"
             >
               {locations.map((loc) => (
                 <option key={loc} value={loc}>
-                  {loc === 'All' ? 'All Locations' : loc}
+                  {loc === '' ? 'All Locations' : loc}
                 </option>
               ))}
             </select>
@@ -202,10 +254,12 @@ export default function TweetFeed({
 
           <label className="flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer select-none whitespace-nowrap">
             <button
-              onClick={() => setMappedOnly(!mappedOnly)}
+              onClick={() =>
+                setFilterHasLocation(filterHasLocation ? null : true)
+              }
               className="text-slate-400 hover:text-indigo-400 transition-colors"
             >
-              {mappedOnly ? (
+              {filterHasLocation ? (
                 <CheckSquare className="w-3.5 h-3.5 text-indigo-400" />
               ) : (
                 <Square className="w-3.5 h-3.5" />
@@ -216,20 +270,20 @@ export default function TweetFeed({
         </div>
 
         <p className="text-[10px] text-slate-500">
-          Showing {filteredTweets.length} of {baseTweets.length} tweets
+          Showing {displayTweets.length} tweets
         </p>
       </div>
 
       {/* Tweet List */}
       <div className="flex-1 overflow-y-auto p-2 space-y-2">
-        {filteredTweets.length === 0 && (
+        {displayTweets.length === 0 && (
           <div className="flex flex-col items-center justify-center py-12 text-slate-500">
             <Search className="w-8 h-8 mb-2 opacity-40" />
             <p className="text-xs">No tweets match your filters.</p>
           </div>
         )}
 
-        {filteredTweets.map((tweet) => (
+        {displayTweets.map((tweet) => (
           <TweetCard key={tweet.id} tweet={tweet} onFlyTo={onFlyTo} />
         ))}
       </div>
@@ -238,7 +292,13 @@ export default function TweetFeed({
 }
 
 function TweetCard({ tweet, onFlyTo }) {
-  const hasCoords = tweet.lat != null && tweet.lng != null;
+  const loc = getFirstLocation(tweet);
+  const coordsAvailable = loc?.lat != null && loc?.lng != null;
+  const text = tweet.text || tweet.tweet_text || '';
+  const category = tweet.category || tweet.impact_category || null;
+  const confidence = tweet.confidence ?? null;
+  const isRelevant = tweet.relevant ?? tweet.is_relevant ?? false;
+  const timestamp = tweet.created_at || tweet.timestamp || null;
 
   return (
     <div className="tweet-card p-3 rounded-lg bg-slate-900/40 border border-slate-800/60 space-y-2 animate-fade-in">
@@ -247,56 +307,56 @@ function TweetCard({ tweet, onFlyTo }) {
         {/* Relevance badge */}
         <span
           className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
-            tweet.is_relevant
+            isRelevant
               ? 'bg-emerald-500/15 text-emerald-400'
               : 'bg-slate-700/40 text-slate-500'
           }`}
         >
-          {tweet.is_relevant ? 'RELEVANT' : 'NOISE'}
+          {isRelevant ? 'RELEVANT' : 'NOISE'}
         </span>
 
         {/* Category badge */}
-        {tweet.impact_category && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${getCategoryColor(tweet.impact_category)}`}>
-            {tweet.impact_category}
+        {category && (
+          <span className={`text-[10px] px-1.5 py-0.5 rounded ${getCategoryColor(category)}`}>
+            {categoryLabel(category)}
           </span>
         )}
 
-        {/* Urgency */}
-        {tweet.urgency && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${getUrgencyColor(tweet.urgency)}`}>
-            {tweet.urgency.toUpperCase()}
+        {/* Confidence */}
+        {confidence != null && (
+          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${getConfidenceColor(confidence)}`}>
+            {(confidence * 100).toFixed(0)}%
           </span>
         )}
       </div>
 
       {/* Tweet text */}
-      <p className="text-xs text-slate-300 leading-relaxed">{tweet.tweet_text}</p>
+      <p className="text-xs text-slate-300 leading-relaxed">{text}</p>
 
       {/* Footer: location + timestamp */}
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-2 flex-wrap">
-          {tweet.location_name && hasCoords && (
+          {loc?.name && coordsAvailable && (
             <button
-              onClick={() => onFlyTo({ lat: tweet.lat, lng: tweet.lng })}
+              onClick={() => onFlyTo({ lat: loc.lat, lng: loc.lng })}
               className="flex items-center gap-1 text-[10px] text-blue-400 hover:text-blue-300 transition-colors group"
             >
               <Navigation className="w-3 h-3 group-hover:scale-110 transition-transform" />
-              {tweet.location_name}
+              {loc.name}
             </button>
           )}
-          {tweet.location_name && !hasCoords && (
+          {loc?.name && !coordsAvailable && (
             <span className="flex items-center gap-1 text-[10px] text-slate-500">
               <MapPin className="w-3 h-3" />
-              {tweet.location_name}
+              {loc.name}
             </span>
           )}
         </div>
 
-        {tweet.timestamp && (
+        {timestamp && (
           <span className="flex items-center gap-1 text-[10px] text-slate-500 shrink-0">
             <Clock className="w-3 h-3" />
-            {new Date(tweet.timestamp).toLocaleTimeString([], {
+            {new Date(timestamp).toLocaleTimeString([], {
               hour: '2-digit',
               minute: '2-digit',
             })}

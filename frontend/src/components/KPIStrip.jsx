@@ -6,30 +6,16 @@ import {
   MapPin,
 } from 'lucide-react';
 
-export default function KPIStrip({ tweets, relevantTweets, mappedTweets }) {
-  const totalCount = tweets.length;
-  const relevantCount = relevantTweets.length;
-  const noiseCount = totalCount - relevantCount;
-  const mappedCount = mappedTweets.length;
-
-  const relevantPct = totalCount > 0 ? ((relevantCount / totalCount) * 100).toFixed(1) : '0.0';
-  const noisePct = totalCount > 0 ? ((noiseCount / totalCount) * 100).toFixed(1) : '0.0';
-
-  // Find the most common location among mapped tweets
-  const locationCounts = {};
-  mappedTweets.forEach((t) => {
-    if (t.location_name) {
-      locationCounts[t.location_name] = (locationCounts[t.location_name] || 0) + 1;
-    }
-  });
-  const hotspotLocation =
-    Object.entries(locationCounts).sort((a, b) => b[1] - a[1])[0]?.[0] || '—';
+export default function KPIStrip({ total, relevant, noise, withLocation, topLocations }) {
+  const relevantPct = total > 0 ? ((relevant / total) * 100).toFixed(1) : '0.0';
+  const noisePct = total > 0 ? ((noise / total) * 100).toFixed(1) : '0.0';
+  const hotspotLocation = topLocations?.[0]?.name || '—';
 
   const cards = [
     {
       icon: BarChart3,
       label: 'Total Tweets Processed',
-      value: totalCount,
+      value: total,
       sub: null,
       color: 'text-slate-300',
       bg: 'bg-slate-800/60',
@@ -40,7 +26,7 @@ export default function KPIStrip({ tweets, relevantTweets, mappedTweets }) {
     {
       icon: Signal,
       label: 'Relevant Flood Signal',
-      value: relevantCount,
+      value: relevant,
       sub: `${relevantPct}% of total`,
       color: 'text-emerald-400',
       bg: 'bg-emerald-950/30',
@@ -51,7 +37,7 @@ export default function KPIStrip({ tweets, relevantTweets, mappedTweets }) {
     {
       icon: ShieldOff,
       label: 'Noise Filtered Out',
-      value: noiseCount,
+      value: noise,
       sub: `${noisePct}% removed`,
       color: 'text-amber-400',
       bg: 'bg-amber-950/20',
@@ -62,7 +48,7 @@ export default function KPIStrip({ tweets, relevantTweets, mappedTweets }) {
     {
       icon: MapPin,
       label: 'Plotted Ground Locations',
-      value: mappedCount,
+      value: withLocation,
       sub: hotspotLocation,
       color: 'text-blue-400',
       bg: 'bg-blue-950/20',
@@ -88,7 +74,7 @@ export default function KPIStrip({ tweets, relevantTweets, mappedTweets }) {
             </span>
           </div>
           <div className={`text-2xl font-bold ${card.color} font-[Outfit]`}>
-            {card.value.toLocaleString()}
+            {(card.value ?? 0).toLocaleString()}
           </div>
           {card.sub && (
             <p className="text-[11px] text-slate-500 mt-0.5 truncate">{card.sub}</p>
