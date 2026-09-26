@@ -9,10 +9,21 @@ DATA_DIR = BACKEND_DIR / "data"
 DATASETS_DIR = DATA_DIR / "datasets"
 DATASETS_DIR.mkdir(parents=True, exist_ok=True)
 
-SAMPLE_CSV = BACKEND_DIR.parent / "CE Strategies" / "main_contestant.csv"
-SAMPLE_DATASET_ID = "sample"
-# Precomputed sample (committed) so deployed servers don't reprocess on every cold start.
-SAMPLE_SEED = DATA_DIR / "sample_seed.json"
+CHALLENGE_DIR = BACKEND_DIR.parent / "CE Strategies"
+SEEDS_DIR = DATA_DIR / "seeds"
+SEEDS_DIR.mkdir(parents=True, exist_ok=True)
+
+# Datasets that ship with the app. Each is processed once and saved as a gzipped "seed"
+# (committed) so deployed servers load it instantly instead of reprocessing.
+BUILTIN_DATASETS = [
+    {"id": "sample", "name": "Alberta Floods 2013 (main challenge)", "scope": "regional",
+     "csv": CHALLENGE_DIR / "main_contestant.csv", "seed": SEEDS_DIR / "sample.json.gz"},
+    {"id": "bonus", "name": "World Disasters (bonus challenge)", "scope": "world", "default": True,
+     "csv": CHALLENGE_DIR / "bonus_contestant.csv", "seed": SEEDS_DIR / "bonus.json.gz"},
+]
+BUILTIN_IDS = {d["id"] for d in BUILTIN_DATASETS}
+# The dataset the UI should open first (GET /api/datasets -> "default_id").
+DEFAULT_DATASET_ID = next((d["id"] for d in BUILTIN_DATASETS if d.get("default")), BUILTIN_DATASETS[0]["id"])
 
 AI_WORKFLOW_DIR = BACKEND_DIR.parent / "ai_workflow"
 
@@ -31,6 +42,10 @@ BATCH_SIZE = int(os.getenv("BATCH_SIZE", "50"))
 AI_CONCURRENCY = int(os.getenv("AI_CONCURRENCY", "4"))
 # Max new Nominatim lookups per dataset (~1/s). Cached names don't count.
 GEOCODE_MAX_LOOKUPS = int(os.getenv("GEOCODE_MAX_LOOKUPS", "250"))
+# Same, when building a built-in dataset's seed (run once locally; results are cached).
+BUILTIN_GEOCODE_MAX_LOOKUPS = int(os.getenv("BUILTIN_GEOCODE_MAX_LOOKUPS", "1500"))
+# Top place names looked up worldwide to decide if an upload is "regional" or "world".
+SCOPE_PROBE_NAMES = int(os.getenv("SCOPE_PROBE_NAMES", "15"))
 MAX_UPLOAD_MB = int(os.getenv("MAX_UPLOAD_MB", "25"))
 MAX_SUMMARY_TWEETS = int(os.getenv("MAX_SUMMARY_TWEETS", "300"))
 
@@ -50,6 +65,8 @@ LLM_CONCURRENCY = int(os.getenv("LLM_CONCURRENCY", "2"))
 LLM_MAX_CONSECUTIVE_FAILURES = int(os.getenv("LLM_MAX_CONSECUTIVE_FAILURES", "3"))
 # Max LLM requests per uploaded dataset (x BATCH_SIZE tweets); the rest use the rule engine.
 LLM_MAX_REQUESTS_PER_DATASET = int(os.getenv("LLM_MAX_REQUESTS_PER_DATASET", "170"))
-# Only when explicitly set does (re)processing the provided sample use the LLM — so a
-# deployed server never spends quota on it. Set it locally when regenerating sample_seed.json.
-SAMPLE_USE_LLM = os.getenv("SAMPLE_USE_LLM", "0") in ("1", "true", "yes")
+# Only when explicitly set does (re)processing a built-in dataset use the LLM, so a
+# deployed server never spends quota on them. Set it locally when regenerating seeds.
+BUILTIN_USE_LLM = (os.getenv("BUILTIN_USE_LLM") or os.getenv("SAMPLE_USE_LLM") or "0") in ("1", "true", "yes")
+# LLM request cap per built-in dataset when regenerating seeds (bonus needs ~255).
+BUILTIN_LLM_MAX_REQUESTS = int(os.getenv("BUILTIN_LLM_MAX_REQUESTS", "400"))

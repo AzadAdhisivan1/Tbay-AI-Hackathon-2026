@@ -17,8 +17,8 @@ from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import ai, pipeline, store
-from .config import (ALLOWED_ORIGINS, FRONTEND_DIST, MAX_SUMMARY_TWEETS, MAX_UPLOAD_MB,
-                     SAMPLE_CSV, SAMPLE_DATASET_ID)
+from .config import (ALLOWED_ORIGINS, DEFAULT_DATASET_ID, FRONTEND_DIST, MAX_SUMMARY_TWEETS,
+                     MAX_UPLOAD_MB)
 from .csv_loader import CSVError, parse_tweets_csv
 
 logging.basicConfig(level=logging.INFO)
@@ -37,14 +37,7 @@ SEVERITY_ORDER = {"critical": 0, "high": 1, "medium": 2, "low": 3}
 @app.on_event("startup")
 def startup():
     store.load_persisted()
-    sample = store.datasets.get(SAMPLE_DATASET_ID)
-    if sample and sample.get("fingerprint") != pipeline.ai_fingerprint():
-        store.datasets.pop(SAMPLE_DATASET_ID, None)  # AI code changed since it was processed
-    if SAMPLE_DATASET_ID in store.datasets or pipeline.load_sample_seed():
-        return
-    if SAMPLE_CSV.exists():
-        tweets = parse_tweets_csv(SAMPLE_CSV.read_bytes())
-        pipeline.start("Sample: main_contestant.csv", tweets, dataset_id=SAMPLE_DATASET_ID)
+    pipeline.ensure_builtin_datasets()  # "sample" (Alberta) and "bonus" (world)
 
 
 # ---------------------------------------------------------------------------
@@ -73,11 +66,13 @@ def _csv_set(value: Optional[str]) -> set:
 
 def _filter(tweets: List[Dict], relevant: Optional[bool] = True, category: Optional[str] = None,
             q: Optional[str] = None, location: Optional[str] = None, min_confidence: float = 0.0,
-            has_location: Optional[bool] = None, severity: Optional[str] = None) -> List[Dict]:
+            has_location: Optional[bool] = None, severity: Optional[str] = None,
+            disaster_type: Optional[str] = None) -> List[Dict]:
     q = (q or "").lower()
     location = (location or "").lower()
     cats = _csv_set(category)
     sevs = _csv_set(severity)
+    dtypes = _csv_set(disaster_type)
     out = []
     for t in tweets:
         if relevant is not None and t["relevant"] != relevant:
@@ -85,6 +80,8 @@ def _filter(tweets: List[Dict], relevant: Optional[bool] = True, category: Optio
         if cats and t["category"] not in cats:
             continue
         if sevs and t.get("severity") not in sevs:
+            continue
+        if dtypes and t.get("disaster_type", "none") not in dtypes:
             continue
         if t["confidence"] < min_confidence:
             continue
@@ -110,7 +107,7 @@ def _sort(rows: List[Dict], sort: str) -> List[Dict]:
 
 def _public(t: Dict) -> Dict:
     return {k: t.get(k) for k in ("id", "text", "created_at", "ts", "relevant", "confidence",
-                                   "category", "severity", "reasoning", "ai_source", "locations",
+                                   "category", "severity", "disaster_type", "reasoning", "ai_source", "locations",
                                    "meta")}
 
 
@@ -118,6 +115,7 @@ class FilterParams(BaseModel):
     relevant: Optional[bool] = True
     category: Optional[str] = None
     severity: Optional[str] = None
+    disaster_type: Optional[str] = None
     q: Optional[str] = None
     location: Optional[str] = None
     min_confidence: float = 0.0
@@ -140,11 +138,16 @@ def ai_status():
 
 @app.get("/api/categories")
 def categories():
-    return {"categories": ai.CATEGORIES, "severities": list(SEVERITY_ORDER)}
+    return {"categories": ai.CATEGORIES, "severities": list(SEVERITY_ORDER),
+            "disaster_types": ai.DISASTER_TYPES}
 
 
 @app.post("/api/datasets", status_code=202)
-async def upload_dataset(file: UploadFile = File(...)):
+async def upload_dataset(
+    file: UploadFile = File(...),
+    scope: str = Query("auto", pattern="^(auto|regional|world)$",
+                       description="Map scope; auto-detected from place spread by default"),
+):
     raw = await file.read()
     if len(raw) > MAX_UPLOAD_MB * 1024 * 1024:
         raise HTTPException(413, f"File too large (max {MAX_UPLOAD_MB} MB)")
@@ -152,13 +155,14 @@ async def upload_dataset(file: UploadFile = File(...)):
         tweets = parse_tweets_csv(raw)
     except CSVError as e:
         raise HTTPException(400, str(e))
-    job = pipeline.start(file.filename or "upload.csv", tweets)
+    job = pipeline.start(file.filename or "upload.csv", tweets, scope=scope)
     return {"dataset_id": job["dataset_id"], "job_id": job["id"], "total": len(tweets)}
 
 
 @app.get("/api/datasets")
 def list_datasets():
-    return {"datasets": store.list_datasets()}
+    """Default dataset first, then other built-ins, then uploads (newest first)."""
+    return {"default_id": DEFAULT_DATASET_ID, "datasets": store.list_datasets()}
 
 
 @app.get("/api/jobs/{job_id}")
@@ -175,6 +179,7 @@ def get_tweets(
     relevant: str = Query("true", description="true | false | all"),
     category: Optional[str] = Query(None, description="Comma-separated categories"),
     severity: Optional[str] = Query(None, description="Comma-separated: critical,high,medium,low"),
+    disaster_type: Optional[str] = Query(None, description="Comma-separated, e.g. explosion,storm"),
     q: Optional[str] = None,
     location: Optional[str] = None,
     min_confidence: float = 0.0,
@@ -185,7 +190,7 @@ def get_tweets(
 ):
     ds = _get_dataset_or_404(dataset_id)
     rows = _filter(ds["tweets"], _relevant_param(relevant), category, q, location,
-                   min_confidence, has_location, severity)
+                   min_confidence, has_location, severity, disaster_type)
     rows = _sort(rows, sort)
     return {"total": len(rows), "offset": offset, "limit": limit,
             "tweets": [_public(t) for t in rows[offset:offset + limit]]}
@@ -212,6 +217,9 @@ def get_stats(dataset_id: str):
         "top_locations": [{"name": n, "count": c} for n, c in places.most_common(15)],
         "has_timestamps": any(t.get("ts") for t in tweets),
         "ai_sources": dict(Counter(t.get("ai_source", "rules") for t in tweets)),  # gemini vs rules
+        "by_disaster_type": dict(Counter(t.get("disaster_type", "none") for t in tweets).most_common()),
+        "scope": ds.get("scope", "regional"),  # "world" -> start the map zoomed out
+        "builtin": ds.get("builtin", False),
         "anchor": ds.get("anchor"),  # [lat, lon] centre of activity — good initial map view
     }
 
@@ -222,17 +230,19 @@ def get_geojson(
     category: Optional[str] = None,
     severity: Optional[str] = None,
     q: Optional[str] = None,
+    location: Optional[str] = None,
     min_confidence: float = 0.0,
 ):
     """One Point feature per (tweet, location). Drop straight into Leaflet / Mapbox."""
     ds = _get_dataset_or_404(dataset_id)
-    rows = _filter(ds["tweets"], True, category, q, None, min_confidence, True, severity)
+    rows = _filter(ds["tweets"], True, category, q, location, min_confidence, True, severity)
     features = [
         {
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [loc["lon"], loc["lat"]]},
             "properties": {"tweet_id": t["id"], "text": t["text"], "category": t["category"],
                            "severity": t.get("severity"), "confidence": t["confidence"],
+                           "disaster_type": t.get("disaster_type"),
                            "place": loc["name"], "created_at": t["created_at"], "ts": t.get("ts")},
         }
         for t in rows for loc in t["locations"]
@@ -276,21 +286,24 @@ def export_csv(
     relevant: str = Query("all", description="true | false | all"),
     category: Optional[str] = None,
     severity: Optional[str] = None,
+    disaster_type: Optional[str] = None,
     q: Optional[str] = None,
     location: Optional[str] = None,
     min_confidence: float = 0.0,
 ):
     """Classified tweets as CSV (all tweets by default). Link to it directly for a download."""
     ds = _get_dataset_or_404(dataset_id)
-    rows = _filter(ds["tweets"], _relevant_param(relevant), category, q, location, min_confidence, None, severity)
+    rows = _filter(ds["tweets"], _relevant_param(relevant), category, q, location, min_confidence,
+                   None, severity, disaster_type)
     buf = io.StringIO()
     w = csv.writer(buf)
     w.writerow(["id", "text", "created_at", "relevant", "confidence", "category", "severity",
-                "reasoning", "places", "lat", "lon"])
+                "disaster_type", "reasoning", "places", "lat", "lon"])
     for t in rows:
         first = t["locations"][0] if t["locations"] else {}
         w.writerow([t["id"], t["text"], t["created_at"] or "", t["relevant"], t["confidence"],
-                    t["category"] or "", t.get("severity") or "", t.get("reasoning") or "",
+                    t["category"] or "", t.get("severity") or "", t.get("disaster_type") or "",
+                    t.get("reasoning") or "",
                     "; ".join(l["name"] for l in t["locations"]), first.get("lat", ""), first.get("lon", "")])
     filename = f"living_flood_map_{dataset_id}.csv"
     return StreamingResponse(iter([buf.getvalue()]), media_type="text/csv",
@@ -301,7 +314,8 @@ def export_csv(
 def get_summary(dataset_id: str, filters: FilterParams):
     ds = _get_dataset_or_404(dataset_id)
     rows = _filter(ds["tweets"], filters.relevant, filters.category, filters.q,
-                   filters.location, filters.min_confidence, None, filters.severity)
+                   filters.location, filters.min_confidence, None, filters.severity,
+                   filters.disaster_type)
     # Most urgent and most confident first so the summary is based on the strongest signal.
     rows = _sort(rows, "severity")[:MAX_SUMMARY_TWEETS]
     try:
