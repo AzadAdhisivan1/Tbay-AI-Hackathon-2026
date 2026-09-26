@@ -1,0 +1,122 @@
+{
+"banff, alberta": {
+"display_name": "Banff, Alberta, Canada",
+"lat": 51.175076,
+"lon": -115.5720773
+},
+"bow river, calgary, alberta": {
+"display_name": "Bow Crescent NW, Bowness, Calgary, Alberta, T3B 0E4, Canada",
+"lat": 51.0850019,
+"lon": -114.1759192
+},
+"bowness, calgary, alberta": {
+"display_name": "Bowness, Calgary, Alberta, Canada",
+"lat": 51.0892766,
+"lon": -114.1930754
+},
+"bragg creek, alberta": {
+"display_name": "Bragg Creek, Rocky View County, Alberta, Canada",
+"lat": 50.9527622,
+"lon": -114.5638491
+},
+"calgary, alberta": {
+"display_name": "Calgary, Alberta, Canada",
+"lat": 51.0456064,
+"lon": -114.057541
+},
+"canmore, alberta": {
+"display_name": "Canmore, Town of Canmore, Alberta, T1W 2H4, Canada",
+"lat": 51.0866897,
+"lon": -115.3481135
+},
+"cochrane, alberta": {
+"display_name": "Town of Cochrane, Alberta, Canada",
+"lat": 51.1874627,
+"lon": -114.4710708
+},
+"drumheller, alberta": {
+"display_name": "Drumheller, Alberta, Canada",
+"lat": 51.401597,
+"lon": -112.6185167
+},
+"east village, calgary, alberta": {
+"display_name": "Downtown East Village, Calgary, Alberta, Canada",
+"lat": 51.0464963,
+"lon": -114.0506433
+},
+"edmonton, alberta": {
+"display_name": "Edmonton, Alberta, Canada",
+"lat": 53.5462055,
+"lon": -113.491241
+},
+"elbow river, calgary, alberta": {
+"display_name": "Elbow River, Glenmore Park, Calgary, Alberta, Canada",
+"lat": 50.9823945,
+"lon": -114.1147754
+},
+"erlton, calgary, alberta": {
+"display_name": "Erlton, Calgary, Alberta, Canada",
+"lat": 51.0290858,
+"lon": -114.0612758
+},
+"high river, alberta": {
+"display_name": "High River, Town of High River, Alberta, T1V 2C2, Canada",
+"lat": 50.5801916,
+"lon": -113.8709332
+},
+"inglewood, calgary, alberta": {
+"display_name": "Inglewood, Calgary, Alberta, Canada",
+"lat": 51.0380591,
+"lon": -114.0248225
+},
+"lethbridge, alberta": {
+"display_name": "Lethbridge, Alberta, Canada",
+"lat": 49.6945782,
+"lon": -112.8331033
+},
+"medicine hat, alberta": {
+"display_name": "Medicine Hat, Alberta, Canada",
+"lat": 50.04303,
+"lon": -110.679016
+},
+"mission, calgary, alberta": {
+"display_name": "Mission, Calgary, Alberta, Canada",
+"lat": 51.0317576,
+"lon": -114.0667199
+},
+"okotoks, alberta": {
+"display_name": "Okotoks, Town of Okotoks, Alberta, T1S 2N7, Canada",
+"lat": 50.7253685,
+"lon": -113.975082
+},
+"red deer, alberta": {
+"display_name": "City of Red Deer, Alberta, Canada",
+"lat": 52.2690628,
+"lon": -113.8141464
+},
+"roxboro, calgary, alberta": {
+"display_name": "Roxboro, Calgary, Alberta, Canada",
+"lat": 51.0271497,
+"lon": -114.0686909
+},
+"saddledome, calgary, alberta": {
+"display_name": "Scotiabank Saddledome, 555, Saddledome Rise SE, Beltline, Calgary, Alberta, T2G 2W1, Canada",
+"lat": 51.0374124,
+"lon": -114.0519642
+},
+"siksika nation, alberta": {
+"display_name": "Siksika Nation, 132, 16 Avenue NE, Balmoral, Tuxedo Park, Calgary, Alberta, T2E 1J5, Canada",
+"lat": 51.0672574,
+"lon": -114.0604824
+},
+"sunnyside, calgary, alberta": {
+"display_name": "Sunnyside, Calgary, Alberta, Canada",
+"lat": 51.0578696,
+"lon": -114.0787405
+},
+"winnipeg, manitoba": {
+"display_name": "Winnipeg, Manitoba, Canada",
+"lat": 49.8955367,
+"lon": -97.1384584
+}
+}
