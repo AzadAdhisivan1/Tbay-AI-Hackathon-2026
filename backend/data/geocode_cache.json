@@ -1,122 +1,2420 @@
 {
-"banff, alberta": {
-"display_name": "Banff, Alberta, Canada",
-"lat": 51.175076,
-"lon": -115.5720773
-},
-"bow river, calgary, alberta": {
-"display_name": "Bow Crescent NW, Bowness, Calgary, Alberta, T3B 0E4, Canada",
-"lat": 51.0850019,
-"lon": -114.1759192
-},
-"bowness, calgary, alberta": {
-"display_name": "Bowness, Calgary, Alberta, Canada",
-"lat": 51.0892766,
-"lon": -114.1930754
-},
-"bragg creek, alberta": {
-"display_name": "Bragg Creek, Rocky View County, Alberta, Canada",
-"lat": 50.9527622,
-"lon": -114.5638491
-},
-"calgary, alberta": {
-"display_name": "Calgary, Alberta, Canada",
-"lat": 51.0456064,
-"lon": -114.057541
-},
-"canmore, alberta": {
-"display_name": "Canmore, Town of Canmore, Alberta, T1W 2H4, Canada",
-"lat": 51.0866897,
-"lon": -115.3481135
-},
-"cochrane, alberta": {
-"display_name": "Town of Cochrane, Alberta, Canada",
-"lat": 51.1874627,
-"lon": -114.4710708
-},
-"drumheller, alberta": {
-"display_name": "Drumheller, Alberta, Canada",
-"lat": 51.401597,
-"lon": -112.6185167
-},
-"east village, calgary, alberta": {
-"display_name": "Downtown East Village, Calgary, Alberta, Canada",
-"lat": 51.0464963,
-"lon": -114.0506433
-},
-"edmonton, alberta": {
-"display_name": "Edmonton, Alberta, Canada",
-"lat": 53.5462055,
-"lon": -113.491241
-},
-"elbow river, calgary, alberta": {
-"display_name": "Elbow River, Glenmore Park, Calgary, Alberta, Canada",
-"lat": 50.9823945,
-"lon": -114.1147754
-},
-"erlton, calgary, alberta": {
-"display_name": "Erlton, Calgary, Alberta, Canada",
-"lat": 51.0290858,
-"lon": -114.0612758
-},
-"high river, alberta": {
-"display_name": "High River, Town of High River, Alberta, T1V 2C2, Canada",
-"lat": 50.5801916,
-"lon": -113.8709332
-},
-"inglewood, calgary, alberta": {
-"display_name": "Inglewood, Calgary, Alberta, Canada",
-"lat": 51.0380591,
-"lon": -114.0248225
-},
-"lethbridge, alberta": {
-"display_name": "Lethbridge, Alberta, Canada",
-"lat": 49.6945782,
-"lon": -112.8331033
-},
-"medicine hat, alberta": {
-"display_name": "Medicine Hat, Alberta, Canada",
-"lat": 50.04303,
-"lon": -110.679016
-},
-"mission, calgary, alberta": {
-"display_name": "Mission, Calgary, Alberta, Canada",
-"lat": 51.0317576,
-"lon": -114.0667199
-},
-"okotoks, alberta": {
-"display_name": "Okotoks, Town of Okotoks, Alberta, T1S 2N7, Canada",
-"lat": 50.7253685,
-"lon": -113.975082
-},
-"red deer, alberta": {
-"display_name": "City of Red Deer, Alberta, Canada",
-"lat": 52.2690628,
-"lon": -113.8141464
-},
-"roxboro, calgary, alberta": {
-"display_name": "Roxboro, Calgary, Alberta, Canada",
-"lat": 51.0271497,
-"lon": -114.0686909
-},
-"saddledome, calgary, alberta": {
-"display_name": "Scotiabank Saddledome, 555, Saddledome Rise SE, Beltline, Calgary, Alberta, T2G 2W1, Canada",
-"lat": 51.0374124,
-"lon": -114.0519642
-},
-"siksika nation, alberta": {
-"display_name": "Siksika Nation, 132, 16 Avenue NE, Balmoral, Tuxedo Park, Calgary, Alberta, T2E 1J5, Canada",
-"lat": 51.0672574,
-"lon": -114.0604824
-},
-"sunnyside, calgary, alberta": {
-"display_name": "Sunnyside, Calgary, Alberta, Canada",
-"lat": 51.0578696,
-"lon": -114.0787405
-},
-"winnipeg, manitoba": {
-"display_name": "Winnipeg, Manitoba, Canada",
-"lat": 49.8955367,
-"lon": -97.1384584
+"airdrie|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.28597,
+"lon": -114.01062,
+"n": "Airdrie",
+"name": "Airdrie, Alberta, Canada",
+"rank": 12
 }
+],
+"alberta fact sheet|51.0,-114.1": [],
+"alberta floods|51.0,-114.1": [],
+"alberta forces|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 53.6050162,
+"lon": -113.492007,
+"n": "97 Street NW",
+"name": "97 Street NW, Griesbach, Edmonton",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.6225147,
+"lon": -113.4917716,
+"n": "97 Street NW",
+"name": "97 Street NW, Eaux Claires, Lake District",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.6074855,
+"lon": -113.4920121,
+"n": "97 Street NW",
+"name": "97 Street NW, Griesbach, Edmonton",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.6184195,
+"lon": -113.4920224,
+"n": "97 Street NW",
+"name": "97 Street NW, Beaumaris, Castle Downs",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.5998106,
+"lon": -113.4918989,
+"n": "97 Street NW",
+"name": "97 Street NW, Northmount, Dickinsfield",
+"rank": 26
+}
+],
+"alberta rogers|51.0,-114.1": [
+{
+"cat": "landuse",
+"lat": 51.4223619,
+"lon": -114.0296897,
+"n": "Rogers",
+"name": "Rogers, Town of Crossfield, Alberta",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.570294,
+"lon": -114.0737619,
+"n": "Rogers",
+"name": "Rogers, Mountain View County, Alberta",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.3941476,
+"lon": -114.0145143,
+"n": "Rogers",
+"name": "Rogers, Rocky View County, Alberta",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 52.1848878,
+"lon": -113.239202,
+"n": "Rogers",
+"name": "Rogers, Red Deer County, Alberta",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 52.099293,
+"lon": -115.0393723,
+"n": "Rogers",
+"name": "Rogers, Alberta, Canada",
+"rank": 24
+}
+],
+"albertans|51.0,-114.1": [],
+"australia|51.0,-114.1": [],
+"bangaladesh|51.0,-114.1": [],
+"bangor tuesday|51.0,-114.1": [],
+"beltline|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0404978,
+"lon": -114.0725934,
+"n": "Beltline",
+"name": "Beltline, Calgary, Alberta",
+"rank": 20
+}
+],
+"blackie|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.6030153,
+"lon": -113.6177721,
+"n": "Blackie",
+"name": "Blackie, Foothills County, Alberta",
+"rank": 20
+}
+],
+"bonavista rec ctr|51.0,-114.1": [],
+"bow city|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.4359857,
+"lon": -112.2229134,
+"n": "Bow City",
+"name": "Bow City, County of Newell, Alberta",
+"rank": 20
+}
+],
+"bowness community centre|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.0844764,
+"lon": -114.1819819,
+"n": "Bowness Seniors' Centre",
+"name": "Bowness Seniors' Centre, 35 Avenue NW, Bowness",
+"rank": 30
+}
+],
+"bowness road|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 51.0902233,
+"lon": -114.2054639,
+"n": "Bowglen Road NW",
+"name": "Bowglen Road NW, Bowness, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.074761,
+"lon": -114.182059,
+"n": "Short Road NW",
+"name": "Short Road NW, Bowness, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0842888,
+"lon": -114.2087374,
+"n": "Bowfort Road NW",
+"name": "Bowfort Road NW, Bowness, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0849423,
+"lon": -114.207703,
+"n": "Bowfort Road NW",
+"name": "Bowfort Road NW, Bowness, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0949592,
+"lon": -114.1974571,
+"n": "70 Street NW",
+"name": "70 Street NW, Bowness, Calgary",
+"rank": 26
+}
+],
+"bragg|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 50.9396009,
+"lon": -114.5806131,
+"n": "Bragg Creek Provincial Park",
+"name": "Bragg Creek Provincial Park, Bragg Creek, Rocky View County",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 50.9527622,
+"lon": -114.5638491,
+"n": "Bragg Creek",
+"name": "Bragg Creek, Rocky View County, Alberta",
+"rank": 16
+},
+{
+"cat": "waterway",
+"lat": 50.951526,
+"lon": -114.6812542,
+"n": "Bragg Creek",
+"name": "Bragg Creek, Kananaskis Improvement District, Alberta",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 50.9514689,
+"lon": -114.562894,
+"n": "Bragg Creek",
+"name": "Bragg Creek, Rocky View County, Alberta",
+"rank": 20
+}
+],
+"brandon|51.4,-97.4": [
+{
+"cat": "boundary",
+"lat": 49.8511143,
+"lon": -99.9608924,
+"n": "Brandon",
+"name": "Brandon, Manitoba, Canada",
+"rank": 12
+}
+],
+"brandon|any": [
+{
+"cat": "boundary",
+"lat": 46.3527084,
+"lon": 4.5776087,
+"n": "Brandon",
+"name": "Brandon, Navour-sur-Grosne, M\u00e2con",
+"rank": 18
+},
+{
+"cat": "boundary",
+"lat": 49.8511143,
+"lon": -99.9608924,
+"n": "Brandon",
+"name": "Brandon, Manitoba, Canada",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 32.2731475,
+"lon": -89.9868058,
+"n": "Brandon",
+"name": "Brandon, Rankin County, Mississippi",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 42.3144359,
+"lon": -92.0021228,
+"n": "Brandon",
+"name": "Brandon, Buchanan County, Iowa",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 52.4482313,
+"lon": 0.6240803,
+"n": "Brandon",
+"name": "Brandon, West Suffolk, Suffolk",
+"rank": 20
+}
+],
+"brentview baptist|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.0842994,
+"lon": -114.1231728,
+"n": "Brentview Baptist Church",
+"name": "Brentview Baptist Church, Charleswood Drive NW, Charleswood",
+"rank": 30
+}
+],
+"bruce willis|51.0,-114.1": [],
+"calgarians|51.0,-114.1": [],
+"calgarian|51.0,-114.1": [],
+"calgary comfort inn|51.0,-114.1": [
+{
+"cat": "tourism",
+"lat": 51.1465781,
+"lon": -114.0277853,
+"n": "Comfort Inn & Suites Calgary Airport North",
+"name": "Comfort Inn & Suites Calgary Airport North, Freeport Crescent NE, Stoney 2",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0700202,
+"lon": -114.1158702,
+"n": "Comfort Inn & Suites University",
+"name": "Comfort Inn & Suites University, Banff Trail NW, Banff Trail",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0123972,
+"lon": -114.0665577,
+"n": "Comfort Inn & Suites South",
+"name": "Comfort Inn & Suites South, Macleod Trail SW, Elboya",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0795629,
+"lon": -113.9990143,
+"n": "Comfort Inn & Suites Calgary Airport",
+"name": "Comfort Inn & Suites Calgary Airport, 26 Street NE, Sunridge",
+"rank": 30
+}
+],
+"calgary comfort|51.0,-114.1": [
+{
+"cat": "tourism",
+"lat": 51.1465781,
+"lon": -114.0277853,
+"n": "Comfort Inn & Suites Calgary Airport North",
+"name": "Comfort Inn & Suites Calgary Airport North, Freeport Crescent NE, Stoney 2",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0700202,
+"lon": -114.1158702,
+"n": "Comfort Inn & Suites University",
+"name": "Comfort Inn & Suites University, Banff Trail NW, Banff Trail",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0123972,
+"lon": -114.0665577,
+"n": "Comfort Inn & Suites South",
+"name": "Comfort Inn & Suites South, Macleod Trail SW, Elboya",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 51.0795629,
+"lon": -113.9990143,
+"n": "Comfort Inn & Suites Calgary Airport",
+"name": "Comfort Inn & Suites Calgary Airport, 26 Street NE, Sunridge",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.1581211,
+"lon": -114.161748,
+"n": "Clogs 4 Comfort",
+"name": "Clogs 4 Comfort, Sarcee Trail NW, Sherwood",
+"rank": 30
+}
+],
+"calgary flames|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.0738417,
+"lon": -114.1424692,
+"n": "Rotary Flames Park",
+"name": "Rotary Flames Park, University District, Calgary",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 51.0117733,
+"lon": -114.1162016,
+"n": "Flames Community Arenas",
+"name": "Flames Community Arenas, 47 Avenue SW, Altadore",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 51.0763406,
+"lon": -114.1471737,
+"n": "Rotary Flames House",
+"name": "Rotary Flames House, Children's Drive NW, University District",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0618238,
+"lon": -113.9810312,
+"n": "Oven Flames Pizza",
+"name": "Oven Flames Pizza, 36 Street NE, Marlborough",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1326772,
+"lon": -114.0146171,
+"n": "Flames Grill",
+"name": "Flames Grill, Airport Road NE, Calgary International Airport",
+"rank": 30
+}
+],
+"calgary flood warnings fell|51.0,-114.1": [],
+"calgary flood|51.0,-114.1": [
+{
+"cat": "information",
+"lat": 51.0192097,
+"lon": -114.0833359,
+"n": "The flood of 2013",
+"name": "The flood of 2013, Sifton Boulevard SW, Elbow Park",
+"rank": 30
+}
+],
+"calgary north veterinary hospital|51.0,-114.1": [],
+"calgary rob ford|51.0,-114.1": [],
+"calgary super nenshi|51.0,-114.1": [],
+"calgary transit|51.0,-114.1": [
+{
+"cat": "landuse",
+"lat": 51.0854469,
+"lon": -114.0586961,
+"n": "Calgary Transit Access Garage",
+"name": "Calgary Transit Access Garage, Greenview Industrial, Calgary",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 50.965516,
+"lon": -114.0953543,
+"n": "Southwest Bus Rapid Transit",
+"name": "Southwest Bus Rapid Transit, Pump Hill Bay SW, Pump Hill",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 51.0836258,
+"lon": -114.0432408,
+"n": "Calgary Transit - Spring Gardens Garage",
+"name": "Calgary Transit - Spring Gardens Garage, 32 Avenue NE, Greenview Industrial",
+"rank": 30
+},
+{
+"cat": "highway",
+"lat": 50.9760136,
+"lon": -114.0954458,
+"n": "Southwest Bus Rapid Transit",
+"name": "Southwest Bus Rapid Transit, Heritage Drive SW, Glenmore Park",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0847293,
+"lon": -114.062864,
+"n": "Calgary Transit Park and Ride (bus)",
+"name": "Calgary Transit Park and Ride (bus), 36 Avenue NW, Highland Park",
+"rank": 30
+}
+],
+"calgary who|51.0,-114.1": [
+{
+"cat": "building",
+"lat": 51.0508904,
+"lon": -114.098948,
+"n": "Who What Wear Inc.",
+"name": "Who What Wear Inc., Bowness Road NW, Hillhurst",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.0472825,
+"lon": -114.0508877,
+"n": "Who Cares? Wear",
+"name": "Who Cares? Wear, Riverfront Avenue SE, Downtown East Village",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.1304062,
+"lon": -114.0099766,
+"n": "Whos Who In The Zoo",
+"name": "Whos Who In The Zoo, Airport Road NE, Calgary International Airport",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.1297009,
+"lon": -114.0030222,
+"n": "Who\u2019s Who in the Zoo",
+"name": "Who\u2019s Who in the Zoo, Airport Road NE, Calgary International Airport",
+"rank": 30
+}
+],
+"cambodian orphanage|51.0,-114.1": [],
+"cambridge|51.0,-114.1": [
+{
+"cat": "waterway",
+"lat": 49.052578,
+"lon": -117.7251733,
+"n": "Cambridge Creek",
+"name": "Cambridge Creek, Trail, Regional District of Kootenay Boundary",
+"rank": 21
+},
+{
+"cat": "waterway",
+"lat": 49.073529,
+"lon": -117.7431278,
+"n": "Cambridge Creek",
+"name": "Cambridge Creek, Trail, Regional District of Kootenay Boundary",
+"rank": 22
+},
+{
+"cat": "landuse",
+"lat": 51.0410995,
+"lon": -114.074958,
+"n": "Cambridge Gate",
+"name": "Cambridge Gate, Beltline, Calgary",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 53.5239926,
+"lon": -113.6094032,
+"n": "Cambridge West",
+"name": "Cambridge West, Jasper Place, Edmonton",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 53.6063776,
+"lon": -113.4797988,
+"n": "Cambridge Manor",
+"name": "Cambridge Manor, Dickinsfield, Northern Mature Area",
+"rank": 24
+}
+],
+"canada blog|51.0,-114.1": [],
+"canada causes|51.0,-114.1": [],
+"canmore rolling|51.0,-114.1": [],
+"cgy|51.0,-114.1": [],
+"chaparral valley|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.8850542,
+"lon": -114.0154368,
+"n": "Chaparral Valley",
+"name": "Chaparral Valley, Chaparral, Calgary",
+"rank": 24
+}
+],
+"chem|51.0,-114.1": [
+{
+"cat": "craft",
+"lat": 51.058387,
+"lon": -113.9953477,
+"n": "Calgary Chem-Dry",
+"name": "Calgary Chem-Dry, 106 2719, 7 Avenue NE",
+"rank": 30
+}
+],
+"chicago|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 48.0735498,
+"lon": -115.6862817,
+"n": "Chicago Peak",
+"name": "Chicago Peak, Sanders County, Montana",
+"rank": 18
+},
+{
+"cat": "waterway",
+"lat": 48.8675476,
+"lon": -111.2628098,
+"n": "Chicago Lake Dam",
+"name": "Chicago Lake Dam, Liberty County, Montana",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 48.8661228,
+"lon": -111.2638307,
+"n": "Chicago Lake",
+"name": "Chicago Lake, Liberty County, Montana",
+"rank": 24
+}
+],
+"china town|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 50.5061115,
+"lon": -116.0284753,
+"n": "China Town",
+"name": "China Town, 6th Avenue, Invermere",
+"rank": 30
+}
+],
+"chinatown|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0506542,
+"lon": -114.0626107,
+"n": "Chinatown",
+"name": "Chinatown, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 49.6964711,
+"lon": -112.8427374,
+"n": "Chinatown",
+"name": "Chinatown, Lethbridge, Alberta",
+"rank": 24
+}
+],
+"chinook mall|51.0,-114.1": [
+{
+"cat": "shop",
+"lat": 50.9979719,
+"lon": -114.0735897,
+"n": "Chinook Centre",
+"name": "Chinook Centre, Macleod Trail SW, Meadowlark Park",
+"rank": 30
+}
+],
+"chinook regional hospital|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 49.6852205,
+"lon": -112.8162087,
+"n": "Chinook Regional Hospital",
+"name": "Chinook Regional Hospital, 19 Street S, Victoria Park",
+"rank": 30
+}
+],
+"city hall|51.0,-114.1": [
+{
+"cat": "railway",
+"lat": 51.0463194,
+"lon": -114.0567906,
+"n": "City Hall/Bow Valley College",
+"name": "City Hall/Bow Valley College, 7 Avenue SE, Downtown Commercial Core",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 52.2686044,
+"lon": -113.8095796,
+"n": "Red Deer City Hall",
+"name": "Red Deer City Hall, Ross (50) Street, Downtown",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.5639631,
+"lon": -111.898654,
+"n": "City Hall",
+"name": "City Hall, 1 Avenue West, Downtown",
+"rank": 30
+}
+],
+"climate change|51.0,-114.1": [],
+"cloverdale|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.5369857,
+"lon": -113.47264,
+"n": "Cloverdale",
+"name": "Cloverdale, Central Core, Edmonton",
+"rank": 20
+}
+],
+"community associations|51.0,-114.1": [],
+"connaught|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 51.0410667,
+"lon": -114.082943,
+"n": "Connaught",
+"name": "Connaught, Beltline, Calgary",
+"rank": 24
+},
+{
+"cat": "waterway",
+"lat": 51.2982947,
+"lon": -117.5483523,
+"n": "Connaught Creek",
+"name": "Connaught Creek, Area A (Kicking Horse/Kinbasket Lake), Columbia-Shuswap Regional District",
+"rank": 22
+}
+],
+"cougar creek|51.0,-114.1": [
+{
+"cat": "waterway",
+"lat": 51.1014658,
+"lon": -115.3079908,
+"n": "Cougar Creek",
+"name": "Cougar Creek, Municipal District of Bighorn, Alberta",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": 51.0915523,
+"lon": -115.3223407,
+"n": "Cougar Creek",
+"name": "Cougar Creek, Silvertip Mountain Village, Canmore",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": 51.1073077,
+"lon": -115.2954972,
+"n": "Cougar Creek",
+"name": "Cougar Creek, Municipal District of Bighorn, Alberta",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": 51.0781747,
+"lon": -115.3367434,
+"n": "Cougar Creek",
+"name": "Cougar Creek, Cairns on the Bow, Spring Creek Mountain Village",
+"rank": 22
+}
+],
+"crescent heights|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0596864,
+"lon": -114.0608864,
+"n": "Crescent Heights",
+"name": "Crescent Heights, Calgary, Alberta",
+"rank": 20
+}
+],
+"criminal minds|51.0,-114.1": [],
+"crisis cafe|51.0,-114.1": [],
+"ctown|51.0,-114.1": [],
+"deer park|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 52.2623201,
+"lon": -113.7586432,
+"n": "Deer Park",
+"name": "Deer Park, Deer Park Village, City of Red Deer",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 53.5622771,
+"lon": -113.9274528,
+"n": "Deer Park",
+"name": "Deer Park, City Centre, City of Spruce Grove",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 49.4165552,
+"lon": -118.037989,
+"n": "Deer Park",
+"name": "Deer Park, Area J (Lower Arrow/Columbia), Regional District of Central Kootenay",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 49.416101,
+"lon": -118.039386,
+"n": "Deer Park",
+"name": "Deer Park, Area J (Lower Arrow/Columbia), Regional District of Central Kootenay",
+"rank": 25
+},
+{
+"cat": "highway",
+"lat": 53.4446817,
+"lon": -113.8319894,
+"n": "Deer Park",
+"name": "Deer Park, Parkland County, Alberta",
+"rank": 26
+}
+],
+"deer run|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 50.9202967,
+"lon": -114.0070381,
+"n": "Deer Run",
+"name": "Deer Run, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "highway",
+"lat": 48.1631931,
+"lon": -114.387058,
+"n": "Deer Run",
+"name": "Deer Run, Flathead County, Montana",
+"rank": 26
+}
+],
+"devon|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.3633545,
+"lon": -113.7316992,
+"n": "Devon",
+"name": "Devon, Alberta, Canada",
+"rank": 12
+}
+],
+"didsbury|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.6567661,
+"lon": -114.1375682,
+"n": "Didsbury",
+"name": "Didsbury, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 51.6608182,
+"lon": -114.1369027,
+"n": "Didsbury",
+"name": "Didsbury, Alberta, Canada",
+"rank": 18
+}
+],
+"discovery ridge|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.012741,
+"lon": -114.203496,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Calgary, Alberta",
+"rank": 20
+}
+],
+"east elbow park|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 50.7385364,
+"lon": -115.0149608,
+"n": "Elbow-Sheep Wildland Provincial Park",
+"name": "Elbow-Sheep Wildland Provincial Park, Kananaskis Improvement District, Alberta",
+"rank": 24
+}
+],
+"east village|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0464963,
+"lon": -114.0506433,
+"n": "Downtown East Village",
+"name": "Downtown East Village, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 48.4466475,
+"lon": -113.2332922,
+"n": "East Glacier Park Village",
+"name": "East Glacier Park Village, Glacier County, Montana",
+"rank": 25
+},
+{
+"cat": "leisure",
+"lat": 53.5165864,
+"lon": -113.3232597,
+"n": "Village on the Lake East Park",
+"name": "Village on the Lake East Park, Sherwood Park, Strathcona County",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 50.5687102,
+"lon": -111.880163,
+"n": "Greenbrook Mobile Village East",
+"name": "Greenbrook Mobile Village East, Greenbrook, Brooks",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.5668239,
+"lon": -111.8781228,
+"n": "Greenbrook Mobile Village East",
+"name": "Greenbrook Mobile Village East, Greenbrook Mobile Village, Brooks",
+"rank": 26
+}
+],
+"eau claire|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0525789,
+"lon": -114.0703115,
+"n": "Eau Claire",
+"name": "Eau Claire, Calgary, Alberta",
+"rank": 20
+}
+],
+"economic tally|51.0,-114.1": [],
+"elbow park|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0206343,
+"lon": -114.0784467,
+"n": "Elbow Park",
+"name": "Elbow Park, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "leisure",
+"lat": 51.0241528,
+"lon": -114.0828383,
+"n": "Elbow Park",
+"name": "Elbow Park, Calgary, Alberta",
+"rank": 24
+}
+],
+"elbow|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 50.8087942,
+"lon": -114.7835463,
+"n": "Elbow",
+"name": "Elbow, Kananaskis Improvement District, Alberta",
+"rank": 22
+},
+{
+"cat": "highway",
+"lat": 49.65293,
+"lon": -115.9844418,
+"n": "Elbow",
+"name": "Elbow, Blarchmont, Kimberley",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 49.664868,
+"lon": -115.9847945,
+"n": "Elbow",
+"name": "Elbow, Blarchmont, Kimberley",
+"rank": 27
+},
+{
+"cat": "leisure",
+"lat": 50.7385364,
+"lon": -115.0149608,
+"n": "Elbow-Sheep Wildland Provincial Park",
+"name": "Elbow-Sheep Wildland Provincial Park, Kananaskis Improvement District, Alberta",
+"rank": 24
+},
+{
+"cat": "waterway",
+"lat": 50.9834081,
+"lon": -114.5197369,
+"n": "Elbow River",
+"name": "Elbow River, Rocky View County, Alberta",
+"rank": 18
+}
+],
+"emergency management ron robinson|51.0,-114.1": [],
+"emergency ops centre|51.0,-114.1": [],
+"enmax|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 49.6668175,
+"lon": -112.8054615,
+"n": "VisitLethbridge.com Arena",
+"name": "VisitLethbridge.com Arena, Scenic Drive S, Tudor Estates",
+"rank": 30
+},
+{
+"cat": "leisure",
+"lat": 51.0378942,
+"lon": -114.0480078,
+"n": "ENMAX Park",
+"name": "ENMAX Park, Ramsay, Calgary",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.0067273,
+"lon": -114.0628416,
+"n": "Enmax Corporation Head Office",
+"name": "Enmax Corporation Head Office, Manchester Industrial, Calgary",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.0453689,
+"lon": -114.0800793,
+"n": "Enmax Substation No. 1 Replacement",
+"name": "Enmax Substation No. 1 Replacement, Downtown Commercial Core, Calgary",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.3974742,
+"lon": -114.0148385,
+"n": "ENMAX Crossfield Energy Centre",
+"name": "ENMAX Crossfield Energy Centre, Rocky View County, Alberta",
+"rank": 24
+}
+],
+"erlton|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0290858,
+"lon": -114.0612758,
+"n": "Erlton",
+"name": "Erlton, Calgary, Alberta",
+"rank": 20
+}
+],
+"ernest manning|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.0364083,
+"lon": -114.1906129,
+"n": "Ernest Manning High School",
+"name": "Ernest Manning High School, Springborough Boulevard SW, Springbank Hill",
+"rank": 30
+},
+{
+"cat": "leisure",
+"lat": 51.0365731,
+"lon": -114.1920068,
+"n": "Ernest Manning Athletic Park",
+"name": "Ernest Manning Athletic Park, Springbank Hill, Calgary",
+"rank": 24
+}
+],
+"fish creek provincial park society|51.0,-114.1": [],
+"flames|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.0738417,
+"lon": -114.1424692,
+"n": "Rotary Flames Park",
+"name": "Rotary Flames Park, University District, Calgary",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 51.0117733,
+"lon": -114.1162016,
+"n": "Flames Community Arenas",
+"name": "Flames Community Arenas, 47 Avenue SW, Altadore",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 51.0763406,
+"lon": -114.1471737,
+"n": "Rotary Flames House",
+"name": "Rotary Flames House, Children's Drive NW, University District",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0618238,
+"lon": -113.9810312,
+"n": "Oven Flames Pizza",
+"name": "Oven Flames Pizza, 36 Street NE, Marlborough",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1326772,
+"lon": -114.0146171,
+"n": "Flames Grill",
+"name": "Flames Grill, Airport Road NE, Calgary International Airport",
+"rank": 30
+}
+],
+"floods|51.0,-114.1": [],
+"france|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 46.603354,
+"lon": 1.8883335,
+"n": "France",
+"name": "France",
+"rank": 4
+}
+],
+"glenmore coin laundry|51.0,-114.1": [],
+"goldbar|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 53.5593685,
+"lon": -113.4131879,
+"n": "Goldbar Park Road NW",
+"name": "Goldbar Park Road NW, River Valley Gold Bar, Greater Hardisty",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.5616293,
+"lon": -113.4108583,
+"n": "Goldbar Access",
+"name": "Goldbar Access, River Valley Gold Bar, Greater Hardisty",
+"rank": 27
+},
+{
+"cat": "amenity",
+"lat": 53.5566906,
+"lon": -113.4061565,
+"n": "Goldbar Pavillion",
+"name": "Goldbar Pavillion, Lake Loop, River Valley Gold Bar",
+"rank": 30
+}
+],
+"hamza|51.0,-114.1": [],
+"harvest hills|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.1481976,
+"lon": -114.0537778,
+"n": "Harvest Hills",
+"name": "Harvest Hills, Calgary, Alberta",
+"rank": 20
+}
+],
+"harvey|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 53.5810089,
+"lon": -118.4508955,
+"n": "Mount Harvey",
+"name": "Mount Harvey, Alberta, Canada",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.9918971,
+"lon": -116.2860362,
+"n": "Harvey Mountain",
+"name": "Harvey Mountain, Boundary County, Idaho",
+"rank": 18
+},
+{
+"cat": "water",
+"lat": 50.1961669,
+"lon": -119.0347012,
+"n": "Harvey Lake",
+"name": "Harvey Lake, Area D (Trinity/West Creighton), Regional District of North Okanagan",
+"rank": 20
+},
+{
+"cat": "water",
+"lat": 49.2834936,
+"lon": -114.71337,
+"n": "Harvey Lake",
+"name": "Harvey Lake, Area A (Upper Flathead/Elk Valley), Regional District of East Kootenay",
+"rank": 20
+},
+{
+"cat": "water",
+"lat": 53.1555804,
+"lon": -118.4538514,
+"n": "Harvey Lake",
+"name": "Harvey Lake, Improvement District No. 12, Alberta",
+"rank": 20
+}
+],
+"heritage heights|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 49.6959872,
+"lon": -112.884191,
+"n": "Heritage Heights",
+"name": "Heritage Heights, Lethbridge, Alberta",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 49.6955521,
+"lon": -112.884044,
+"n": "Heritage Heights",
+"name": "Heritage Heights, Lethbridge, Alberta",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 51.2115876,
+"lon": -114.512384,
+"n": "Heritage Heights",
+"name": "Heritage Heights, Heritage Hills, Town of Cochrane",
+"rank": 26
+},
+{
+"cat": "building",
+"lat": 50.02551,
+"lon": -110.7255712,
+"n": "Heritage Heights",
+"name": "Heritage Heights, Viscount Avenue Southwest, Medicine Hat",
+"rank": 30
+}
+],
+"high water tees|51.0,-114.1": [],
+"hillhurst|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.0554142,
+"lon": -114.0955638,
+"n": "Hillhurst",
+"name": "Hillhurst, Calgary, Alberta",
+"rank": 20
+}
+],
+"house crashing|51.0,-114.1": [],
+"india|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 48.8245807,
+"lon": -116.5141671,
+"n": "India Road",
+"name": "India Road, Boundary County, Idaho",
+"rank": 26
+},
+{
+"cat": "amenity",
+"lat": 51.1472265,
+"lon": -114.1066811,
+"n": "LITTLE INDIA CALGARY",
+"name": "LITTLE INDIA CALGARY, Hidden Valley Drive NW, Hidden Valley",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0294852,
+"lon": -114.1421728,
+"n": "A Touch of India",
+"name": "A Touch of India, 37 Street SW, Glenbrook",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1068253,
+"lon": -113.9700424,
+"n": "Mother India Restaurant & Sweets",
+"name": "Mother India Restaurant & Sweets, Castleridge Boulevard NE, Westwinds",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1553414,
+"lon": -114.0571133,
+"n": "Gate of India Calgary East Indian Restaurant",
+"name": "Gate of India Calgary East Indian Restaurant, Country Hills Boulevard NE, Country Hills Village",
+"rank": 30
+}
+],
+"jeff berg|51.0,-114.1": [],
+"kensington|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.5957958,
+"lon": -113.528911,
+"n": "Kensington",
+"name": "Kensington, Northern Mature Area, Edmonton",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 53.0066638,
+"lon": -112.848861,
+"n": "Kensington",
+"name": "Kensington, Camrose, Alberta",
+"rank": 24
+}
+],
+"killarney|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.5884939,
+"lon": -113.479596,
+"n": "Killarney",
+"name": "Killarney, Northern Mature Area, Edmonton",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 51.0315785,
+"lon": -114.1297493,
+"n": "Killarney",
+"name": "Killarney, Calgary, Alberta",
+"rank": 20
+}
+],
+"lac|51.0,-114.1": [],
+"lakeview|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 50.9975865,
+"lon": -114.1294176,
+"n": "Lakeview",
+"name": "Lakeview, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 53.5605239,
+"lon": -114.456145,
+"n": "Lakeview",
+"name": "Lakeview, Summer Village of Lakeview, Alberta",
+"rank": 19
+},
+{
+"cat": "boundary",
+"lat": 49.6766684,
+"lon": -112.7965933,
+"n": "Lakeview",
+"name": "Lakeview, Lethbridge, Alberta",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 53.6416215,
+"lon": -113.4680138,
+"n": "Lakeview",
+"name": "Lakeview, Lake District, Edmonton",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 49.678093,
+"lon": -112.7963019,
+"n": "Lakeview",
+"name": "Lakeview, Lethbridge, Alberta",
+"rank": 24
+}
+],
+"laureen harper|51.0,-114.1": [],
+"lions campground|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.2360234,
+"lon": -113.1396606,
+"n": "Rockyford Lions Baseball Diamond",
+"name": "Rockyford Lions Baseball Diamond, Campground Trail, Rockyford",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.2354022,
+"lon": -113.1399484,
+"n": "Lions Campground Washrooms",
+"name": "Lions Campground Washrooms, Campground Road, Rockyford",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.2356456,
+"lon": -113.140149,
+"n": "Lions R.V. Sewage Dump",
+"name": "Lions R.V. Sewage Dump, Campground Trail, Rockyford",
+"rank": 30
+},
+{
+"cat": "leisure",
+"lat": 51.2364573,
+"lon": -113.1372812,
+"n": "Rockyford Lions Rodeo Grounds",
+"name": "Rockyford Lions Rodeo Grounds, Campground Road, Rockyford",
+"rank": 30
+}
+],
+"little buffalo|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 48.8538782,
+"lon": -112.7147988,
+"n": "Little Buffalo Lake",
+"name": "Little Buffalo Lake, Glacier County, Montana",
+"rank": 22
+}
+],
+"lobi|51.0,-114.1": [],
+"local emergency|51.0,-114.1": [],
+"louisiana|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 48.6923474,
+"lon": -116.3016722,
+"n": "Louisiana Street",
+"name": "Louisiana Street, Bonners Ferry, Boundary County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 48.6474965,
+"lon": -118.7273778,
+"n": "Louisiana Street",
+"name": "Louisiana Street, Republic, Ferry County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 48.3900789,
+"lon": -115.5499143,
+"n": "Louisiana Avenue",
+"name": "Louisiana Avenue, Libby, Lincoln County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 48.383749,
+"lon": -115.5525935,
+"n": "Louisiana Avenue",
+"name": "Louisiana Avenue, Libby, Lincoln County",
+"rank": 26
+},
+{
+"cat": "amenity",
+"lat": 51.0375904,
+"lon": -113.9783715,
+"n": "Popeyes",
+"name": "Popeyes, 17 Avenue SE, Forest Lawn",
+"rank": 30
+}
+],
+"lourdes|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 53.7167568,
+"lon": -113.2216111,
+"n": "Notre Dame De Lourdes Roman Catholic Church",
+"name": "Notre Dame De Lourdes Roman Catholic Church, 1 Street, Hamlet of Lamoureux",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0357178,
+"lon": -114.0681624,
+"n": "Our Lady of Lourdes School",
+"name": "Our Lady of Lourdes School, 2 Street SW, Mission",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 52.8802751,
+"lon": -118.0862689,
+"n": "Our Lady Of Lourdes - Catholic Church",
+"name": "Our Lady Of Lourdes - Catholic Church, Pyramid Lake Road, Municipality of Jasper",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.2399771,
+"lon": -117.8041774,
+"n": "Our Lady of Lourdes Catholic Church",
+"name": "Our Lady of Lourdes Catholic Church, 5th Avenue NW, Nakusp",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 53.9218479,
+"lon": -114.2770267,
+"n": "Our Lady of Lourdes Catholic Church",
+"name": "Our Lady of Lourdes Catholic Church, Range Road 25, County of Barrhead",
+"rank": 30
+}
+],
+"macleod|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 49.7216652,
+"lon": -113.4001447,
+"n": "Town of Fort Macleod",
+"name": "Town of Fort Macleod, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 49.7221058,
+"lon": -113.4022702,
+"n": "Fort Macleod",
+"name": "Fort Macleod, Town of Fort Macleod, Alberta",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 52.5278,
+"lon": -117.3508,
+"n": "Mount Henry MacLeod",
+"name": "Mount Henry MacLeod, Improvement District No. 12, Alberta",
+"rank": 18
+}
+],
+"marina mohan|51.0,-114.1": [],
+"mcmahon|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.0704233,
+"lon": -114.1214899,
+"n": "McMahon Stadium",
+"name": "McMahon Stadium, University Drive NW, University of Calgary",
+"rank": 30
+},
+{
+"cat": "landuse",
+"lat": 53.5695091,
+"lon": -114.7241431,
+"n": "McMahon Place",
+"name": "McMahon Place, Parkland County, Alberta",
+"rank": 24
+}
+],
+"melissa|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.1767139,
+"lon": -115.5712122,
+"n": "Melissa's MisSteak",
+"name": "Melissa's MisSteak, Banff Avenue, Downtown District",
+"rank": 30
+}
+],
+"memorial drive|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 52.8756444,
+"lon": -113.5721612,
+"n": "Memorial Drive",
+"name": "Memorial Drive, County of Wetaskiwin, Alberta",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 52.8756636,
+"lon": -113.5805966,
+"n": "Memorial Drive",
+"name": "Memorial Drive, County of Wetaskiwin, Alberta",
+"rank": 26
+}
+],
+"mexico city|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 53.5134555,
+"lon": -113.4980175,
+"n": "Calle Mexico",
+"name": "Calle Mexico, 77 Avenue NW, Queen Alexandra",
+"rank": 30
+}
+],
+"middle east|51.0,-114.1": [
+{
+"cat": "waterway",
+"lat": 48.3752203,
+"lon": -116.8046164,
+"n": "Middle Fork East River",
+"name": "Middle Fork East River, Bonner County, Idaho",
+"rank": 19
+},
+{
+"cat": "waterway",
+"lat": 48.3917192,
+"lon": -116.7203771,
+"n": "Middle Fork East River",
+"name": "Middle Fork East River, Bonner County, Idaho",
+"rank": 22
+},
+{
+"cat": "highway",
+"lat": 48.387282,
+"lon": -116.7823783,
+"n": "IDL 10",
+"name": "IDL 10, Bonner County, Idaho",
+"rank": 26
+}
+],
+"millarville|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.7581452,
+"lon": -114.3253775,
+"n": "Millarville",
+"name": "Millarville, Foothills County, Alberta",
+"rank": 20
+}
+],
+"mission safeway|51.0,-114.1": [],
+"mitford park|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.1886759,
+"lon": -114.489806,
+"n": "Mitford Park",
+"name": "Mitford Park, Town of Cochrane, Alberta",
+"rank": 24
+}
+],
+"montreal|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 51.0312391,
+"lon": -114.0912693,
+"n": "Montreal Avenue SW",
+"name": "Montreal Avenue SW, Upper Mount Royal, Calgary",
+"rank": 26
+},
+{
+"cat": "amenity",
+"lat": 50.9031094,
+"lon": -114.0661665,
+"n": "BMO",
+"name": "BMO, Shawville Boulevard SE, Shawnessy",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.9683455,
+"lon": -114.0707343,
+"n": "BMO",
+"name": "BMO, Macleod Trail SE, Millrise",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1723121,
+"lon": -114.157258,
+"n": "BMO",
+"name": "BMO, Nolan Hill Boulevard NW, Nolan Hill",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.078837,
+"lon": -114.1302851,
+"n": "BMO",
+"name": "BMO, MH-SB Tunnel, University of Calgary",
+"rank": 30
+}
+],
+"morley|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 51.1700283,
+"lon": -114.8496742,
+"n": "M\u00een\u00ee Thn\u00ee",
+"name": "M\u00een\u00ee Thn\u00ee, Municipal District of Bighorn, Alberta",
+"rank": 19
+}
+],
+"morris|51.4,-97.4": [
+{
+"cat": "boundary",
+"lat": 49.353316,
+"lon": -97.3655648,
+"n": "Morris",
+"name": "Morris, Manitoba, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 49.3482203,
+"lon": -97.3722745,
+"n": "Morris",
+"name": "Morris, Manitoba, Canada",
+"rank": 18
+}
+],
+"morris|any": [
+{
+"cat": "boundary",
+"lat": 33.0738633,
+"lon": -94.7392197,
+"n": "Morris County",
+"name": "Morris County, Texas, United States",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 40.8679538,
+"lon": -74.5601181,
+"n": "Morris County",
+"name": "Morris County, New Jersey, United States",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 38.6908906,
+"lon": -96.6707526,
+"n": "Morris County",
+"name": "Morris County, Kansas, United States",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 33.747724,
+"lon": -86.8091343,
+"n": "Morris",
+"name": "Morris, Jefferson County, Alabama",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 41.3574135,
+"lon": -88.4215234,
+"n": "Morris",
+"name": "Morris, Grundy County, Illinois",
+"rank": 16
+}
+],
+"mosquitos|51.0,-114.1": [],
+"nanton|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 50.3481989,
+"lon": -113.770256,
+"n": "Town of Nanton",
+"name": "Town of Nanton, Alberta, Canada",
+"rank": 12
+}
+],
+"north american|51.0,-114.1": [
+{
+"cat": "aerialway",
+"lat": 51.2003953,
+"lon": -115.6059947,
+"n": "North American",
+"name": "North American, Mount Norquay Route, Improvement District No. 9",
+"rank": 30
+}
+],
+"ogden road|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 50.2415364,
+"lon": -118.5888766,
+"n": "Ogden Road",
+"name": "Ogden Road, Area E (Cherryville/East Creighton), Regional District of North Okanagan",
+"rank": 26
+}
+],
+"okotoks costco|51.0,-114.1": [
+{
+"cat": "shop",
+"lat": 50.706224,
+"lon": -113.9459696,
+"n": "Costco",
+"name": "Costco, Southbank Street, Southbank Industrial",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7069005,
+"lon": -113.9472076,
+"n": "Costco Gasoline",
+"name": "Costco Gasoline, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7062718,
+"lon": -113.9462168,
+"n": "Costco Pharmacy",
+"name": "Costco Pharmacy, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 50.706231,
+"lon": -113.9466352,
+"n": "Costco Tire Centre",
+"name": "Costco Tire Centre, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7059456,
+"lon": -113.9467264,
+"n": "Costco Food Court",
+"name": "Costco Food Court, Southbank Boulevard, Southbank Centre",
+"rank": 30
+}
+],
+"olympic|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 51.0927318,
+"lon": -115.3930537,
+"n": "Olympic",
+"name": "Olympic, Kananaskis Improvement District, Alberta",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0946333,
+"lon": -115.394451,
+"n": "Olympic",
+"name": "Olympic, Kananaskis Improvement District, Alberta",
+"rank": 26
+}
+],
+"palm springs|51.0,-114.1": [],
+"pincher creek|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 49.485667,
+"lon": -113.9502919,
+"n": "Pincher Creek",
+"name": "Pincher Creek, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 49.4761993,
+"lon": -114.0374873,
+"n": "Municipal District of Pincher Creek No. 9",
+"name": "Municipal District of Pincher Creek No. 9, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 49.4896314,
+"lon": -113.9471472,
+"n": "Pincher Creek (town)",
+"name": "Pincher Creek (town), Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "waterway",
+"lat": 49.4778077,
+"lon": -113.9765775,
+"n": "Pincher Creek",
+"name": "Pincher Creek, Municipal District of Pincher Creek No. 9, Alberta",
+"rank": 18
+}
+],
+"possible flood relief scams|51.0,-114.1": [],
+"prince|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.5755185,
+"lon": -113.536201,
+"n": "Prince Charles",
+"name": "Prince Charles, Western Mature Area, Edmonton",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 53.5627675,
+"lon": -113.522008,
+"n": "Prince Rupert",
+"name": "Prince Rupert, Western Mature Area, Edmonton",
+"rank": 20
+},
+{
+"cat": "leisure",
+"lat": 51.0551846,
+"lon": -114.0706486,
+"n": "Prince's Island Park",
+"name": "Prince's Island Park, Eau Claire, Calgary",
+"rank": 24
+},
+{
+"cat": "tourism",
+"lat": 49.0583723,
+"lon": -113.9040707,
+"n": "Prince of Wales Hotel",
+"name": "Prince of Wales Hotel, Linnet Lake Trail, Improvement District No. 04",
+"rank": 30
+},
+{
+"cat": "natural",
+"lat": 50.638749,
+"lon": -115.4367937,
+"n": "Mount Prince John",
+"name": "Mount Prince John, Area F (Columbia Lake/Windermere Lake), Regional District of East Kootenay",
+"rank": 18
+}
+],
+"queensland liquor|51.0,-114.1": [
+{
+"cat": "shop",
+"lat": 50.9325938,
+"lon": -114.0171342,
+"n": "Liquor Empire",
+"name": "Liquor Empire, Queensland Drive SE, Queensland",
+"rank": 30
+}
+],
+"red deer river|51.0,-114.1": [
+{
+"cat": "waterway",
+"lat": 51.5522664,
+"lon": -112.894253,
+"n": "Red Deer River",
+"name": "Red Deer River, Canada",
+"rank": 18
+},
+{
+"cat": "waterway",
+"lat": 51.8264457,
+"lon": -114.6187576,
+"n": "Red Deer River",
+"name": "Red Deer River, Mountain View County, Alberta",
+"rank": 19
+},
+{
+"cat": "waterway",
+"lat": 51.7915273,
+"lon": -114.6385421,
+"n": "Red Deer River",
+"name": "Red Deer River, Sundre, Town of Sundre",
+"rank": 19
+},
+{
+"cat": "waterway",
+"lat": 51.1337428,
+"lon": -112.0962209,
+"n": "Red Deer River",
+"name": "Red Deer River, County of Newell, Alberta",
+"rank": 19
+},
+{
+"cat": "waterway",
+"lat": 51.7055565,
+"lon": -115.4779899,
+"n": "Red Deer River",
+"name": "Red Deer River, Alberta, Canada",
+"rank": 19
+}
+],
+"redwood meadows|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 50.9904543,
+"lon": -114.5043434,
+"n": "Redwood Meadows",
+"name": "Redwood Meadows, Rocky View County, Alberta",
+"rank": 19
+}
+],
+"restricted water use|51.0,-114.1": [],
+"rideau|51.0,-114.1": [
+{
+"cat": "place",
+"lat": 53.4787577,
+"lon": -113.507575,
+"n": "Rideau Park",
+"name": "Rideau Park, Edmonton, Alberta",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 51.0243435,
+"lon": -114.0735992,
+"n": "Rideau Park",
+"name": "Rideau Park, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 53.4785469,
+"lon": -113.5060056,
+"n": "Rideau Park",
+"name": "Rideau Park, Edmonton, Alberta",
+"rank": 20
+},
+{
+"cat": "landuse",
+"lat": 51.0243541,
+"lon": -114.0720895,
+"n": "Rideau Towers",
+"name": "Rideau Towers, Rideau Park, Calgary",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 51.0246764,
+"lon": -114.0734773,
+"n": "Rideau Ridge Townhomes",
+"name": "Rideau Ridge Townhomes, Rideau Park, Calgary",
+"rank": 24
+}
+],
+"rising risks|51.0,-114.1": [],
+"riverdale|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 53.5433166,
+"lon": -113.47255,
+"n": "Riverdale",
+"name": "Riverdale, Central Core, Edmonton",
+"rank": 20
+}
+],
+"royal oak|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.1442556,
+"lon": -114.2235981,
+"n": "Royal Oak",
+"name": "Royal Oak, Calgary, Alberta",
+"rank": 20
+}
+],
+"saddle ridge|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.1297064,
+"lon": -113.9447956,
+"n": "Saddle Ridge",
+"name": "Saddle Ridge, Calgary, Alberta",
+"rank": 20
+}
+],
+"safeway grocery|51.0,-114.1": [],
+"sandy beach park|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.0121573,
+"lon": -114.0935653,
+"n": "Sandy Beach",
+"name": "Sandy Beach, Altadore, Calgary",
+"rank": 24
+}
+],
+"saskatoon|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 49.6618653,
+"lon": -114.4943452,
+"n": "Saskatoon Mountain",
+"name": "Saskatoon Mountain, Municipal District of Ranchland No. 66, Alberta",
+"rank": 18
+},
+{
+"cat": "highway",
+"lat": 49.6720879,
+"lon": -114.4850983,
+"n": "Saskatoon Mountain Route",
+"name": "Saskatoon Mountain Route, Municipal District of Ranchland No. 66, Alberta",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 49.4045574,
+"lon": -110.6904975,
+"n": "Saskatoon Street",
+"name": "Saskatoon Street, Manyberries, County of Forty Mile",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 52.6014015,
+"lon": -113.6450604,
+"n": "Saskatoon Drive",
+"name": "Saskatoon Drive, Ponoka County, Alberta",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 49.6537025,
+"lon": -114.5003542,
+"n": "Saskatoon Mountain Route",
+"name": "Saskatoon Mountain Route, Municipality of Crowsnest Pass, Municipal District of Ranchland No. 66",
+"rank": 27
+}
+],
+"scuba nenshi|51.0,-114.1": [],
+"shawnessy|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 50.9085388,
+"lon": -114.0851646,
+"n": "Shawnessy",
+"name": "Shawnessy, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "railway",
+"lat": 50.9106156,
+"lon": -114.0705997,
+"n": "Shawnessy",
+"name": "Shawnessy, Shawmeadows Close SW, Shawnessy",
+"rank": 30
+}
+],
+"sobeys|51.0,-114.1": [
+{
+"cat": "shop",
+"lat": 51.1114309,
+"lon": -114.0399688,
+"n": "Sobeys",
+"name": "Sobeys, 64 Avenue NE, Deerfoot Business Centre",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.1735096,
+"lon": -114.1569349,
+"n": "Sobeys",
+"name": "Sobeys, Nolan Hill Boulevard NW, Nolan Hill",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.1247775,
+"lon": -114.2486202,
+"n": "Sobeys",
+"name": "Sobeys, Tuscany Court NW, The Mosaic Mercato",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 50.9153415,
+"lon": -114.0722226,
+"n": "Sobeys",
+"name": "Sobeys, Millrise Boulevard SW, Millrise",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.0372774,
+"lon": -113.96084,
+"n": "Sobeys",
+"name": "Sobeys, 17 Avenue SE, Forest Lawn Industrial",
+"rank": 30
+}
+],
+"social media mentions|51.0,-114.1": [],
+"southern alberta caused|51.0,-114.1": [],
+"stampede ground|51.0,-114.1": [],
+"stanley park|51.0,-114.1": [
+{
+"cat": "leisure",
+"lat": 51.0185246,
+"lon": -114.0678983,
+"n": "Stanley Park",
+"name": "Stanley Park, Parkhill, Calgary",
+"rank": 24
+}
+],
+"stoney nakoda nation|51.0,-114.1": [
+{
+"cat": "boundary",
+"lat": 51.1958703,
+"lon": -114.9826439,
+"n": "\u00cey\u00e2rhe Nakoda / Stoney Nakoda Nations",
+"name": "\u00cey\u00e2rhe Nakoda / Stoney Nakoda Nations, Municipal District of Bighorn, Alberta",
+"rank": 25
+}
+],
+"sunyside|51.0,-114.1": [],
+"suzie vile|51.0,-114.1": [],
+"taiwan|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 53.5164169,
+"lon": -113.4964688,
+"n": "Taiwan Bubble Tea",
+"name": "Taiwan Bubble Tea, 80 Avenue NW, Strathcona Junction",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 53.4750712,
+"lon": -113.4932926,
+"n": "Taiwan No. 1 Xing Fu Tang",
+"name": "Taiwan No. 1 Xing Fu Tang, Gateway Boulevard NW, Calgary Trail South",
+"rank": 30
+}
+],
+"the calgary|51.0,-114.1": [
+{
+"cat": "amenity",
+"lat": 51.0792148,
+"lon": -113.9845974,
+"n": "Peter Lougheed Centre",
+"name": "Peter Lougheed Centre, 26 Avenue NE, Sunridge",
+"rank": 30
+},
+{
+"cat": "healthcare",
+"lat": 51.048632,
+"lon": -114.0371886,
+"n": "The Rehabilitation Society of Calgary",
+"name": "The Rehabilitation Society of Calgary, 11 Street NE, Bridgeland/Riverside",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.1198931,
+"lon": -114.2130334,
+"n": "A Meeting Place of the Church in Calgary",
+"name": "A Meeting Place of the Church in Calgary, Scenic Acres Boulevard NW, Scenic Acres",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.9064391,
+"lon": -114.0622077,
+"n": "The Hideout Calgary South",
+"name": "The Hideout Calgary South, Midpark Way SE, Midnapore",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.0447499,
+"lon": -114.1888394,
+"n": "The First Korean Presbyterian Church of Calgary",
+"name": "The First Korean Presbyterian Church of Calgary, 69 Street SW, Aspen Woods",
+"rank": 30
+}
+],
+"the pas|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 53.4023103,
+"lon": -113.4634394,
+"n": "Hawthorn Passage SW",
+"name": "Hawthorn Passage SW, The Orchards at Ellerslie, Ellerslie",
+"rank": 26
+}
+],
+"tim hortans|51.0,-114.1": [],
+"titanic|51.0,-114.1": [],
+"travelers|51.0,-114.1": [
+{
+"cat": "office",
+"lat": 51.0459689,
+"lon": -114.0728396,
+"n": "Travelers Canada Calgary Office",
+"name": "Travelers Canada Calgary Office, 8 Avenue SW, Downtown Commercial Core",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.084456,
+"lon": -114.1552072,
+"n": "Travelers Currency Exchange",
+"name": "Travelers Currency Exchange, Shaganappi Trail NW, Varsity",
+"rank": 30
+}
+],
+"turner valley|51.0,-114.1": [
+{
+"cat": "landuse",
+"lat": 50.6715813,
+"lon": -114.2687992,
+"n": "Turner Valley Gas Plant",
+"name": "Turner Valley Gas Plant, Diamond Valley, Alberta",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 50.6685597,
+"lon": -114.2585772,
+"n": "Turner Valley Golf Club",
+"name": "Turner Valley Golf Club, Dingman Close SE, Diamond Valley",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.6778318,
+"lon": -114.2813166,
+"n": "Turner Valley School",
+"name": "Turner Valley School, Edward Avenue NW, Diamond Valley",
+"rank": 30
+},
+{
+"cat": "office",
+"lat": 50.6632951,
+"lon": -114.289934,
+"n": "Youth With a Mission Turner Valley",
+"name": "Youth With a Mission Turner Valley, Okalta Road SW, Diamond Valley",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.6771504,
+"lon": -114.2784062,
+"n": "Turner Valley RCMP",
+"name": "Turner Valley RCMP, Royal Avenue NW, Diamond Valley",
+"rank": 30
+}
+],
+"tweets|51.0,-114.1": [],
+"vancouver|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 51.0916465,
+"lon": -114.1427887,
+"n": "Vancouver Crescent NW",
+"name": "Vancouver Crescent NW, Varsity, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 52.2315072,
+"lon": -113.7451955,
+"n": "Vancouver Crescent",
+"name": "Vancouver Crescent, Vanier, Vanier East",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 49.4853387,
+"lon": -117.2954512,
+"n": "Vancouver Street",
+"name": "Vancouver Street, Rosemont, Nelson",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 49.4836929,
+"lon": -117.2938567,
+"n": "Vancouver Street",
+"name": "Vancouver Street, Uphill, Nelson",
+"rank": 26
+}
+],
+"walmart|51.0,-114.1": [
+{
+"cat": "shop",
+"lat": 53.4503363,
+"lon": -113.4812196,
+"n": "South Edmonton Common",
+"name": "South Edmonton Common, 22 Avenue NW, South Edmonton Common",
+"rank": 30
+},
+{
+"cat": "landuse",
+"lat": 49.0848938,
+"lon": -117.6206252,
+"n": "Walmart",
+"name": "Walmart, Trail, Regional District of Kootenay Boundary",
+"rank": 24
+},
+{
+"cat": "shop",
+"lat": 50.9009288,
+"lon": -114.0613214,
+"n": "Walmart Supercentre",
+"name": "Walmart Supercentre, Shawville Boulevard SE, Shawnessy",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 51.0385962,
+"lon": -113.9108052,
+"n": "Walmart Supercentre",
+"name": "Walmart Supercentre, East Hills Boulevard SE, East Hills",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 50.9661601,
+"lon": -114.0692276,
+"n": "Walmart",
+"name": "Walmart, Southland Drive SE, Acadia",
+"rank": 30
+}
+],
+"wikipedia|51.0,-114.1": [],
+"winnipeg|51.4,-97.4": [
+{
+"cat": "boundary",
+"lat": 49.8955367,
+"lon": -97.1384584,
+"n": "Winnipeg",
+"name": "Winnipeg, Manitoba, Canada",
+"rank": 12
+},
+{
+"cat": "water",
+"lat": 52.1189567,
+"lon": -97.9692362,
+"n": "Lake Winnipeg",
+"name": "Lake Winnipeg, Manitoba, Canada",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 49.8722879,
+"lon": -97.1491181,
+"n": "Winnipeg (city)",
+"name": "Winnipeg (city), Manitoba, Canada",
+"rank": 12
+}
+],
+"winnipeg|any": [
+{
+"cat": "boundary",
+"lat": 49.8955367,
+"lon": -97.1384584,
+"n": "Winnipeg",
+"name": "Winnipeg, Manitoba, Canada",
+"rank": 12
+},
+{
+"cat": "water",
+"lat": 52.1189567,
+"lon": -97.9692362,
+"n": "Lake Winnipeg",
+"name": "Lake Winnipeg, Manitoba, Canada",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 49.8722879,
+"lon": -97.1491181,
+"n": "Winnipeg (city)",
+"name": "Winnipeg (city), Manitoba, Canada",
+"rank": 12
+}
+],
+"yamnuska hall|51.0,-114.1": [
+{
+"cat": "building",
+"lat": 51.0751477,
+"lon": -114.1378907,
+"n": "Yamnuska Hall",
+"name": "Yamnuska Hall, 24 Avenue NW, University of Calgary",
+"rank": 30
+}
+]
 }
