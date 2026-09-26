@@ -1,36 +1,6 @@
 import React from 'react';
-import { Brain, Filter, RefreshCw } from 'lucide-react';
-
-/** Nice display labels for backend category keys */
-const CATEGORY_LABELS = {
-  infrastructure_damage: 'Infrastructure',
-  evacuation: 'Evacuation',
-  rescue_help: 'Rescue / Help',
-  donations_volunteering: 'Donations',
-  weather_water_levels: 'Weather / Water',
-  sympathy_support: 'Sympathy',
-  other_related: 'Other Related',
-};
-
-function categoryLabel(key) {
-  return CATEGORY_LABELS[key] || key;
-}
-
-function getCategoryColors(category) {
-  if (!category) return { bg: 'bg-slate-800/40', text: 'text-slate-400', ring: 'ring-slate-700/40' };
-  const cat = category.toLowerCase();
-  if (cat.includes('rescue') || cat.includes('elder') || cat.includes('home'))
-    return { bg: 'bg-rose-900/30', text: 'text-rose-300', ring: 'ring-rose-800/40' };
-  if (cat.includes('infrastructure') || cat.includes('road') || cat.includes('bridge'))
-    return { bg: 'bg-orange-900/30', text: 'text-orange-300', ring: 'ring-orange-800/40' };
-  if (cat.includes('evacuation'))
-    return { bg: 'bg-amber-900/30', text: 'text-amber-300', ring: 'ring-amber-800/40' };
-  if (cat.includes('weather') || cat.includes('water'))
-    return { bg: 'bg-blue-900/30', text: 'text-blue-300', ring: 'ring-blue-800/40' };
-  if (cat.includes('donation') || cat.includes('volunteer'))
-    return { bg: 'bg-emerald-900/30', text: 'text-emerald-300', ring: 'ring-emerald-800/40' };
-  return { bg: 'bg-slate-800/40', text: 'text-slate-400', ring: 'ring-slate-700/40' };
-}
+import { Brain, Filter, RefreshCw, AlertTriangle } from 'lucide-react';
+import { getCategoryBadge, getCategoryDisplay } from '../utils/categories';
 
 export default function SummaryPanel({
   summary,
@@ -39,95 +9,133 @@ export default function SummaryPanel({
   topLocations,
   byCategory,
   onRequestSummary,
-  canRequestSummary,
+  isLoadingSummary,
 }) {
   const locationList = topLocations || [];
   const categoryEntries = Object.entries(byCategory || {}).sort((a, b) => b[1] - a[1]);
 
   return (
-    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3">
-      {/* AI Disaster Summary */}
-      <div className="glass-card rounded-xl p-4">
-        <div className="flex items-center justify-between mb-3">
-          <div className="flex items-center gap-2">
-            <div className="w-8 h-8 rounded-lg bg-indigo-900/40 flex items-center justify-center">
-              <Brain className="w-4 h-4 text-indigo-400" />
+    <div className="grid grid-cols-1 lg:grid-cols-2 gap-3.5 w-full">
+      {/* AI Disaster Summary Card */}
+      <div className="glass-card rounded-xl p-4 border border-indigo-500/25 bg-gradient-to-br from-indigo-950/30 via-slate-900/60 to-slate-900/80 shadow-xl flex flex-col justify-between">
+        <div>
+          <div className="flex items-center justify-between mb-3">
+            <div className="flex items-center gap-2.5">
+              <div className="w-8 h-8 rounded-lg bg-indigo-600/30 border border-indigo-500/40 flex items-center justify-center shadow-md">
+                <Brain className="w-4 h-4 text-indigo-400" />
+              </div>
+              <div>
+                <div className="flex items-center gap-2">
+                  <h3 className="text-xs font-bold text-white tracking-wide uppercase font-[Outfit]">
+                    AI Situation Overview
+                  </h3>
+                  <span className="text-[9px] px-1.5 py-0.5 rounded-full bg-indigo-500/20 text-indigo-300 border border-indigo-500/30 font-semibold">
+                    Gemini Live
+                  </span>
+                </div>
+                <p className="text-[10px] text-slate-400">
+                  Real-time disaster synthesis across verified signal tweets
+                </p>
+              </div>
             </div>
-            <div>
-              <h3 className="text-xs font-semibold text-white">AI Situation Overview</h3>
-              <p className="text-[10px] text-slate-500">Gemini-powered disaster intelligence</p>
-            </div>
-          </div>
-          {canRequestSummary && (
-            <button
-              onClick={onRequestSummary}
-              className="flex items-center gap-1.5 text-[10px] px-2 py-1 rounded-lg bg-indigo-900/30 text-indigo-300 hover:bg-indigo-800/40 transition-all ring-1 ring-indigo-800/40"
-            >
-              <RefreshCw className="w-3 h-3" />
-              Re-generate
-            </button>
-          )}
-        </div>
-        <p className="text-xs text-slate-300 leading-relaxed">
-          {summary || 'No summary available. Click "Re-generate" or load a dataset to see the AI overview.'}
-        </p>
-      </div>
 
-      {/* Dynamic Filter Overview */}
-      <div className="glass-card rounded-xl p-4">
-        <div className="flex items-center gap-2 mb-3">
-          <div className="w-8 h-8 rounded-lg bg-cyan-900/40 flex items-center justify-center">
-            <Filter className="w-4 h-4 text-cyan-400" />
+            {/* Always visible Re-generate Summary button */}
+            <button
+              id="btn-regenerate-summary"
+              type="button"
+              onClick={onRequestSummary}
+              disabled={isLoadingSummary}
+              className="flex items-center gap-1.5 text-[11px] font-semibold px-3 py-1.5 rounded-lg bg-indigo-600/30 text-indigo-200 hover:bg-indigo-600/50 hover:text-white transition-all border border-indigo-500/40 shadow-sm active:scale-95 disabled:opacity-50 cursor-pointer"
+              title="Re-generate situational overview using Gemini AI"
+            >
+              <RefreshCw className={`w-3.5 h-3.5 ${isLoadingSummary ? 'animate-spin text-indigo-300' : 'text-indigo-400'}`} />
+              <span>{isLoadingSummary ? 'Generating...' : 'Re-generate Summary'}</span>
+            </button>
           </div>
-          <div>
-            <h3 className="text-xs font-semibold text-white">Current Filter Overview</h3>
-            <p className="text-[10px] text-slate-500">
-              {filteredRelevantCount} of {totalRelevantCount} relevant tweets shown
+
+          <div className="rounded-lg bg-slate-950/40 border border-indigo-500/15 p-3">
+            <p className="text-xs sm:text-[13px] text-slate-100 leading-relaxed font-normal">
+              {summary ||
+                'Generating real-time emergency intelligence summary from active flood signals...'}
             </p>
           </div>
         </div>
 
-        {/* Location breakdown */}
-        <div className="mb-2.5">
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-            Top Locations
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {locationList.slice(0, 6).map((loc) => (
-              <span
-                key={loc.name}
-                className="text-[10px] px-2 py-0.5 rounded-full bg-blue-900/30 text-blue-300 ring-1 ring-blue-800/40"
-              >
-                {loc.name} ({loc.count})
-              </span>
-            ))}
-            {locationList.length === 0 && (
-              <span className="text-[10px] text-slate-500">No locations extracted</span>
-            )}
+        <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-indigo-500/15 text-[10px] text-slate-400">
+          <span className="flex items-center gap-1.5 text-indigo-300">
+            <AlertTriangle className="w-3 h-3 text-amber-400" />
+            Priority for Emergency Operations & EMO Field Commanders
+          </span>
+          <span className="text-slate-500">Auto-updates on dataset ingestion</span>
+        </div>
+      </div>
+
+      {/* Dynamic Filter Overview Card */}
+      <div className="glass-card rounded-xl p-4 border border-cyan-500/25 bg-gradient-to-br from-cyan-950/20 via-slate-900/60 to-slate-900/80 shadow-xl flex flex-col justify-between">
+        <div>
+          <div className="flex items-center gap-2.5 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-cyan-600/30 border border-cyan-500/40 flex items-center justify-center shadow-md">
+              <Filter className="w-4 h-4 text-cyan-400" />
+            </div>
+            <div>
+              <h3 className="text-xs font-bold text-white tracking-wide uppercase font-[Outfit]">
+                Current Intelligence Breakdown
+              </h3>
+              <p className="text-[10px] text-slate-400">
+                Displaying <strong className="text-cyan-300">{filteredRelevantCount}</strong> of{' '}
+                <strong className="text-slate-200">{totalRelevantCount}</strong> verified signal reports
+              </p>
+            </div>
+          </div>
+
+          {/* Top Affected Locations */}
+          <div className="mb-3">
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+              Priority Hotspots
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {locationList.slice(0, 5).map((loc) => (
+                <span
+                  key={loc.name}
+                  className="text-[10px] font-medium px-2 py-0.5 rounded-full bg-blue-900/40 text-blue-200 border border-blue-700/50 shadow-sm"
+                >
+                  📍 {loc.name} <strong className="text-blue-300">({loc.count})</strong>
+                </span>
+              ))}
+              {locationList.length === 0 && (
+                <span className="text-[10px] text-slate-500 italic">No locations extracted</span>
+              )}
+            </div>
+          </div>
+
+          {/* Impact Categories Breakdown */}
+          <div>
+            <p className="text-[10px] font-bold text-slate-400 uppercase tracking-wider mb-1.5">
+              Impact Categories
+            </p>
+            <div className="flex flex-wrap gap-1.5">
+              {categoryEntries.map(([cat, count]) => {
+                const badge = getCategoryBadge(cat);
+                const label = getCategoryDisplay(cat);
+                return (
+                  <span
+                    key={cat}
+                    className={`text-[10px] font-medium px-2 py-0.5 rounded-full ${badge}`}
+                  >
+                    {label} <strong className="ml-1 opacity-90">({count})</strong>
+                  </span>
+                );
+              })}
+              {categoryEntries.length === 0 && (
+                <span className="text-[10px] text-slate-500 italic">No category data</span>
+              )}
+            </div>
           </div>
         </div>
 
-        {/* Impact breakdown */}
-        <div>
-          <p className="text-[10px] font-semibold text-slate-400 uppercase tracking-wider mb-1.5">
-            Impact Categories
-          </p>
-          <div className="flex flex-wrap gap-1.5">
-            {categoryEntries.map(([cat, count]) => {
-              const colors = getCategoryColors(cat);
-              return (
-                <span
-                  key={cat}
-                  className={`text-[10px] px-2 py-0.5 rounded-full ${colors.bg} ${colors.text} ring-1 ${colors.ring}`}
-                >
-                  {categoryLabel(cat)} ({count})
-                </span>
-              );
-            })}
-            {categoryEntries.length === 0 && (
-              <span className="text-[10px] text-slate-500">No category data</span>
-            )}
-          </div>
+        <div className="flex items-center justify-between pt-2.5 mt-2 border-t border-cyan-500/15 text-[10px] text-slate-400">
+          <span className="text-cyan-400/90 font-medium">MapAki GeoJSON Ready</span>
+          <span className="text-slate-500">Live coordinates validated</span>
         </div>
       </div>
     </div>

@@ -10,42 +10,16 @@ import {
   Navigation,
   ChevronDown,
 } from 'lucide-react';
-
-/** Nice display labels for backend category keys */
-const CATEGORY_LABELS = {
-  infrastructure_damage: 'Infrastructure',
-  evacuation: 'Evacuation',
-  rescue_help: 'Rescue / Help',
-  donations_volunteering: 'Donations',
-  weather_water_levels: 'Weather / Water',
-  sympathy_support: 'Sympathy',
-  other_related: 'Other',
-};
-
-function categoryLabel(key) {
-  if (!key) return 'Unknown';
-  return CATEGORY_LABELS[key] || key.replace(/_/g, ' ');
-}
-
-function getCategoryColor(category) {
-  if (!category) return 'bg-slate-700/40 text-slate-400';
-  const cat = category.toLowerCase();
-  if (cat.includes('rescue') || cat.includes('elder') || cat.includes('home'))
-    return 'bg-rose-500/15 text-rose-300 ring-1 ring-rose-500/30';
-  if (cat.includes('infrastructure') || cat.includes('road') || cat.includes('bridge'))
-    return 'bg-orange-500/15 text-orange-300 ring-1 ring-orange-500/30';
-  if (cat.includes('evacuation'))
-    return 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30';
-  if (cat.includes('weather') || cat.includes('water') || cat.includes('rising'))
-    return 'bg-blue-500/15 text-blue-300 ring-1 ring-blue-500/30';
-  if (cat.includes('donation') || cat.includes('volunteer'))
-    return 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30';
-  return 'bg-slate-700/40 text-slate-400';
-}
+import {
+  SYNCED_CATEGORIES,
+  getCategoryBadge,
+  getCategoryDisplay,
+  matchesCategory,
+} from '../utils/categories';
 
 function getConfidenceColor(confidence) {
-  if (confidence >= 0.8) return 'bg-emerald-500/15 text-emerald-300';
-  if (confidence >= 0.5) return 'bg-amber-500/15 text-amber-300';
+  if (confidence >= 0.8) return 'bg-emerald-500/15 text-emerald-300 ring-1 ring-emerald-500/30';
+  if (confidence >= 0.5) return 'bg-amber-500/15 text-amber-300 ring-1 ring-amber-500/30';
   return 'bg-slate-700/40 text-slate-400';
 }
 
@@ -110,13 +84,10 @@ export default function TweetFeed({
   // Active set
   const baseTweets = activeTab === 'signal' ? signalTweets : noiseTweets;
 
-  // Client-side filtering for fallback mode or noise tab
+  // Filtering for fallback mode or noise tab (and active signal filtering)
   const displayTweets = useMemo(() => {
-    // If in backend mode and on signal tab, tweets are already server-filtered
-    if (!useFallback && activeTab === 'signal') return baseTweets;
-
-    // Client-side filtering for fallback mode or noise tab
     let result = baseTweets;
+
     if (filterSearch.trim()) {
       const q = filterSearch.toLowerCase();
       result = result.filter((t) => {
@@ -125,74 +96,92 @@ export default function TweetFeed({
         return text.includes(q) || loc.includes(q);
       });
     }
+
     if (filterCategory && activeTab === 'signal') {
       result = result.filter((t) => {
         const cat = t.category || t.impact_category || '';
-        return cat === filterCategory;
+        return matchesCategory(cat, filterCategory);
       });
     }
+
     if (filterLocation) {
       result = result.filter((t) => {
         const name = getLocationName(t) || '';
         return name.toLowerCase().includes(filterLocation.toLowerCase());
       });
     }
+
     if (filterHasLocation) {
       result = result.filter(hasCoords);
     }
-    return result;
-  }, [baseTweets, filterSearch, filterCategory, filterLocation, filterHasLocation, useFallback, activeTab]);
 
-  // Build category pills from backend categories or fallback
+    return result;
+  }, [baseTweets, filterSearch, filterCategory, filterLocation, filterHasLocation, activeTab]);
+
+  // Category filter pills: standard 4 synced categories, plus any extra backend categories
   const categoryPills = useMemo(() => {
-    if (categories && categories.length > 0) return categories;
-    // Fallback categories
-    return [
-      'Elder / Home Water',
-      'Submerged Road / Bridge',
-      'Rising Water / Evacuation',
-    ];
+    const pills = [...SYNCED_CATEGORIES];
+
+    // If backend provided additional categories, append them if not already represented
+    if (categories && categories.length > 0) {
+      categories.forEach((catKey) => {
+        const alreadyCovered = pills.some((p) => matchesCategory(catKey, p.key));
+        if (!alreadyCovered) {
+          pills.push({
+            key: catKey,
+            label: getCategoryDisplay(catKey),
+            altLabel: catKey,
+            badgeClass: getCategoryBadge(catKey),
+            pillActiveClass: 'bg-indigo-600 text-white ring-2 ring-indigo-400',
+            pillInactiveClass: 'bg-slate-800/60 text-slate-300 border-slate-700 hover:border-indigo-500/50 hover:text-indigo-200',
+            dotBg: 'bg-indigo-500',
+          });
+        }
+      });
+    }
+
+    return pills;
   }, [categories]);
 
   return (
-    <div className="flex flex-col h-full glass-card rounded-xl overflow-hidden">
+    <div className="flex flex-col h-full glass-card rounded-xl overflow-hidden ring-1 ring-slate-800/80 shadow-2xl">
       {/* Tabs */}
       <div className="flex border-b border-slate-800/80">
         <button
           id="tab-signal"
           onClick={() => setActiveTab('signal')}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-semibold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold transition-all ${
             activeTab === 'signal'
-              ? 'text-emerald-400 border-b-2 border-emerald-400 bg-emerald-950/20'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'text-emerald-400 border-b-2 border-emerald-400 bg-emerald-950/25'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/30'
           }`}
         >
           <Signal className="w-3.5 h-3.5" />
           <span>Relevant Flood Reports</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-emerald-900/40 text-emerald-400">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-emerald-900/50 text-emerald-300 font-bold">
             {signalTweets.length}
           </span>
         </button>
         <button
           id="tab-noise"
           onClick={() => setActiveTab('noise')}
-          className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-semibold transition-all ${
+          className={`flex-1 flex items-center justify-center gap-2 py-3 text-xs font-bold transition-all ${
             activeTab === 'noise'
-              ? 'text-amber-400 border-b-2 border-amber-400 bg-amber-950/20'
-              : 'text-slate-400 hover:text-slate-200'
+              ? 'text-amber-400 border-b-2 border-amber-400 bg-amber-950/25'
+              : 'text-slate-400 hover:text-slate-200 hover:bg-slate-900/30'
           }`}
         >
           <ShieldOff className="w-3.5 h-3.5" />
           <span>Filtered Out (Noise)</span>
-          <span className="text-[10px] px-1.5 py-0.5 rounded-full bg-amber-900/40 text-amber-400">
+          <span className="text-[10px] px-2 py-0.5 rounded-full bg-amber-900/50 text-amber-300 font-bold">
             {noiseTweets.length}
           </span>
         </button>
       </div>
 
       {/* Filter Controls */}
-      <div className="p-3 border-b border-slate-800/60 space-y-2.5">
-        {/* Search */}
+      <div className="p-3 border-b border-slate-800/80 space-y-2.5 bg-slate-950/30">
+        {/* Search Input */}
         <div className="relative">
           <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-slate-500" />
           <input
@@ -201,50 +190,55 @@ export default function TweetFeed({
             placeholder="Search by tweet text or location..."
             value={filterSearch}
             onChange={(e) => setFilterSearch(e.target.value)}
-            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/80 border border-slate-800 text-xs text-slate-200 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/25 transition-all"
+            className="w-full pl-9 pr-3 py-2 rounded-lg bg-slate-900/90 border border-slate-800 text-xs text-slate-100 placeholder:text-slate-500 focus:outline-none focus:border-indigo-500/60 focus:ring-1 focus:ring-indigo-500/30 transition-all"
           />
         </div>
 
-        {/* Category pills — only show for signal tab */}
+        {/* Synced Category Filter Pills (Signal Tab only) */}
         {activeTab === 'signal' && (
-          <div className="flex flex-wrap gap-1.5">
+          <div className="flex flex-wrap items-center gap-1.5 pt-0.5">
             <button
               onClick={() => setFilterCategory('')}
-              className={`text-[10px] px-2.5 py-1 rounded-full font-medium transition-all ${
+              className={`text-[10px] px-2.5 py-1 rounded-full font-bold transition-all ${
                 filterCategory === ''
-                  ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                  : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 hover:text-slate-300'
+                  ? 'bg-slate-100 text-slate-900 shadow-sm'
+                  : 'bg-slate-800/70 text-slate-400 border border-slate-700/60 hover:text-slate-200 hover:bg-slate-700/60'
               }`}
             >
               All
             </button>
-            {categoryPills.map((cat) => (
-              <button
-                key={cat}
-                onClick={() => setFilterCategory(filterCategory === cat ? '' : cat)}
-                className={`text-[10px] px-2.5 py-1 rounded-full font-medium transition-all ${
-                  filterCategory === cat
-                    ? 'bg-indigo-600 text-white shadow-lg shadow-indigo-600/20'
-                    : 'bg-slate-800/60 text-slate-400 hover:bg-slate-700/60 hover:text-slate-300'
-                }`}
-              >
-                {categoryLabel(cat)}
-              </button>
-            ))}
+            {categoryPills.map((cat) => {
+              const isSelected = filterCategory === cat.key;
+              return (
+                <button
+                  key={cat.key}
+                  onClick={() => setFilterCategory(isSelected ? '' : cat.key)}
+                  className={`text-[10px] px-2.5 py-1 rounded-full font-medium transition-all flex items-center gap-1.5 border ${
+                    isSelected
+                      ? cat.pillActiveClass
+                      : cat.pillInactiveClass
+                  }`}
+                  title={`${cat.label} (Matches ${cat.altLabel || cat.label})`}
+                >
+                  <span className={`w-2 h-2 rounded-full ${cat.dotBg} shrink-0`} />
+                  <span>{cat.label}</span>
+                </button>
+              );
+            })}
           </div>
         )}
 
-        {/* Location dropdown + Mapped checkbox */}
+        {/* Location Dropdown & Mapped Filter */}
         <div className="flex items-center gap-2">
           <div className="relative flex-1">
             <select
               id="select-location"
               value={filterLocation}
               onChange={(e) => setFilterLocation(e.target.value)}
-              className="w-full appearance-none pl-3 pr-8 py-1.5 rounded-lg bg-slate-900/80 border border-slate-800 text-[11px] text-slate-200 focus:outline-none focus:border-indigo-500/50 transition-all"
+              className="w-full appearance-none pl-3 pr-8 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-[11px] text-slate-200 focus:outline-none focus:border-indigo-500/60 transition-all cursor-pointer"
             >
               {locations.map((loc) => (
-                <option key={loc} value={loc}>
+                <option key={loc} value={loc} className="bg-slate-900 text-slate-200">
                   {loc === '' ? 'All Locations' : loc}
                 </option>
               ))}
@@ -252,11 +246,10 @@ export default function TweetFeed({
             <ChevronDown className="absolute right-2.5 top-1/2 -translate-y-1/2 w-3 h-3 text-slate-500 pointer-events-none" />
           </div>
 
-          <label className="flex items-center gap-1.5 text-[11px] text-slate-400 cursor-pointer select-none whitespace-nowrap">
+          <label className="flex items-center gap-1.5 text-[11px] text-slate-300 cursor-pointer select-none whitespace-nowrap bg-slate-900/60 px-2.5 py-1.5 rounded-lg border border-slate-800 hover:border-slate-700 transition-all">
             <button
-              onClick={() =>
-                setFilterHasLocation(filterHasLocation ? null : true)
-              }
+              type="button"
+              onClick={() => setFilterHasLocation(filterHasLocation ? null : true)}
               className="text-slate-400 hover:text-indigo-400 transition-colors"
             >
               {filterHasLocation ? (
@@ -265,21 +258,47 @@ export default function TweetFeed({
                 <Square className="w-3.5 h-3.5" />
               )}
             </button>
-            Mapped Only
+            <span>Mapped Only</span>
           </label>
         </div>
 
-        <p className="text-[10px] text-slate-500">
-          Showing {displayTweets.length} tweets
-        </p>
+        <div className="flex items-center justify-between text-[10px] text-slate-400">
+          <span>
+            Showing <strong className="text-slate-200 font-semibold">{displayTweets.length}</strong> tweets
+          </span>
+          {filterCategory && (
+            <span className="text-indigo-400 font-medium flex items-center gap-1">
+              Filtered: {filterCategory}
+              <button
+                onClick={() => setFilterCategory('')}
+                className="hover:text-white underline text-[9px]"
+              >
+                (clear)
+              </button>
+            </span>
+          )}
+        </div>
       </div>
 
       {/* Tweet List */}
-      <div className="flex-1 overflow-y-auto p-2 space-y-2">
+      <div className="flex-1 overflow-y-auto p-2.5 space-y-2">
         {displayTweets.length === 0 && (
-          <div className="flex flex-col items-center justify-center py-12 text-slate-500">
-            <Search className="w-8 h-8 mb-2 opacity-40" />
-            <p className="text-xs">No tweets match your filters.</p>
+          <div className="flex flex-col items-center justify-center py-12 text-slate-500 space-y-2">
+            <Search className="w-8 h-8 opacity-40" />
+            <p className="text-xs font-medium">No tweets match the selected filters.</p>
+            {(filterSearch || filterCategory || filterLocation || filterHasLocation) && (
+              <button
+                onClick={() => {
+                  setFilterSearch('');
+                  setFilterCategory('');
+                  setFilterLocation('');
+                  setFilterHasLocation(null);
+                }}
+                className="text-[11px] text-indigo-400 hover:underline"
+              >
+                Reset all filters
+              </button>
+            )}
           </div>
         )}
 
@@ -295,60 +314,65 @@ function TweetCard({ tweet, onFlyTo }) {
   const loc = getFirstLocation(tweet);
   const coordsAvailable = loc?.lat != null && loc?.lng != null;
   const text = tweet.text || tweet.tweet_text || '';
-  const category = tweet.category || tweet.impact_category || null;
+  const rawCategory = tweet.category || tweet.impact_category || null;
   const confidence = tweet.confidence ?? null;
   const isRelevant = tweet.relevant ?? tweet.is_relevant ?? false;
   const timestamp = tweet.created_at || tweet.timestamp || null;
 
   return (
-    <div className="tweet-card p-3 rounded-lg bg-slate-900/40 border border-slate-800/60 space-y-2 animate-fade-in">
+    <div className="tweet-card p-3 rounded-xl bg-slate-900/60 border border-slate-800/80 space-y-2 animate-fade-in hover:border-slate-700 transition-all">
       {/* Badges row */}
       <div className="flex items-center gap-1.5 flex-wrap">
         {/* Relevance badge */}
         <span
-          className={`text-[10px] px-1.5 py-0.5 rounded font-semibold ${
+          className={`text-[10px] px-2 py-0.5 rounded-full font-bold uppercase tracking-wider ${
             isRelevant
-              ? 'bg-emerald-500/15 text-emerald-400'
-              : 'bg-slate-700/40 text-slate-500'
+              ? 'bg-emerald-500/20 text-emerald-300 ring-1 ring-emerald-500/40'
+              : 'bg-slate-800 text-slate-400 border border-slate-700'
           }`}
         >
-          {isRelevant ? 'RELEVANT' : 'NOISE'}
+          {isRelevant ? 'SIGNAL' : 'NOISE'}
         </span>
 
-        {/* Category badge */}
-        {category && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded ${getCategoryColor(category)}`}>
-            {categoryLabel(category)}
+        {/* Category badge with synced color */}
+        {rawCategory && (
+          <span
+            className={`text-[10px] px-2 py-0.5 rounded-full font-semibold ${getCategoryBadge(rawCategory)}`}
+          >
+            {getCategoryDisplay(rawCategory)}
           </span>
         )}
 
-        {/* Confidence */}
+        {/* Confidence score */}
         {confidence != null && (
-          <span className={`text-[10px] px-1.5 py-0.5 rounded font-medium ${getConfidenceColor(confidence)}`}>
-            {(confidence * 100).toFixed(0)}%
+          <span
+            className={`text-[10px] px-1.5 py-0.5 rounded-full font-medium ${getConfidenceColor(confidence)}`}
+          >
+            {(confidence * 100).toFixed(0)}% conf
           </span>
         )}
       </div>
 
       {/* Tweet text */}
-      <p className="text-xs text-slate-300 leading-relaxed">{text}</p>
+      <p className="text-xs text-slate-200 leading-relaxed font-normal">{text}</p>
 
       {/* Footer: location + timestamp */}
-      <div className="flex items-center justify-between gap-2">
+      <div className="flex items-center justify-between gap-2 pt-1 border-t border-slate-800/60">
         <div className="flex items-center gap-2 flex-wrap">
           {loc?.name && coordsAvailable && (
             <button
               onClick={() => onFlyTo({ lat: loc.lat, lng: loc.lng })}
-              className="flex items-center gap-1 text-[10px] text-blue-400 hover:text-blue-300 transition-colors group"
+              className="flex items-center gap-1 text-[11px] font-semibold text-blue-400 hover:text-blue-300 transition-colors group"
+              title="Click to zoom to location on map"
             >
-              <Navigation className="w-3 h-3 group-hover:scale-110 transition-transform" />
-              {loc.name}
+              <Navigation className="w-3 h-3 group-hover:scale-125 transition-transform text-blue-400" />
+              <span>{loc.name}</span>
             </button>
           )}
           {loc?.name && !coordsAvailable && (
-            <span className="flex items-center gap-1 text-[10px] text-slate-500">
-              <MapPin className="w-3 h-3" />
-              {loc.name}
+            <span className="flex items-center gap-1 text-[10px] text-slate-400">
+              <MapPin className="w-3 h-3 text-slate-500" />
+              <span>{loc.name}</span>
             </span>
           )}
         </div>
