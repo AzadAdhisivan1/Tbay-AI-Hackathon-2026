@@ -9,7 +9,7 @@ import time
 import uuid
 from typing import Dict, List, Optional
 
-from .config import DATASETS_DIR
+from .config import DATASETS_DIR, DEFAULT_DATASET_ID
 
 _lock = threading.Lock()
 datasets: Dict[str, Dict] = {}  # id -> {"id", "name", "created_at", "tweets": [...]}
@@ -41,9 +41,12 @@ def get_dataset(dataset_id: str) -> Optional[Dict]:
 def list_datasets() -> List[Dict]:
     return [
         {"id": d["id"], "name": d["name"], "created_at": d["created_at"],
-         "processing": d.get("processing", False),
+         "processing": d.get("processing", False), "builtin": d.get("builtin", False),
+         "default": d["id"] == DEFAULT_DATASET_ID,
+         "scope": d.get("scope", "regional"),
          "total": len(d["tweets"]), "relevant": sum(1 for t in d["tweets"] if t.get("relevant"))}
-        for d in sorted(datasets.values(), key=lambda d: d["created_at"], reverse=True)
+        for d in sorted(datasets.values(), key=lambda d: (d["id"] != DEFAULT_DATASET_ID,
+                                                          not d.get("builtin"), -d["created_at"]))
     ]
 
 

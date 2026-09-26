@@ -17,12 +17,31 @@ uvicorn app.main:app --reload --port 8000
 
 Open http://localhost:8000/docs for interactive API docs where you can try every endpoint.
 
-The provided dataset (`CE Strategies/main_contestant.csv`) is available as dataset id
-**`sample`**. It loads instantly from `data/sample_seed.json` (committed). That file is
-tagged with a fingerprint of the AI/geocoding code; if the code changes, the server
-reprocesses the sample on startup and rewrites the seed. **Commit the new
-`sample_seed.json` and `geocode_cache.json` after changing the AI** so the deployed
-server doesn't reprocess on every cold start.
+Two **built-in datasets** load instantly from gzipped seeds in `data/seeds/` (committed):
+
+| id | Source | Scope |
+|---|---|---|
+| `sample` | `CE Strategies/main_contestant.csv` (Alberta floods 2013, 8,024 tweets) | `regional` |
+| `bonus` | `CE Strategies/bonus_contestant.csv` (world disasters, 61,159 tweets) | `world` — **default** |
+
+The UI should open `default_id` from `GET /api/datasets` (set via `"default": True` in
+`BUILTIN_DATASETS` in `app/config.py`).
+
+Seeds are tagged with a fingerprint of the AI/geocoding code (`app/ai.py`, `app/geocode.py`,
+`app/pipeline.py`, `ai_workflow/{analyzer,prompt_template,geocoder}.py`). If that code changes,
+the server rebuilds the built-ins on startup **with the free rule engine only** and
+rewrites the seeds. **Commit `data/seeds/` and `data/geocode_cache.json` after changing
+the AI** so the deployed server doesn't rebuild on every cold start.
+
+**"Relevant" means flood-related** (shared agreement with the AI/UI teams). Every tweet
+also gets a `disaster_type`: `flood`, `storm`, `wildfire`, `earthquake`, `explosion`,
+`shooting`, `transport_accident`, `haze`, `other`, `none`. Tweets about non-flood disasters are
+never relevant (backend policy in `ai.py`, applied to Gemini and rule-engine output alike).
+
+**Map scope:** `regional` datasets bound OpenStreetMap lookups to ~300 km around the
+disaster; `world` datasets look places up anywhere. Uploads are auto-detected (the 15
+most-mentioned places are looked up worldwide; spread out = `world`) or forced with
+`POST /api/datasets?scope=world|regional`.
 
 ## Project layout
 
@@ -47,12 +66,15 @@ can't handle (disabled, quota guard hit, error, missing rows) falls back to the
 - No automatic retries of LLM calls.
 - The LLM stops once `requests_remaining` ≤ `LLM_MIN_REMAINING` (default 40, kept for summaries).
 - At most `LLM_MAX_REQUESTS_PER_DATASET` (default 170 ≈ 8,500 tweets) per upload.
+- **Pre-filter:** if a dataset needs more requests than its cap, only likely-flood tweets
+  go to Gemini (clear flood words first, then rain/storm/river/evacuation words); the
+  rest use the free rule engine. The 61k-tweet bonus → ~12.7k candidates → ~254 requests.
 - Summaries are one request each, cached per identical filter result.
-- **The provided sample never spends quota on a server.** It loads from `data/sample_seed.json`.
-  If the AI/geocoding code changes, the server reprocesses it with the rule engine only.
-  To refresh the Gemini version, run locally once and commit the new seed:
+- **Built-in datasets never spend quota on a server.** To build the Gemini versions,
+  run locally ONCE after the AI prompts are final, then commit `data/seeds/`:
   ```bash
-  SAMPLE_USE_LLM=1 uvicorn app.main:app --port 8000   # ~160 requests, ~15 min
+  rm data/seeds/*.json.gz data/datasets/*.json
+  BUILTIN_USE_LLM=1 uvicorn app.main:app --port 8000   # sample ~161 + bonus ~254 requests
   ```
 - Testing uploads locally? Set `LLM_ENABLED=0` in `.env` to avoid spending quota.
 
@@ -70,19 +92,19 @@ Base URL: `http://localhost:8000` locally. Use `import.meta.env.VITE_API_URL` in
 |---|---|---|
 | `GET /api/health` | Health check | `{ok: true}` |
 | `GET /api/ai/status` | Is Gemini live? (for the "Gemini Live" badge) | `{active, enabled, requests_remaining, model, ...}` |
-| `GET /api/categories` | Filter options | `{categories: [...], severities: [critical, high, medium, low]}` |
+| `GET /api/categories` | Filter options | `{categories: [...], severities: [...], disaster_types: [...]}` |
 | `POST /api/datasets` (multipart `file`) | Upload a CSV | `{dataset_id, job_id, total}` (202) |
 | `GET /api/jobs/{job_id}` | Poll progress every ~1s | `{status: queued\|running\|done\|failed, stage: classifying\|geocoding\|done, processed, total, dataset_ready, places_done, places_total, ai_failed, error}` |
-| `GET /api/datasets` | Previously processed datasets | `{datasets: [{id, name, total, relevant, processing}]}` |
-| `GET /api/datasets/{id}/stats` | KPI cards / charts | `{total, relevant, unrelated, with_location, by_category, by_severity, top_locations: [{name, count}], anchor: [lat, lon], has_timestamps, processing}` |
-| `GET /api/datasets/{id}/tweets` | Tweet list | `{total, tweets: [{id, text, created_at, ts, relevant, confidence, category, severity, reasoning, locations: [{name, lat, lon}], meta}]}` |
+| `GET /api/datasets` | Default first, then built-ins, then uploads | `{default_id: "bonus", datasets: [{id, name, total, relevant, processing, builtin, default, scope}]}` |
+| `GET /api/datasets/{id}/stats` | KPI cards / charts | `{total, relevant, unrelated, with_location, by_category, by_severity, by_disaster_type, top_locations: [{name, count}], scope: regional\|world, anchor: [lat, lon] or null, has_timestamps, ai_sources, builtin, processing}` |
+| `GET /api/datasets/{id}/tweets` | Tweet list | `{total, tweets: [{id, text, created_at, ts, relevant, confidence, category, severity, disaster_type, reasoning, ai_source, locations: [{name, lat, lon}], meta}]}` |
 | `GET /api/datasets/{id}/geojson` | Map layer | GeoJSON `FeatureCollection` of Points (properties include `severity`) |
 | `GET /api/datasets/{id}/timeline?interval=hour\|day` | Activity over time | `{available, buckets: [{t, total, relevant, by_category}]}` (`available: false` if the CSV has no dates) |
 | `GET /api/datasets/{id}/export.csv` | Download classified tweets | CSV file (link to it directly; takes the same filters) |
 | `POST /api/datasets/{id}/summary` | AI overview of the filtered tweets | `{summary, tweet_count}` |
 
 **Filters** (query params; JSON body on `/summary`): `relevant` (`true` default, `false`, or `all`),
-`category` and `severity` (comma-separated), `q` (text search), `location` (substring of place
+`category`, `severity` and `disaster_type` (comma-separated), `q` (text search), `location` (substring of place
 name), `min_confidence`. `/tweets` also takes `has_location`, `sort`
 (`original`\|`severity`\|`confidence`\|`time`), `limit` (max 1000), `offset`.
 
@@ -117,7 +139,7 @@ Render → New → **Web Service** → **Public Git Repository** →
 | Instance Type | Free |
 
 Environment variables: `PYTHON_VERSION=3.11.9`, `NODE_VERSION=22`, `HACKATHON_API_KEY` (secret).
-Do NOT set `SAMPLE_USE_LLM` on Render.
+Do NOT set `BUILTIN_USE_LLM` on Render.
 Optional tuning: `AI_CONCURRENCY` (parallel AI batches, default 4 — lower it if the model
 rate-limits), `BATCH_SIZE` (default 50), `GEOCODE_MAX_LOOKUPS` (new OpenStreetMap lookups
 per upload, default 250), `GEOCODE_COUNTRY_CODES` (country tried first, default `ca`).

@@ -132,9 +132,146 @@
 }
 ],
 "albertans|51.0,-114.1": [],
+"albion park|51.0,-114.1": [],
+"albion park|any": [
+{
+"cat": "boundary",
+"lat": -34.5708425,
+"lon": 150.7752326,
+"n": "Albion Park",
+"name": "Albion Park, New South Wales, Australia",
+"rank": 18
+},
+{
+"cat": "railway",
+"lat": -34.5629223,
+"lon": 150.7986248,
+"n": "Albion Park",
+"name": "Albion Park, Princes Highway, Albion Park Rail",
+"rank": 30
+},
+{
+"cat": "leisure",
+"lat": -27.3255972,
+"lon": 153.0219831,
+"n": "Albion Park",
+"name": "Albion Park, Bracken Ridge, Brisbane",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": -32.0195801,
+"lon": 115.9522163,
+"n": "Albion Park",
+"name": "Albion Park, East Cannington, Perth",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 53.7987772,
+"lon": -1.5710579,
+"n": "Albion Park",
+"name": "Albion Park, Hyde Park, Leeds",
+"rank": 24
+}
+],
+"alexandra headland|51.0,-114.1": [],
+"alexandra headland|any": [
+{
+"cat": "boundary",
+"lat": -26.669602,
+"lon": 153.1017526,
+"n": "Alexandra Headland",
+"name": "Alexandra Headland, Sunshine Coast, Queensland",
+"rank": 18
+},
+{
+"cat": "place",
+"lat": -26.6669432,
+"lon": 153.1028931,
+"n": "Alexandra Headland",
+"name": "Alexandra Headland, Sunshine Coast, Queensland",
+"rank": 19
+},
+{
+"cat": "natural",
+"lat": -26.6725728,
+"lon": 153.1135563,
+"n": "Alexandra Headland",
+"name": "Alexandra Headland, Mooloolaba, Sunshine Coast",
+"rank": 22
+}
+],
+"angeles city|51.0,-114.1": [],
+"angeles city|any": [
+{
+"cat": "boundary",
+"lat": 34.0536909,
+"lon": -118.242766,
+"n": "Los Angeles",
+"name": "Los Angeles, Los Angeles County, California",
+"rank": 16
+},
+{
+"cat": "place",
+"lat": 19.0437975,
+"lon": -98.1981513,
+"n": "Puebla",
+"name": "Puebla, Municipio de Puebla, Puebla",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 15.1348084,
+"lon": 120.5906946,
+"n": "Angeles",
+"name": "Angeles, Central Luzon, Philippines",
+"rank": 12
+}
+],
+"australia queensland|51.0,-114.1": [],
+"australia queensland|any": [
+{
+"cat": "boundary",
+"lat": -22.1646782,
+"lon": 144.5844903,
+"n": "Queensland",
+"name": "Queensland, Australia",
+"rank": 8
+}
+],
 "australia|51.0,-114.1": [],
+"ayala malls|51.0,-114.1": [],
+"ayala malls|any": [
+{
+"cat": "shop",
+"lat": 14.7364859,
+"lon": 121.0600276,
+"n": "Fairview Terraces",
+"name": "Fairview Terraces, Quirino Highway, Pasong Putik Proper",
+"rank": 30
+},
+{
+"cat": "landuse",
+"lat": 15.4706613,
+"lon": 120.9780769,
+"n": "Ayala Malls",
+"name": "Ayala Malls, Cabanatuan, Nueva Ecija",
+"rank": 24
+},
+{
+"cat": "shop",
+"lat": 14.3836062,
+"lon": 120.9609534,
+"n": "Ayala Malls Vermosa",
+"name": "Ayala Malls Vermosa, Daang Hari, Vermosa",
+"rank": 30
+}
+],
 "bad scuba|51.0,-114.1": [],
 "bangaladesh|51.0,-114.1": [],
+"bangladesh rubble|51.0,-114.1": [],
+"bangladesh rubble|any": [],
 "bangor tuesday|51.0,-114.1": [],
 "beltline, calgary|51.0,-114.1": [
 {
@@ -156,6 +293,58 @@
 "rank": 20
 }
 ],
+"bison drive|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 48.1812181,
+"lon": -114.2956178,
+"n": "Bison Drive",
+"name": "Bison Drive, Flathead County, Montana",
+"rank": 26
+}
+],
+"bison drive|any": [
+{
+"cat": "highway",
+"lat": 51.5013575,
+"lon": -0.3678705,
+"n": "Bison Drive",
+"name": "Bison Drive, Havelock Estate, London Borough of Ealing",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 43.7900447,
+"lon": -79.4440309,
+"n": "Bison Drive",
+"name": "Bison Drive, Newtonbrook West, Willowdale",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 29.7763036,
+"lon": -95.6204301,
+"n": "Bison Drive",
+"name": "Bison Drive, Woods on Memorial, Energy Corridor",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 35.3107201,
+"lon": -97.5428591,
+"n": "Bison Drive",
+"name": "Bison Drive, Oklahoma City, Cleveland County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 49.7951976,
+"lon": -97.1950323,
+"n": "Bison Drive",
+"name": "Bison Drive, Bridgwater Centre, Waverley West",
+"rank": 26
+}
+],
 "blackie|51.0,-114.1": [
 {
 "cat": "place",
@@ -167,6 +356,110 @@
 }
 ],
 "bonavista rec ctr|51.0,-114.1": [],
+"boulder county|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 48.9569182,
+"lon": -114.0904578,
+"n": "Boulder Glacier",
+"name": "Boulder Glacier, Flathead County, Montana",
+"rank": 22
+},
+{
+"cat": "natural",
+"lat": 48.5263826,
+"lon": -116.1809105,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Boundary County, Idaho",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.7514386,
+"lon": -116.9949045,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Bonner County, Idaho",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.4582399,
+"lon": -117.454123,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Pend Oreille County, Washington",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.8266246,
+"lon": -115.4540668,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Lincoln County, Montana",
+"rank": 18
+}
+],
+"boulder county|any": [
+{
+"cat": "boundary",
+"lat": 40.102555,
+"lon": -105.3632079,
+"n": "Boulder County",
+"name": "Boulder County, Colorado, United States",
+"rank": 12
+}
+],
+"boulder co|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 48.9569182,
+"lon": -114.0904578,
+"n": "Boulder Glacier",
+"name": "Boulder Glacier, Flathead County, Montana",
+"rank": 22
+},
+{
+"cat": "natural",
+"lat": 48.5263826,
+"lon": -116.1809105,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Boundary County, Idaho",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.7514386,
+"lon": -116.9949045,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Bonner County, Idaho",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.4582399,
+"lon": -117.454123,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Pend Oreille County, Washington",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": 48.8266246,
+"lon": -115.4540668,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Lincoln County, Montana",
+"rank": 18
+}
+],
+"boulder co|any": [
+{
+"cat": "boundary",
+"lat": 40.102555,
+"lon": -105.3632079,
+"n": "Boulder County",
+"name": "Boulder County, Colorado, United States",
+"rank": 12
+}
+],
 "bow city|51.0,-114.1": [
 {
 "cat": "place",
@@ -325,6 +618,25 @@
 "rank": 30
 }
 ],
+"brisbane australia|51.0,-114.1": [],
+"brisbane australia|any": [
+{
+"cat": "place",
+"lat": -27.4689623,
+"lon": 153.0235009,
+"n": "Brisbane",
+"name": "Brisbane, Queensland, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -27.4693645,
+"lon": 152.9687926,
+"n": "City of Brisbane",
+"name": "City of Brisbane, Queensland, Australia",
+"rank": 12
+}
+],
 "britannia, calgary|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -335,7 +647,137 @@
 "rank": 20
 }
 ],
+"brookside cainta|51.0,-114.1": [],
+"brookside cainta|any": [
+{
+"cat": "landuse",
+"lat": 14.5890417,
+"lon": 121.1215527,
+"n": "Brookside Hills Area 6",
+"name": "Brookside Hills Area 6, Santo Domingo, Cainta",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 14.5881173,
+"lon": 121.1277615,
+"n": "Brookside Hills Subdivision Oval Park",
+"name": "Brookside Hills Subdivision Oval Park, Santo Ni\u00f1o, Cainta",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 14.5889196,
+"lon": 121.1234512,
+"n": "Brookside Hills",
+"name": "Brookside Hills, Santo Ni\u00f1o, Cainta",
+"rank": 25
+},
+{
+"cat": "highway",
+"lat": 14.5884026,
+"lon": 121.1179501,
+"n": "Brookside Drive",
+"name": "Brookside Drive, Park Place 1, Santo Domingo",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 14.5902323,
+"lon": 121.1198393,
+"n": "Brookside Drive Ext.",
+"name": "Brookside Drive Ext., Gruar Phase 1, Santo Domingo",
+"rank": 26
+}
+],
 "bruce willis|51.0,-114.1": [],
+"bundaberg australia|51.0,-114.1": [],
+"bundaberg australia|any": [
+{
+"cat": "place",
+"lat": -24.8653253,
+"lon": 152.3516785,
+"n": "Bundaberg",
+"name": "Bundaberg, Queensland, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -24.8677788,
+"lon": 152.35112,
+"n": "Bundaberg Central",
+"name": "Bundaberg Central, Bundaberg, Queensland",
+"rank": 18
+}
+],
+"bundaberg queensland|51.0,-114.1": [],
+"bundaberg queensland|any": [
+{
+"cat": "place",
+"lat": -24.8653253,
+"lon": 152.3516785,
+"n": "Bundaberg",
+"name": "Bundaberg, Queensland, Australia",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -24.8677788,
+"lon": 152.35112,
+"n": "Bundaberg Central",
+"name": "Bundaberg Central, Bundaberg, Queensland",
+"rank": 18
+}
+],
+"burnett heads|51.0,-114.1": [],
+"burnett heads|any": [
+{
+"cat": "boundary",
+"lat": -24.7656579,
+"lon": 152.4096358,
+"n": "Burnett Heads",
+"name": "Burnett Heads, Queensland, Australia",
+"rank": 18
+}
+],
+"cactus jacks|51.0,-114.1": [],
+"cactus jacks|any": [
+{
+"cat": "amenity",
+"lat": 53.3470288,
+"lon": -6.2652084,
+"n": "Cactus Jacks",
+"name": "Cactus Jacks, Millennium Walkway, Italian Quarter",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 29.0037467,
+"lon": -13.4873053,
+"n": "Cactus Jacks",
+"name": "Cactus Jacks, Calle Las Acacias, Costa Teguise",
+"rank": 30
+}
+],
+"calamba city|51.0,-114.1": [],
+"calamba city|any": [
+{
+"cat": "highway",
+"lat": 14.2066432,
+"lon": 121.1550581,
+"n": "Calamba City",
+"name": "Calamba City, National Highway 1, Barangay 1",
+"rank": 30
+},
+{
+"cat": "boundary",
+"lat": 14.2060217,
+"lon": 121.1556496,
+"n": "Calamba",
+"name": "Calamba, Laguna, Calabarzon",
+"rank": 12
+}
+],
 "calgarian day|51.0,-114.1": [],
 "calgarians|51.0,-114.1": [],
 "calgarian|51.0,-114.1": [],
@@ -567,6 +1009,49 @@
 "rank": 30
 }
 ],
+"california trust|51.0,-114.1": [],
+"california trust|any": [
+{
+"cat": "natural",
+"lat": 37.4513551,
+"lon": -122.4416495,
+"n": "Peninsula Open Space Trust",
+"name": "Peninsula Open Space Trust, Half Moon Bay, San Mateo County",
+"rank": 22
+},
+{
+"cat": "natural",
+"lat": 34.2296439,
+"lon": -116.2379761,
+"n": "Mojave Desert Land Trust",
+"name": "Mojave Desert Land Trust, Sunfair Heights, San Bernardino County",
+"rank": 22
+},
+{
+"cat": "natural",
+"lat": 37.1241015,
+"lon": -122.2578042,
+"n": "Sempervirens Land Trust",
+"name": "Sempervirens Land Trust, Last Chance, Santa Cruz County",
+"rank": 22
+},
+{
+"cat": "leisure",
+"lat": 36.8853451,
+"lon": -119.7802715,
+"n": "Parkway Trust / Caglia",
+"name": "Parkway Trust / Caglia, Fresno, Fresno County",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 33.9291587,
+"lon": -117.5015804,
+"n": "Doty-Trust Park",
+"name": "Doty-Trust Park, Riverside, Riverside County",
+"rank": 24
+}
+],
 "cambodian orphanage|51.0,-114.1": [],
 "cambridge|51.0,-114.1": [
 {
@@ -612,7 +1097,96 @@
 ],
 "canada blog|51.0,-114.1": [],
 "canada causes|51.0,-114.1": [],
+"cane ros|51.0,-114.1": [],
+"cane ros|any": [
+{
+"cat": "amenity",
+"lat": 39.3513026,
+"lon": -82.9772942,
+"n": "Raising Cane's",
+"name": "Raising Cane's, North Bridge Street, Chillicothe",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 46.6799024,
+"lon": -1.0483232,
+"n": "Cane de l'Arquignon",
+"name": "Cane de l'Arquignon, Avenue Georges Clemenceau, Chantonnay",
+"rank": 30
+}
+],
 "canmore rolling|51.0,-114.1": [],
+"celebrity lane|51.0,-114.1": [],
+"celebrity lane|any": [
+{
+"cat": "highway",
+"lat": 37.6842073,
+"lon": -121.0320212,
+"n": "Celebrity Lane",
+"name": "Celebrity Lane, Modesto, Stanislaus County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 39.1668949,
+"lon": -77.0247375,
+"n": "Celebrity Lane",
+"name": "Celebrity Lane, Brinklow, Sandy Spring",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 38.0946911,
+"lon": -78.9630367,
+"n": "Celebrity Lane",
+"name": "Celebrity Lane, Jefferson Court, Fishersville",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 36.6873143,
+"lon": -81.9110094,
+"n": "Celebrity Lane",
+"name": "Celebrity Lane, Ashleys, Washington County",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 30.5278345,
+"lon": -90.5273319,
+"n": "Celebrity Lane",
+"name": "Celebrity Lane, Kin Tally, Tangipahoa Parish",
+"rank": 26
+}
+],
+"central queensland|51.0,-114.1": [],
+"central queensland|any": [
+{
+"cat": "highway",
+"lat": -10.6198947,
+"lon": 142.2855067,
+"n": "Central",
+"name": "Central, Horn, Queensland",
+"rank": 26
+},
+{
+"cat": "railway",
+"lat": -27.4654607,
+"lon": 153.0259412,
+"n": "Central",
+"name": "Central, Turbot Street, Golden Triangle",
+"rank": 30
+},
+{
+"cat": "railway",
+"lat": -27.4657312,
+"lon": 153.0262082,
+"n": "Central",
+"name": "Central, Ann Street, Golden Triangle",
+"rank": 30
+}
+],
 "cgy|51.0,-114.1": [],
 "chaparral valley|51.0,-114.1": [
 {
@@ -688,6 +1262,48 @@
 "rank": 24
 }
 ],
+"chinatown|any": [
+{
+"cat": "place",
+"lat": 40.7164913,
+"lon": -73.9962504,
+"n": "Chinatown",
+"name": "Chinatown, Lower Manhattan, Manhattan",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 37.7943011,
+"lon": -122.4063757,
+"n": "Chinatown",
+"name": "Chinatown, San Francisco, California",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 34.0638402,
+"lon": -118.2358676,
+"n": "Chinatown",
+"name": "Chinatown, Los Angeles, Los Angeles County",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 51.5116245,
+"lon": -0.1305023,
+"n": "Chinatown",
+"name": "Chinatown, City of Westminster, Greater London",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 42.3513291,
+"lon": -71.0626228,
+"n": "Chinatown",
+"name": "Chinatown, Boston, Suffolk County",
+"rank": 19
+}
+],
 "chinook mall|51.0,-114.1": [
 {
 "cat": "shop",
@@ -745,7 +1361,99 @@
 "rank": 20
 }
 ],
+"colorado foothills|51.0,-114.1": [],
+"colorado foothills|any": [
+{
+"cat": "highway",
+"lat": 38.918263,
+"lon": -104.872925,
+"n": "Foothills",
+"name": "Foothills, Colorado Springs, El Paso County",
+"rank": 27
+},
+{
+"cat": "water",
+"lat": 40.1857503,
+"lon": -105.2245217,
+"n": "Foothills Reservoir",
+"name": "Foothills Reservoir, Boulder County, Colorado",
+"rank": 20
+}
+],
+"colorado rockies|51.0,-114.1": [],
+"colorado rockies|any": [
+{
+"cat": "amenity",
+"lat": 38.3554154,
+"lon": -105.0950574,
+"n": "United States Penitentiary, Administrative Maximum Facility",
+"name": "United States Penitentiary, Administrative Maximum Facility, Needham Lane",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 40.4093559,
+"lon": -104.9117023,
+"n": "Bobcat of the Rockies",
+"name": "Bobcat of the Rockies, Champion Drive, Windsor",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 39.7210515,
+"lon": -104.8954657,
+"n": "Wings Over the Rockies Air & Space Museum",
+"name": "Wings Over the Rockies Air & Space Museum, East Academy Boulevard, Denver",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 39.9833683,
+"lon": -105.2500924,
+"n": "Culinary School of the Rockies",
+"name": "Culinary School of the Rockies, South Broadway, Martin Acres",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 40.4154198,
+"lon": -104.9974664,
+"n": "Medical Center of the Rockies",
+"name": "Medical Center of the Rockies, Rocky Mountain Avenue, Loveland",
+"rank": 30
+}
+],
+"colorado springs|51.0,-114.1": [],
+"colorado springs|any": [
+{
+"cat": "boundary",
+"lat": 38.8339578,
+"lon": -104.825348,
+"n": "Colorado Springs",
+"name": "Colorado Springs, El Paso County, Colorado",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 38.7990272,
+"lon": -104.7983255,
+"n": "Colorado Springs",
+"name": "Colorado Springs, El Paso County, Colorado",
+"rank": 16
+}
+],
 "community associations|51.0,-114.1": [],
+"compostela valley|51.0,-114.1": [],
+"compostela valley|any": [
+{
+"cat": "boundary",
+"lat": 7.45,
+"lon": 126.07,
+"n": "Davao de Oro",
+"name": "Davao de Oro, Davao Region, Philippines",
+"rank": 8
+}
+],
 "connaught|51.0,-114.1": [
 {
 "cat": "place",
@@ -796,6 +1504,33 @@
 "n": "Cougar Creek",
 "name": "Cougar Creek, Cairns on the Bow, Spring Creek Mountain Village",
 "rank": 22
+}
+],
+"crangan bay|51.0,-114.1": [],
+"crangan bay|any": [
+{
+"cat": "boundary",
+"lat": -33.1672353,
+"lon": 151.5957532,
+"n": "Crangan Bay",
+"name": "Crangan Bay, New South Wales, Australia",
+"rank": 18
+},
+{
+"cat": "natural",
+"lat": -33.138929,
+"lon": 151.5956793,
+"n": "Crangan Bay",
+"name": "Crangan Bay, New South Wales, Australia",
+"rank": 22
+},
+{
+"cat": "landuse",
+"lat": -33.1538922,
+"lon": 151.5882691,
+"n": "Crangan Bay",
+"name": "Crangan Bay, New South Wales, Australia",
+"rank": 24
 }
 ],
 "crescent heights|51.0,-114.1": [
@@ -851,6 +1586,48 @@
 "n": "Deer Park",
 "name": "Deer Park, Parkland County, Alberta",
 "rank": 26
+}
+],
+"deer park|any": [
+{
+"cat": "boundary",
+"lat": 42.1608585,
+"lon": -88.0814651,
+"n": "Deer Park",
+"name": "Deer Park, Ela Township, Lake County",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 29.7052284,
+"lon": -95.1238204,
+"n": "Deer Park",
+"name": "Deer Park, Harris County, Texas",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 40.7622495,
+"lon": -73.3228592,
+"n": "Deer Park",
+"name": "Deer Park, Town of Babylon, Suffolk County",
+"rank": 25
+},
+{
+"cat": "place",
+"lat": 40.7617653,
+"lon": -73.3292858,
+"n": "Deer Park",
+"name": "Deer Park, Town of Babylon, Suffolk County",
+"rank": 18
+},
+{
+"cat": "boundary",
+"lat": 39.2053367,
+"lon": -84.3946627,
+"n": "Deer Park",
+"name": "Deer Park, Hamilton County, Ohio",
+"rank": 16
 }
 ],
 "deer run|51.0,-114.1": [
@@ -909,7 +1686,68 @@
 "rank": 20
 }
 ],
+"discovery ridge|any": [
+{
+"cat": "boundary",
+"lat": 51.012741,
+"lon": -114.203496,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "natural",
+"lat": 64.4999296,
+"lon": -138.1326964,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Yukon, Canada",
+"rank": 22
+},
+{
+"cat": "landuse",
+"lat": 50.4819638,
+"lon": -104.4080216,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Pilot Butte, Saskatchewan",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 45.8140195,
+"lon": -122.7004737,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Ridgefield, Clark County",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 45.8208222,
+"lon": -122.6987426,
+"n": "Discovery Ridge",
+"name": "Discovery Ridge, Ridgefield, Clark County",
+"rank": 24
+}
+],
 "earls 16th ave, calgary|51.0,-114.1": [],
+"east brisbane|51.0,-114.1": [],
+"east brisbane|any": [
+{
+"cat": "boundary",
+"lat": -27.483124,
+"lon": 153.0464312,
+"n": "East Brisbane",
+"name": "East Brisbane, Brisbane, Queensland",
+"rank": 18
+},
+{
+"cat": "place",
+"lat": -27.4832497,
+"lon": 153.0455745,
+"n": "East Brisbane",
+"name": "East Brisbane, Brisbane, Queensland",
+"rank": 19
+}
+],
 "east elbow park|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -962,6 +1800,91 @@
 "rank": 26
 }
 ],
+"east village|any": [
+{
+"cat": "place",
+"lat": 40.7292688,
+"lon": -73.9873613,
+"n": "East Village",
+"name": "East Village, Manhattan Community Board 3, Manhattan",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 32.713731,
+"lon": -117.1536398,
+"n": "East Village",
+"name": "East Village, Downtown San Diego, San Diego",
+"rank": 20
+},
+{
+"cat": "place",
+"lat": 51.5477822,
+"lon": -0.0097187,
+"n": "East Village",
+"name": "East Village, Stratford, London Borough of Newham",
+"rank": 24
+},
+{
+"cat": "landuse",
+"lat": 41.5899386,
+"lon": -93.6128492,
+"n": "East Village",
+"name": "East Village, Des Moines, Polk County",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 44.7577854,
+"lon": -93.4471047,
+"n": "East Village",
+"name": "East Village, Shakopee, Scott County",
+"rank": 16
+}
+],
+"eastern australia|51.0,-114.1": [],
+"eastern australia|any": [
+{
+"cat": "amenity",
+"lat": -37.9199321,
+"lon": 145.2644571,
+"n": "Rowville Secondary College Eastern Campus",
+"name": "Rowville Secondary College Eastern Campus, Humphreys Way, Park Ridge",
+"rank": 30
+},
+{
+"cat": "boundary",
+"lat": -33.8059423,
+"lon": 150.849956,
+"n": "Eastern Creek",
+"name": "Eastern Creek, Sydney, New South Wales",
+"rank": 18
+},
+{
+"cat": "amenity",
+"lat": -37.8098382,
+"lon": 144.9751285,
+"n": "St Peter's Eastern Hill",
+"name": "St Peter's Eastern Hill, Albert Street, East Melbourne",
+"rank": 30
+},
+{
+"cat": "highway",
+"lat": -35.1066458,
+"lon": 138.9762994,
+"n": "South Eastern Freeway",
+"name": "South Eastern Freeway, South Australia, Australia",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -35.0220418,
+"lon": 138.7850612,
+"n": "South Eastern Freeway",
+"name": "South Eastern Freeway, Verdun, South Australia",
+"rank": 26
+}
+],
 "eau claire|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -972,6 +1895,50 @@
 "rank": 20
 }
 ],
+"eau claire|any": [
+{
+"cat": "boundary",
+"lat": 44.811349,
+"lon": -91.4984941,
+"n": "Eau Claire",
+"name": "Eau Claire, Eau Claire County, Wisconsin",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 44.7257643,
+"lon": -91.3040313,
+"n": "Eau Claire County",
+"name": "Eau Claire County, Wisconsin, United States",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 51.0525789,
+"lon": -114.0703115,
+"n": "Eau Claire",
+"name": "Eau Claire, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 41.1361726,
+"lon": -79.7981071,
+"n": "Eau Claire",
+"name": "Eau Claire, Butler County, Pennsylvania",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 41.9850452,
+"lon": -86.2997387,
+"n": "Eau Claire",
+"name": "Eau Claire, Berrien County, Michigan",
+"rank": 16
+}
+],
+"economic losses|51.0,-114.1": [],
+"economic losses|any": [],
 "economic tally|51.0,-114.1": [],
 "elbow park|51.0,-114.1": [
 {
@@ -989,6 +1956,32 @@
 "n": "Elbow Park",
 "name": "Elbow Park, Calgary, Alberta",
 "rank": 24
+}
+],
+"elbow park|any": [
+{
+"cat": "boundary",
+"lat": 51.0206343,
+"lon": -114.0784467,
+"n": "Elbow Park",
+"name": "Elbow Park, Calgary, Alberta",
+"rank": 20
+},
+{
+"cat": "leisure",
+"lat": 51.0241528,
+"lon": -114.0828383,
+"n": "Elbow Park",
+"name": "Elbow Park, Calgary, Alberta",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 39.5589935,
+"lon": -106.6827083,
+"n": "Elbow Park",
+"name": "Elbow Park, Eagle County, Colorado",
+"rank": 26
 }
 ],
 "elbow|51.0,-114.1": [
@@ -1035,6 +2028,7 @@
 ],
 "emergency management ron robinson|51.0,-114.1": [],
 "emergency ops centre|51.0,-114.1": [],
+"emergency ops centre|any": [],
 "enmax|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -1105,6 +2099,33 @@
 "rank": 24
 }
 ],
+"ferny grove|51.0,-114.1": [],
+"ferny grove|any": [
+{
+"cat": "boundary",
+"lat": -27.4030685,
+"lon": 152.9278735,
+"n": "Ferny Grove",
+"name": "Ferny Grove, Brisbane, Queensland",
+"rank": 18
+},
+{
+"cat": "railway",
+"lat": -27.4008849,
+"lon": 152.93449,
+"n": "Ferny Grove",
+"name": "Ferny Grove, Conavalla Street, Ferny Grove",
+"rank": 30
+},
+{
+"cat": "place",
+"lat": -27.4034029,
+"lon": 152.933129,
+"n": "Ferny Grove",
+"name": "Ferny Grove, Brisbane, Queensland",
+"rank": 19
+}
+],
 "fish creek provincial park society|51.0,-114.1": [],
 "flames|51.0,-114.1": [
 {
@@ -1149,6 +2170,33 @@
 }
 ],
 "floods|51.0,-114.1": [],
+"foothills mall|51.0,-114.1": [],
+"foothills mall|any": [
+{
+"cat": "landuse",
+"lat": 35.7463992,
+"lon": -83.9969917,
+"n": "Foothills Mall",
+"name": "Foothills Mall, Sherwood Forest, Maryville",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 35.7483914,
+"lon": -83.998646,
+"n": "Foothills Mall",
+"name": "Foothills Mall, Sherwood Forest, Maryville",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 40.5441969,
+"lon": -105.074184,
+"n": "Foothills Mall",
+"name": "Foothills Mall, East Foothills Parkway, Foothills Shopping Mall",
+"rank": 30
+}
+],
 "france|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1159,7 +2207,84 @@
 "rank": 4
 }
 ],
+"glacier view|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 48.3661782,
+"lon": -112.3018325,
+"n": "Glacier View",
+"name": "Glacier View, Pondera County, Montana",
+"rank": 26
+}
+],
+"glacier view|any": [
+{
+"cat": "boundary",
+"lat": 61.949546,
+"lon": -147.2224691,
+"n": "Glacier View",
+"name": "Glacier View, Matanuska-Susitna Borough, Alaska",
+"rank": 25
+},
+{
+"cat": "natural",
+"lat": 46.8189962,
+"lon": -121.952883,
+"n": "Glacier View",
+"name": "Glacier View, Pierce County, Washington",
+"rank": 18
+},
+{
+"cat": "boundary",
+"lat": 47.9528102,
+"lon": -122.2065395,
+"n": "Glacier View",
+"name": "Glacier View, Everett, Snohomish County",
+"rank": 20
+}
+],
+"glasgow scotland|51.0,-114.1": [],
+"glasgow scotland|any": [
+{
+"cat": "place",
+"lat": 55.861155,
+"lon": -4.2501687,
+"n": "Glasgow",
+"name": "Glasgow, Glasgow City, Alba / Scotland",
+"rank": 16
+}
+],
 "glenmore coin laundry|51.0,-114.1": [],
+"glenore grove|51.0,-114.1": [],
+"glenore grove|any": [
+{
+"cat": "boundary",
+"lat": -27.525831,
+"lon": 152.39839,
+"n": "Glenore Grove",
+"name": "Glenore Grove, Queensland, Australia",
+"rank": 18
+},
+{
+"cat": "place",
+"lat": -27.5304032,
+"lon": 152.4087404,
+"n": "Glenore Grove",
+"name": "Glenore Grove, Queensland, Australia",
+"rank": 20
+}
+],
+"global markets|51.0,-114.1": [],
+"global markets|any": [
+{
+"cat": "office",
+"lat": 52.4814706,
+"lon": -1.9012909,
+"n": "Munich Re Specialty - Global Markets, UK",
+"name": "Munich Re Specialty - Global Markets, UK, Newhall Street",
+"rank": 30
+}
+],
 "goldbar|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1287,6 +2412,49 @@
 ],
 "house crashing|51.0,-114.1": [],
 "house hippo|51.0,-114.1": [],
+"hwy|51.0,-114.1": [],
+"hwy|any": [
+{
+"cat": "place",
+"lat": 51.5207221,
+"lon": -0.7540287,
+"n": "Highway",
+"name": "Highway, Maidenhead, Windsor and Maidenhead",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 1.2715234,
+"lon": 34.3859266,
+"n": "Highway",
+"name": "Highway, Bugisa sub-region, Bulambuli",
+"rank": 19
+},
+{
+"cat": "place",
+"lat": 1.2136539,
+"lon": 34.2245912,
+"n": "Highway",
+"name": "Highway, Bugisa sub-region, Sironko",
+"rank": 19
+},
+{
+"cat": "landuse",
+"lat": 15.0106266,
+"lon": 120.8899155,
+"n": "Highway",
+"name": "Highway, Baliwag, Bulacan",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 51.4687694,
+"lon": -1.9407764,
+"n": "Highway",
+"name": "Highway, Hilmarton, Wiltshire",
+"rank": 20
+}
+],
 "india|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1329,7 +2497,70 @@
 "rank": 30
 }
 ],
+"jamestown|51.0,-114.1": [
+{
+"cat": "landuse",
+"lat": 53.4674903,
+"lon": -113.4514744,
+"n": "Jamestown Village",
+"name": "Jamestown Village, Millbourne, Mill Woods",
+"rank": 24
+}
+],
+"jamestown|any": [
+{
+"cat": "place",
+"lat": 37.2089184,
+"lon": -76.7783003,
+"n": "Jamestown",
+"name": "Jamestown, James City County, Virginia",
+"rank": 25
+},
+{
+"cat": "boundary",
+"lat": 42.0965167,
+"lon": -79.2380322,
+"n": "Jamestown",
+"name": "Jamestown, Chautauqua County, New York",
+"rank": 14
+},
+{
+"cat": "boundary",
+"lat": 46.910544,
+"lon": -98.708436,
+"n": "Jamestown",
+"name": "Jamestown, Midway Township, Stutsman County",
+"rank": 16
+},
+{
+"cat": "place",
+"lat": -15.9277296,
+"lon": -5.7160872,
+"n": "Jamestown",
+"name": "Jamestown, Saint Helena, STHL 1ZZ",
+"rank": 15
+},
+{
+"cat": "boundary",
+"lat": 36.984392,
+"lon": -85.062818,
+"n": "Jamestown",
+"name": "Jamestown, Russell County, Kentucky",
+"rank": 16
+}
+],
 "jeff berg|51.0,-114.1": [],
+"kempsey england|51.0,-114.1": [],
+"kempsey england|any": [
+{
+"cat": "boundary",
+"lat": 52.1403051,
+"lon": -2.2179724,
+"n": "Kempsey",
+"name": "Kempsey, Malvern Hills, Worcestershire",
+"rank": 20
+}
+],
 "kensington|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1366,6 +2597,27 @@
 "rank": 20
 }
 ],
+"kitchen next door|51.0,-114.1": [],
+"kitchen next door|any": [
+{
+"cat": "amenity",
+"lat": 25.2061402,
+"lon": 55.3432173,
+"n": "Next Door Kitchen",
+"name": "Next Door Kitchen, FB-02, Creek Avenue Street",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 43.0023663,
+"lon": -73.8506724,
+"n": "Next Door Kitchen & Bar",
+"name": "Next Door Kitchen & Bar, Front Street, Village of Ballston Spa",
+"rank": 30
+}
+],
+"labor gvt|51.0,-114.1": [],
+"labor gvt|any": [],
 "lac|51.0,-114.1": [],
 "lakeview|51.0,-114.1": [
 {
@@ -1409,6 +2661,28 @@
 "rank": 24
 }
 ],
+"larimer county|51.0,-114.1": [],
+"larimer county|any": [
+{
+"cat": "boundary",
+"lat": 40.6810174,
+"lon": -105.4726907,
+"n": "Larimer County",
+"name": "Larimer County, Colorado, United States",
+"rank": 12
+}
+],
+"larimer co|51.0,-114.1": [],
+"larimer co|any": [
+{
+"cat": "boundary",
+"lat": 40.6810174,
+"lon": -105.4726907,
+"n": "Larimer County",
+"name": "Larimer County, Colorado, United States",
+"rank": 12
+}
+],
 "laureen harper|51.0,-114.1": [],
 "lions campground|51.0,-114.1": [
 {
@@ -1444,6 +2718,48 @@
 "rank": 30
 }
 ],
+"lions campground|any": [
+{
+"cat": "tourism",
+"lat": 29.8573128,
+"lon": -81.2821585,
+"n": "Saint Augustine Beach KOA",
+"name": "Saint Augustine Beach KOA, West Pope Road, Ocean Cay",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": 58.3688925,
+"lon": -129.9112218,
+"n": "Dease Lake Lions Tanzilla River Campground",
+"name": "Dease Lake Lions Tanzilla River Campground, Dease Lake Tanzilla Campground, Area F (Dease Lake)",
+"rank": 30
+},
+{
+"cat": "leisure",
+"lat": 51.2360234,
+"lon": -113.1396606,
+"n": "Rockyford Lions Baseball Diamond",
+"name": "Rockyford Lions Baseball Diamond, Campground Trail, Rockyford",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.2354022,
+"lon": -113.1399484,
+"n": "Lions Campground Washrooms",
+"name": "Lions Campground Washrooms, Campground Road, Rockyford",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 51.2356456,
+"lon": -113.140149,
+"n": "Lions R.V. Sewage Dump",
+"name": "Lions R.V. Sewage Dump, Campground Trail, Rockyford",
+"rank": 30
+}
+],
 "little buffalo|51.0,-114.1": [
 {
 "cat": "natural",
@@ -1456,6 +2772,80 @@
 ],
 "lobi|51.0,-114.1": [],
 "local emergency|51.0,-114.1": [],
+"lockyer valley|51.0,-114.1": [],
+"lockyer valley|any": [
+{
+"cat": "boundary",
+"lat": -27.680931,
+"lon": 152.199498,
+"n": "Lockyer Valley Regional",
+"name": "Lockyer Valley Regional, Queensland, Australia",
+"rank": 12
+}
+],
+"los angeles international airport|51.0,-114.1": [],
+"los angeles international airport|any": [
+{
+"cat": "aeroway",
+"lat": 33.9421675,
+"lon": -118.4213591,
+"n": "Los Angeles International Airport",
+"name": "Los Angeles International Airport, World Way, Westchester",
+"rank": 30
+}
+],
+"lost dog|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 53.2467535,
+"lon": -114.91281,
+"n": "Lost Dog",
+"name": "Lost Dog, Brazeau County, Alberta",
+"rank": 27
+}
+],
+"lost dog|any": [
+{
+"cat": "highway",
+"lat": 31.8907927,
+"lon": -106.5482075,
+"n": "Lost Dog",
+"name": "Lost Dog, El Paso, El Paso County",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 46.9266386,
+"lon": -122.6649905,
+"n": "Lost Dog",
+"name": "Lost Dog, Yelm, Thurston County",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 38.483326,
+"lon": -106.9514192,
+"n": "Lost Dog",
+"name": "Lost Dog, Gunnison County, Colorado",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 53.2467535,
+"lon": -114.91281,
+"n": "Lost Dog",
+"name": "Lost Dog, Brazeau County, Alberta",
+"rank": 27
+},
+{
+"cat": "tourism",
+"lat": 49.2147807,
+"lon": 3.9998133,
+"n": "Lost Dog",
+"name": "Lost Dog, Avenue Jean Monnet, Bezannes",
+"rank": 30
+}
+],
 "louisiana|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1623,6 +3013,51 @@
 "rank": 26
 }
 ],
+"memorial drive|any": [
+{
+"cat": "highway",
+"lat": -33.8347019,
+"lon": 151.0143522,
+"n": "Memorial Drive",
+"name": "Memorial Drive, Granville, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.9513482,
+"lon": 151.031737,
+"n": "Memorial Drive",
+"name": "Memorial Drive, Padstow, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 42.3611254,
+"lon": -71.0814772,
+"n": "Memorial Drive",
+"name": "Memorial Drive, MIT, Cambridge",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 42.3616325,
+"lon": -71.0798373,
+"n": "Memorial Drive",
+"name": "Memorial Drive, MIT, Cambridge",
+"rank": 26
+}
+],
+"metro manila|51.0,-114.1": [],
+"metro manila|any": [
+{
+"cat": "boundary",
+"lat": 14.5736108,
+"lon": 121.0329706,
+"n": "Metro Manila",
+"name": "Metro Manila, Philippines",
+"rank": 6
+}
+],
 "mexico city|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -1670,6 +3105,40 @@
 }
 ],
 "mission safeway|51.0,-114.1": [],
+"mission safeway|any": [
+{
+"cat": "shop",
+"lat": 37.7691306,
+"lon": -122.428325,
+"n": "Safeway",
+"name": "Safeway, Market Street, Duboce Triangle",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 37.7669716,
+"lon": -122.409327,
+"n": "Safeway",
+"name": "Safeway, 16th Street, Potrero Hill",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 37.7432173,
+"lon": -122.4224715,
+"n": "Safeway",
+"name": "Safeway, Mission Street, Bernal Heights",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 37.7435713,
+"lon": -122.4389441,
+"n": "Safeway",
+"name": "Safeway, Diamond Heights Boulevard, Diamond Heights",
+"rank": 30
+}
+],
 "mitford park|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -1719,6 +3188,17 @@
 "lon": -114.1302851,
 "n": "BMO",
 "name": "BMO, MH-SB Tunnel, University of Calgary",
+"rank": 30
+}
+],
+"moogerah dam|51.0,-114.1": [],
+"moogerah dam|any": [
+{
+"cat": "tourism",
+"lat": -28.0306368,
+"lon": 152.5516482,
+"n": "Moogerah Dam",
+"name": "Moogerah Dam, Moogerah Connection Road, Moogerah",
 "rank": 30
 }
 ],
@@ -1805,6 +3285,30 @@
 }
 ],
 "nenshi noun|51.0,-114.1": [],
+"new south wales|51.0,-114.1": [],
+"new south wales|any": [
+{
+"cat": "boundary",
+"lat": -32.1629594,
+"lon": 147.0320469,
+"n": "New South Wales",
+"name": "New South Wales, Australia",
+"rank": 8
+}
+],
+"new zealand|51.0,-114.1": [],
+"new zealand|any": [
+{
+"cat": "boundary",
+"lat": -41.5000831,
+"lon": 172.8344077,
+"n": "New Zealand / Aotearoa",
+"name": "New Zealand / Aotearoa",
+"rank": 4
+}
+],
+"nigerian gov|51.0,-114.1": [],
+"nigerian gov|any": [],
 "north american|51.0,-114.1": [
 {
 "cat": "aerialway",
@@ -1815,6 +3319,71 @@
 "rank": 30
 }
 ],
+"north boulder|51.0,-114.1": [
+{
+"cat": "natural",
+"lat": 50.2602932,
+"lon": -118.2687402,
+"n": "Boulder Mountain",
+"name": "Boulder Mountain, Area E (Cherryville/East Creighton), Regional District of North Okanagan",
+"rank": 18
+},
+{
+"cat": "highway",
+"lat": 53.5423836,
+"lon": -113.989757,
+"n": "Boulder Boulevard",
+"name": "Boulder Boulevard, Stony Plain North Business Park, Stony Plain",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 53.5511799,
+"lon": -113.9901624,
+"n": "Boulder Boulevard",
+"name": "Boulder Boulevard, Stony Plain North Business Park, Stony Plain",
+"rank": 26
+}
+],
+"north boulder|any": [
+{
+"cat": "highway",
+"lat": 49.3539784,
+"lon": -122.9788362,
+"n": "Boulder",
+"name": "Boulder, District of North Vancouver, Metro Vancouver Regional District",
+"rank": 27
+},
+{
+"cat": "highway",
+"lat": 49.3559631,
+"lon": -122.9749879,
+"n": "Boulder",
+"name": "Boulder, District of North Vancouver, Metro Vancouver Regional District",
+"rank": 27
+},
+{
+"cat": "leisure",
+"lat": 51.565733,
+"lon": 5.1115922,
+"n": "Boulder",
+"name": "Boulder, Jules Verneweg, Bosscheweg",
+"rank": 30
+}
+],
+"north bundy|51.0,-114.1": [],
+"north bundy|any": [
+{
+"cat": "place",
+"lat": -34.8946685,
+"lon": 144.4716526,
+"n": "North Bundy",
+"name": "North Bundy, Booroorban, New South Wales",
+"rank": 22
+}
+],
+"northern colorado reopen|51.0,-114.1": [],
+"northern colorado reopen|any": [],
 "ogden road|51.0,-114.1": [
 {
 "cat": "highway",
@@ -1825,6 +3394,19 @@
 "rank": 26
 }
 ],
+"oklahoma city|51.0,-114.1": [],
+"oklahoma city|any": [
+{
+"cat": "boundary",
+"lat": 35.4729886,
+"lon": -97.5170536,
+"n": "Oklahoma City",
+"name": "Oklahoma City, Oklahoma County, Oklahoma",
+"rank": 16
+}
+],
+"oklahoma moves from rescue|51.0,-114.1": [],
+"oklahoma moves from rescue|any": [],
 "okotoks costco|51.0,-114.1": [
 {
 "cat": "shop",
@@ -1832,6 +3414,48 @@
 "lon": -113.9459696,
 "n": "Costco",
 "name": "Costco, Southbank Street, Southbank Industrial",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7069005,
+"lon": -113.9472076,
+"n": "Costco Gasoline",
+"name": "Costco Gasoline, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7062718,
+"lon": -113.9462168,
+"n": "Costco Pharmacy",
+"name": "Costco Pharmacy, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "shop",
+"lat": 50.706231,
+"lon": -113.9466352,
+"n": "Costco Tire Centre",
+"name": "Costco Tire Centre, Southbank Boulevard, Southbank Centre",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 50.7059456,
+"lon": -113.9467264,
+"n": "Costco Food Court",
+"name": "Costco Food Court, Southbank Boulevard, Southbank Centre",
+"rank": 30
+}
+],
+"okotoks costco|any": [
+{
+"cat": "shop",
+"lat": 50.706224,
+"lon": -113.9459696,
+"n": "Costco",
+"name": "Costco, Southbank Boulevard, Southbank Centre",
 "rank": 30
 },
 {
@@ -1904,6 +3528,79 @@
 "rank": 30
 }
 ],
+"pedro gil|51.0,-114.1": [],
+"pedro gil|any": [
+{
+"cat": "railway",
+"lat": 14.5765746,
+"lon": 120.988066,
+"n": "Pedro Gil",
+"name": "Pedro Gil, Taft Avenue, Ermita",
+"rank": 30
+},
+{
+"cat": "place",
+"lat": 39.1132428,
+"lon": -6.9332442,
+"n": "Pedro Gil",
+"name": "Pedro Gil, Alburquerque, Badajoz",
+"rank": 25
+},
+{
+"cat": "place",
+"lat": 38.6515798,
+"lon": -5.7556151,
+"n": "Pedro Gil",
+"name": "Pedro Gil, Higuera de la Serena, Badajoz",
+"rank": 25
+},
+{
+"cat": "place",
+"lat": 37.7676975,
+"lon": -4.047969,
+"n": "Pedro Gil",
+"name": "Pedro Gil, Torredonjimeno, Ja\u00e9n",
+"rank": 25
+},
+{
+"cat": "place",
+"lat": 38.0973324,
+"lon": -6.9051,
+"n": "Pedro Gil",
+"name": "Pedro Gil, Encinasola, Sierra de Huelva",
+"rank": 25
+}
+],
+"peguis first nation|51.3,-97.4": [
+{
+"cat": "boundary",
+"lat": 51.2964841,
+"lon": -97.5677774,
+"n": "Peguis First Nation",
+"name": "Peguis First Nation, Dallas/Red Rose, Unorganized Division No. 19",
+"rank": 25
+}
+],
+"peguis first nation|51.4,-97.4": [
+{
+"cat": "boundary",
+"lat": 51.2964841,
+"lon": -97.5677774,
+"n": "Peguis First Nation",
+"name": "Peguis First Nation, Dallas/Red Rose, Unorganized Division No. 19",
+"rank": 25
+}
+],
+"peguis first nation|any": [
+{
+"cat": "boundary",
+"lat": 51.2964841,
+"lon": -97.5677774,
+"n": "Peguis First Nation",
+"name": "Peguis First Nation, Dallas/Red Rose, Unorganized Division No. 19",
+"rank": 25
+}
+],
 "pincher creek|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -1938,6 +3635,51 @@
 "rank": 18
 }
 ],
+"pincher creek|any": [
+{
+"cat": "boundary",
+"lat": 49.485667,
+"lon": -113.9502919,
+"n": "Pincher Creek",
+"name": "Pincher Creek, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 49.4761993,
+"lon": -114.0374873,
+"n": "Municipal District of Pincher Creek No. 9",
+"name": "Municipal District of Pincher Creek No. 9, Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 49.4896314,
+"lon": -113.9471472,
+"n": "Pincher Creek (town)",
+"name": "Pincher Creek (town), Alberta, Canada",
+"rank": 12
+},
+{
+"cat": "waterway",
+"lat": 49.4778077,
+"lon": -113.9765775,
+"n": "Pincher Creek",
+"name": "Pincher Creek, Municipal District of Pincher Creek No. 9, Alberta",
+"rank": 18
+}
+],
+"plaza towers elementary school|51.0,-114.1": [],
+"plaza towers elementary school|any": [
+{
+"cat": "amenity",
+"lat": 35.32518,
+"lon": -97.5056705,
+"n": "Plaza Towers Elementary School",
+"name": "Plaza Towers Elementary School, Eagle Drive, Moore",
+"rank": 30
+}
+],
 "police state|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -1953,6 +3695,48 @@
 "lon": -117.713287,
 "n": "Chewelah Police Department",
 "name": "Chewelah Police Department, East Webster Avenue, Chewelah",
+"rank": 30
+}
+],
+"police state|any": [
+{
+"cat": "amenity",
+"lat": 6.0389048,
+"lon": 37.5560451,
+"n": "Police",
+"name": "Police, Wolayta Sodo - Arba Minch, \u12a0\u122d\u1263 \u121d\u1295\u132d / Arba Minch",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -38.0364631,
+"lon": 176.7950502,
+"n": "Police",
+"name": "Police, State Highway 30, Te Teko",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 6.4119709,
+"lon": 3.2524696,
+"n": "police",
+"name": "police, Oremeji Street, Satellite Town",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 6.4119709,
+"lon": 3.2524696,
+"n": "Police",
+"name": "Police, Oremeji Street, Satellite Town",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": 40.6651061,
+"lon": -73.0691167,
+"n": "Police",
+"name": "Police, Fire Island Boulevard, Fire Island Pines",
 "rank": 30
 }
 ],
@@ -1999,6 +3783,60 @@
 "rank": 18
 }
 ],
+"provident village|51.0,-114.1": [],
+"provident village|any": [
+{
+"cat": "landuse",
+"lat": 22.2663707,
+"lon": 114.1285193,
+"n": "\u5bcc\u9e97\u82d1 Provident Villas",
+"name": "\u5bcc\u9e97\u82d1 Provident Villas, \u92fc\u7dab\u7063 Telegraph Bay, \u5357\u5340 Southern District",
+"rank": 24
+},
+{
+"cat": "highway",
+"lat": 42.1047769,
+"lon": -87.7401069,
+"n": "Provident Avenue",
+"name": "Provident Avenue, Lake View, Winnetka",
+"rank": 26
+},
+{
+"cat": "amenity",
+"lat": 41.0935273,
+"lon": -73.9286893,
+"n": "Provident Bank",
+"name": "Provident Bank, North Highland Avenue, Village of Nyack",
+"rank": 30
+},
+{
+"cat": "highway",
+"lat": 22.2666052,
+"lon": 114.128296,
+"n": "\u78a7\u9e97\u82d1 Provident Villas",
+"name": "\u78a7\u9e97\u82d1 Provident Villas, \u6c99\u5ba3\u9053 Sassoon Road, \u92fc\u7dab\u7063 Telegraph Bay",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 22.2664628,
+"lon": 114.1283868,
+"n": "Block A",
+"name": "Block A, \u6c99\u5ba3\u9053 Sassoon Road, \u92fc\u7dab\u7063 Telegraph Bay",
+"rank": 30
+}
+],
+"qld australia|51.0,-114.1": [],
+"qld australia|any": [
+{
+"cat": "boundary",
+"lat": -22.1646782,
+"lon": 144.5844903,
+"n": "Queensland",
+"name": "Queensland, Australia",
+"rank": 8
+}
+],
 "quarry park|51.0,-114.1": [
 {
 "cat": "place",
@@ -2017,6 +3855,17 @@
 "rank": 30
 }
 ],
+"queensland australia|51.0,-114.1": [],
+"queensland australia|any": [
+{
+"cat": "boundary",
+"lat": -22.1646782,
+"lon": 144.5844903,
+"n": "Queensland",
+"name": "Queensland, Australia",
+"rank": 8
+}
+],
 "queensland liquor|51.0,-114.1": [
 {
 "cat": "shop",
@@ -2025,6 +3874,17 @@
 "n": "Liquor Empire",
 "name": "Liquor Empire, Queensland Drive SE, Queensland",
 "rank": 30
+}
+],
+"queensland prepared|51.0,-114.1": [],
+"queensland prepared|any": [
+{
+"cat": "landuse",
+"lat": -27.5855824,
+"lon": 152.9190304,
+"n": "Prepared Foods Australia",
+"name": "Prepared Foods Australia, Wacol, Brisbane",
+"rank": 24
 }
 ],
 "red deer river|51.0,-114.1": [
@@ -2069,7 +3929,61 @@
 "rank": 19
 }
 ],
+"red rocks amphitheatre|51.0,-114.1": [],
+"red rocks amphitheatre|any": [
+{
+"cat": "amenity",
+"lat": 39.6653917,
+"lon": -105.2057171,
+"n": "Red Rocks Amphitheatre",
+"name": "Red Rocks Amphitheatre, West Alameda Parkway, Morrison",
+"rank": 30
+}
+],
 "red sox|51.0,-114.1": [],
+"redfern st|51.0,-114.1": [],
+"redfern st|any": [
+{
+"cat": "highway",
+"lat": -33.8442997,
+"lon": 150.9169282,
+"n": "Redfern Street",
+"name": "Redfern Street, Wetherill Park, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.9932153,
+"lon": 150.8697747,
+"n": "Redfern Street",
+"name": "Redfern Street, Ingleburn, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.8935574,
+"lon": 151.2097153,
+"n": "Redfern Street",
+"name": "Redfern Street, Redfern, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.8930406,
+"lon": 151.2058046,
+"n": "Redfern Street",
+"name": "Redfern Street, Redfern, Sydney",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": -33.846259,
+"lon": 151.0109368,
+"n": "Redfern Street",
+"name": "Redfern Street, South Granville, Sydney",
+"rank": 26
+}
+],
 "redwood meadows|51.0,-114.1": [
 {
 "cat": "place",
@@ -2134,6 +4048,143 @@
 "rank": 20
 }
 ],
+"rolling hills asylum|51.0,-114.1": [],
+"rolling hills asylum|any": [
+{
+"cat": "tourism",
+"lat": 42.8811842,
+"lon": -78.1328049,
+"n": "Rolling Hills Asylum",
+"name": "Rolling Hills Asylum, Bethany Center Road, Town of Bethany",
+"rank": 30
+}
+],
+"route 9|51.3,-97.4": [
+{
+"cat": "highway",
+"lat": 49.0745605,
+"lon": -102.2974918,
+"n": "Saskota Travel Route",
+"name": "Saskota Travel Route, Enniskillen No. 3, Saskatchewan",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 48.9991045,
+"lon": -102.2751764,
+"n": "Saskota Travel Route",
+"name": "Saskota Travel Route, Northgate, Enniskillen No. 3",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.5641554,
+"lon": -96.995452,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Husavik, Rural Municipality of Gimli",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.5955135,
+"lon": -96.9981287,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Rural Municipality of Gimli, Gimli",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.579791,
+"lon": -96.9988961,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Rural Municipality of Gimli, Manitoba",
+"rank": 26
+}
+],
+"route 9|51.4,-97.4": [
+{
+"cat": "highway",
+"lat": 49.0745605,
+"lon": -102.2974918,
+"n": "Saskota Travel Route",
+"name": "Saskota Travel Route, Enniskillen No. 3, Saskatchewan",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 48.9991045,
+"lon": -102.2751764,
+"n": "Saskota Travel Route",
+"name": "Saskota Travel Route, Northgate, Enniskillen No. 3",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.5641554,
+"lon": -96.995452,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Husavik, Rural Municipality of Gimli",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.5955135,
+"lon": -96.9981287,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Rural Municipality of Gimli, Gimli",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 50.579791,
+"lon": -96.9988961,
+"n": "Provincial Trunk Highway 9",
+"name": "Provincial Trunk Highway 9, Rural Municipality of Gimli, Manitoba",
+"rank": 26
+}
+],
+"route 9|any": [
+{
+"cat": "highway",
+"lat": 32.646248,
+"lon": -116.934964,
+"n": "Route 9",
+"name": "Route 9, Eastlake Woods, Rolling Hills Ranch",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 32.647357,
+"lon": -116.9388003,
+"n": "Route 9",
+"name": "Route 9, Eastlake Woods, Rolling Hills Ranch",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 33.8738685,
+"lon": 35.546413,
+"n": "9 \u0637\u0631\u064a\u0642",
+"name": "9 \u0637\u0631\u064a\u0642, \u062a\u0644 \u0627\u0644\u0632\u0639\u062a\u0631, \u062f\u0643\u0648\u0627\u0646\u0629",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 33.8713497,
+"lon": 35.5437036,
+"n": "\u0637\u0631\u064a\u0642 9",
+"name": "\u0637\u0631\u064a\u0642 9, \u062a\u0644 \u0627\u0644\u0632\u0639\u062a\u0631, \u062f\u0643\u0648\u0627\u0646\u0629",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 33.8696539,
+"lon": 35.5431853,
+"n": "\u0637\u0631\u064a\u0642 9",
+"name": "\u0637\u0631\u064a\u0642 9, \u062f\u0643\u0648\u0627\u0646\u0629, \u0642\u0636\u0627\u0621 \u0627\u0644\u0645\u062a\u0646",
+"rank": 26
+}
+],
 "royal oak|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2155,6 +4206,85 @@
 }
 ],
 "safeway grocery|51.0,-114.1": [],
+"san fernando|51.0,-114.1": [
+{
+"cat": "highway",
+"lat": 51.0895091,
+"lon": -113.9285591,
+"n": "San Fernando Crescent NE",
+"name": "San Fernando Crescent NE, Monterey Park, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0899228,
+"lon": -113.9256589,
+"n": "200 San Fernando Place NE",
+"name": "200 San Fernando Place NE, Monterey Park, Calgary",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 51.0891173,
+"lon": -113.9255805,
+"n": "100 San Fernando Place NE",
+"name": "100 San Fernando Place NE, Monterey Park, Calgary",
+"rank": 26
+}
+],
+"san fernando|any": [
+{
+"cat": "boundary",
+"lat": 36.4646672,
+"lon": -6.1983492,
+"n": "San Fernando",
+"name": "San Fernando, Bah\u00eda de C\u00e1diz, C\u00e1diz",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 34.28497,
+"lon": -118.437652,
+"n": "San Fernando",
+"name": "San Fernando, Los Angeles County, California",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 15.0283014,
+"lon": 120.6938038,
+"n": "San Fernando",
+"name": "San Fernando, Pampanga, Central Luzon",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 16.6162676,
+"lon": 120.317104,
+"n": "San Fernando",
+"name": "San Fernando, La Union, Ilocos Region",
+"rank": 12
+},
+{
+"cat": "boundary",
+"lat": 10.2807069,
+"lon": -61.4645896,
+"n": "San Fernando",
+"name": "San Fernando, Trinidad and Tobago",
+"rank": 8
+}
+],
+"san roque dam|51.0,-114.1": [],
+"san roque dam|any": [
+{
+"cat": "waterway",
+"lat": 16.146008,
+"lon": 120.6836798,
+"n": "San Roque Dam",
+"name": "San Roque Dam, San Nicolas, Pangasinan",
+"rank": 20
+}
+],
 "sandy beach park|51.0,-114.1": [
 {
 "cat": "leisure",
@@ -2163,6 +4293,66 @@
 "n": "Sandy Beach",
 "name": "Sandy Beach, Altadore, Calgary",
 "rank": 24
+}
+],
+"sandy creek|51.0,-114.1": [
+{
+"cat": "waterway",
+"lat": 49.4691446,
+"lon": -117.3513077,
+"n": "Sandy Creek",
+"name": "Sandy Creek, Granite, Blewett",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": 49.4876401,
+"lon": -117.3823452,
+"n": "Sandy Creek",
+"name": "Sandy Creek, Granite, Blewett",
+"rank": 22
+}
+],
+"sandy creek|any": [
+{
+"cat": "boundary",
+"lat": 43.6441944,
+"lon": -76.0863182,
+"n": "Village of Sandy Creek",
+"name": "Village of Sandy Creek, Town of Sandy Creek, Oswego County",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": 43.6441944,
+"lon": -76.0863182,
+"n": "Town of Sandy Creek",
+"name": "Town of Sandy Creek, Oswego County, New York",
+"rank": 14
+},
+{
+"cat": "boundary",
+"lat": 34.2871132,
+"lon": -78.1508296,
+"n": "Sandy Creek",
+"name": "Sandy Creek, Brunswick County, North Carolina",
+"rank": 16
+},
+{
+"cat": "boundary",
+"lat": -26.8584705,
+"lon": 152.6402162,
+"n": "Sandy Creek",
+"name": "Sandy Creek, Queensland, Australia",
+"rank": 18
+},
+{
+"cat": "boundary",
+"lat": -34.6035943,
+"lon": 138.8260729,
+"n": "Sandy Creek",
+"name": "Sandy Creek, South Australia, Australia",
+"rank": 18
 }
 ],
 "saskatoon|51.0,-114.1": [
@@ -2207,7 +4397,97 @@
 "rank": 27
 }
 ],
+"school camp|51.0,-114.1": [
+{
+"cat": "building",
+"lat": 49.6655795,
+"lon": -115.9669388,
+"n": "Kimberley Independent School",
+"name": "Kimberley Independent School, 101st Avenue, Blarchmont",
+"rank": 30
+}
+],
+"school camp|any": [
+{
+"cat": "place",
+"lat": 47.5845317,
+"lon": 107.8028987,
+"n": "Schul Camp",
+"name": "Schul Camp, \u042d\u0440\u0434\u044d\u043d\u044d \u1821\u1837\u1833\u1821\u1828\u1822, \u0422\u04e9\u0432 \u1832\u1825\u182a",
+"rank": 25
+},
+{
+"cat": "tourism",
+"lat": -23.7022113,
+"lon": 133.7291339,
+"n": "School Camp",
+"name": "School Camp, Darken Drive, Burt Plain",
+"rank": 30
+},
+{
+"cat": "tourism",
+"lat": -37.3961025,
+"lon": 174.7319724,
+"n": "School Camp",
+"name": "School Camp, Port Waikato - Waikaretu Road, Port Waikato",
+"rank": 30
+}
+],
 "scuba nenshi|51.0,-114.1": [],
+"selkirk|51.3,-97.4": [
+{
+"cat": "boundary",
+"lat": 50.146986,
+"lon": -96.880188,
+"n": "Selkirk",
+"name": "Selkirk, Manitoba, Canada",
+"rank": 12
+}
+],
+"selkirk|51.4,-97.4": [
+{
+"cat": "boundary",
+"lat": 50.146986,
+"lon": -96.880188,
+"n": "Selkirk",
+"name": "Selkirk, Manitoba, Canada",
+"rank": 12
+}
+],
+"selkirk|any": [
+{
+"cat": "boundary",
+"lat": 50.146986,
+"lon": -96.880188,
+"n": "Selkirk",
+"name": "Selkirk, Manitoba, Canada",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": 55.5470714,
+"lon": -2.8415411,
+"n": "Selkirk",
+"name": "Selkirk, Scottish Borders, Alba / Scotland",
+"rank": 18
+},
+{
+"cat": "place",
+"lat": 42.5323027,
+"lon": -73.7984563,
+"n": "Selkirk",
+"name": "Selkirk, Town of Bethlehem, Albany County",
+"rank": 19
+},
+{
+"cat": "boundary",
+"lat": 46.4255743,
+"lon": -62.4448493,
+"n": "Selkirk",
+"name": "Selkirk, Kings County, Prince Edward Island",
+"rank": 16
+}
+],
 "shawnessy|51.0,-114.1": [
 {
 "cat": "boundary",
@@ -2227,6 +4507,7 @@
 }
 ],
 "siska first nation|51.0,-114.1": [],
+"siska first nation|any": [],
 "sobeys|51.0,-114.1": [
 {
 "cat": "shop",
@@ -2270,6 +4551,44 @@
 }
 ],
 "social media mentions|51.0,-114.1": [],
+"south east queensland|51.0,-114.1": [],
+"south east queensland|any": [
+{
+"cat": "highway",
+"lat": 54.9649744,
+"lon": -1.4620721,
+"n": "Queensland Avenue",
+"name": "Queensland Avenue, Brockley Whins, Jarrow",
+"rank": 26
+},
+{
+"cat": "highway",
+"lat": 54.9645696,
+"lon": -1.4602547,
+"n": "PERTH AVENUE-QUEENSLAND AVENUE-W/B",
+"name": "PERTH AVENUE-QUEENSLAND AVENUE-W/B, Perth Avenue, Brockley Whins",
+"rank": 30
+}
+],
+"south eastern queensland|51.0,-114.1": [],
+"south eastern queensland|any": [
+{
+"cat": "highway",
+"lat": -28.2803544,
+"lon": 152.6945421,
+"n": "Eastern Summit Track",
+"name": "Eastern Summit Track, Mount Barney, Queensland",
+"rank": 27
+},
+{
+"cat": "historic",
+"lat": -26.2143966,
+"lon": 152.6857682,
+"n": "2 South Great Eastern Mine",
+"name": "2 South Great Eastern Mine, The Gantry, Monkland",
+"rank": 30
+}
+],
 "southern alberta caused|51.0,-114.1": [],
 "stampede ground|51.0,-114.1": [],
 "stanley park|51.0,-114.1": [
@@ -2280,6 +4599,83 @@
 "n": "Stanley Park",
 "name": "Stanley Park, Parkhill, Calgary",
 "rank": 24
+}
+],
+"stanley park|any": [
+{
+"cat": "leisure",
+"lat": 49.3020684,
+"lon": -123.1413263,
+"n": "Stanley Park",
+"name": "Stanley Park, West End, Vancouver",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 53.8147056,
+"lon": -3.0228394,
+"n": "Stanley Park",
+"name": "Stanley Park, Layton, Blackpool",
+"rank": 24
+},
+{
+"cat": "leisure",
+"lat": 53.4343896,
+"lon": -2.9626861,
+"n": "Stanley Park",
+"name": "Stanley Park, Anfield, Liverpool",
+"rank": 24
+},
+{
+"cat": "boundary",
+"lat": 44.6322063,
+"lon": -63.6290955,
+"n": "Stanley Park",
+"name": "Stanley Park, Armdale, Halifax",
+"rank": 20
+},
+{
+"cat": "boundary",
+"lat": 43.4419742,
+"lon": -80.4422977,
+"n": "Stanley Park",
+"name": "Stanley Park, Kitchener, Region of Waterloo",
+"rank": 20
+}
+],
+"staten island|51.0,-114.1": [],
+"staten island|any": [
+{
+"cat": "boundary",
+"lat": 40.5834557,
+"lon": -74.1496048,
+"n": "Staten Island",
+"name": "Staten Island, Richmond County, New York",
+"rank": 14
+},
+{
+"cat": "boundary",
+"lat": 40.5834557,
+"lon": -74.1496048,
+"n": "Richmond County",
+"name": "Richmond County, New York, United States",
+"rank": 12
+},
+{
+"cat": "place",
+"lat": -54.8149295,
+"lon": -64.4432001,
+"n": "Isla de los Estados",
+"name": "Isla de los Estados, Departamento Ushuaia, Tierra del Fuego",
+"rank": 17
+},
+{
+"cat": "place",
+"lat": 38.1643617,
+"lon": -121.5163415,
+"n": "Staten Island",
+"name": "Staten Island, San Joaquin County, California",
+"rank": 17
 }
 ],
 "stoney nakoda nation|51.0,-114.1": [
@@ -2294,6 +4690,8 @@
 ],
 "sunyside|51.0,-114.1": [],
 "suzie vile|51.0,-114.1": [],
+"tahanang walang hagdan|51.0,-114.1": [],
+"tahanang walang hagdan|any": [],
 "taiwan|51.0,-114.1": [
 {
 "cat": "amenity",
@@ -2427,6 +4825,52 @@
 }
 ],
 "tweets|51.0,-114.1": [],
+"uni queensland|51.0,-114.1": [],
+"uni queensland|any": [
+{
+"cat": "highway",
+"lat": 49.2665868,
+"lon": -123.223124,
+"n": "Queensland Road",
+"name": "Queensland Road, University Endowment Lands, Electoral Area A",
+"rank": 26
+},
+{
+"cat": "building",
+"lat": -21.1757932,
+"lon": 149.1427524,
+"n": "21- Central Queensland Conservatorium of Music",
+"name": "21- Central Queensland Conservatorium of Music, University Drive, Ooralea",
+"rank": 30
+},
+{
+"cat": "amenity",
+"lat": -24.8996031,
+"lon": 152.3119745,
+"n": "Central Queensland University - Bundaberg Campus",
+"name": "Central Queensland University - Bundaberg Campus, University Drive, Branyan",
+"rank": 30
+}
+],
+"upper twp middle school|51.0,-114.1": [],
+"upper twp middle school|any": [
+{
+"cat": "amenity",
+"lat": 39.2623371,
+"lon": -74.7321071,
+"n": "Township Middle School",
+"name": "Township Middle School, Perry Road, Petersburg",
+"rank": 30
+},
+{
+"cat": "building",
+"lat": 38.5026569,
+"lon": -82.6459578,
+"n": "Dawson-Bryant Middle School",
+"name": "Dawson-Bryant Middle School, Hornet Lane, Three Oaks",
+"rank": 30
+}
+],
 "vancouver|51.0,-114.1": [
 {
 "cat": "highway",
@@ -2461,6 +4905,54 @@
 "rank": 26
 }
 ],
+"victory robinsons|51.0,-114.1": [],
+"victory robinsons|any": [
+{
+"cat": "highway",
+"lat": -38.1835056,
+"lon": 145.2080177,
+"n": "Victory Rd/Robinsons Rd",
+"name": "Victory Rd/Robinsons Rd, Robinsons Road, Langwarrin",
+"rank": 30
+}
+],
+"villa monteverde|51.0,-114.1": [],
+"villa monteverde|any": [
+{
+"cat": "place",
+"lat": 44.335242,
+"lon": 11.7082464,
+"n": "Villa Monteverde",
+"name": "Villa Monteverde, Caranta, Tre Monti - Zello",
+"rank": 22
+},
+{
+"cat": "landuse",
+"lat": -23.0171596,
+"lon": -46.9590665,
+"n": "Villa Monteverde",
+"name": "Villa Monteverde, Centro, Vinhedo",
+"rank": 24
+},
+{
+"cat": "place",
+"lat": 14.7465296,
+"lon": 120.9471332,
+"n": "Villa Monteverde",
+"name": "Villa Monteverde, Nagbalon, Marilao",
+"rank": 24
+},
+{
+"cat": "building",
+"lat": 43.7852399,
+"lon": 7.6628266,
+"n": "Villa Monteverde",
+"name": "Villa Monteverde, Via Torre Mostaccini, Bordighera",
+"rank": 30
+}
+],
+"villamor pls|51.0,-114.1": [],
+"villamor pls|any": [],
 "walmart|51.0,-114.1": [
 {
 "cat": "shop",
@@ -2501,6 +4993,52 @@
 "n": "Walmart",
 "name": "Walmart, Southland Drive SE, Acadia",
 "rank": 30
+}
+],
+"weld county|51.0,-114.1": [],
+"weld county|any": [
+{
+"cat": "boundary",
+"lat": 40.5632344,
+"lon": -104.4835287,
+"n": "Weld County",
+"name": "Weld County, Colorado, United States",
+"rank": 12
+}
+],
+"widgee creek|51.0,-114.1": [],
+"widgee creek|any": [
+{
+"cat": "waterway",
+"lat": -28.2767628,
+"lon": 153.0814354,
+"n": "Widgee Creek",
+"name": "Widgee Creek, Darlington, Queensland",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": -28.2289329,
+"lon": 153.0337756,
+"n": "Widgee Creek",
+"name": "Widgee Creek, Hillview, Queensland",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": -26.1604106,
+"lon": 152.4814876,
+"n": "Widgee Creek",
+"name": "Widgee Creek, Widgee, Queensland",
+"rank": 22
+},
+{
+"cat": "waterway",
+"lat": -26.2897468,
+"lon": 152.4084178,
+"n": "Widgee Creek",
+"name": "Widgee Creek, Widgee, Queensland",
+"rank": 22
 }
 ],
 "wikipedia|51.0,-114.1": [],
@@ -2554,6 +5092,17 @@
 "n": "Winnipeg (city)",
 "name": "Winnipeg (city), Manitoba, Canada",
 "rank": 12
+}
+],
+"wivenhoe dam|51.0,-114.1": [],
+"wivenhoe dam|any": [
+{
+"cat": "waterway",
+"lat": -27.3957082,
+"lon": 152.6122274,
+"n": "Wivenhoe Dam",
+"name": "Wivenhoe Dam, Lake Wivenhoe, Queensland",
+"rank": 20
 }
 ],
 "yamnuska hall|51.0,-114.1": [

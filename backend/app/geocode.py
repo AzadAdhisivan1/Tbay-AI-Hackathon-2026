@@ -134,10 +134,15 @@ def _norm_words(s: str) -> str:
     return " ".join(s.split())
 
 
+_GENERIC_SUFFIXES = {"city", "town", "village", "municipality", "county", "district", "province",
+                     "river", "creek", "lake", "park", "first nation", "nation"}
+
+
 def _acceptable(query: str, cand: Dict) -> bool:
     if cand.get("rank", 0) < MIN_PLACE_RANK or cand.get("cat") in _REJECT_CATEGORIES:
         return False
-    q, n = _norm_words(query), _norm_words(cand.get("n") or "")
+    # Match on the place itself: "Tacloban, Philippines" -> "tacloban"
+    q, n = _norm_words(query.split(",")[0]), _norm_words(cand.get("n") or "")
     cat, words = cand.get("cat"), len(q.split())
     if not n:
         return False
@@ -146,6 +151,9 @@ def _acceptable(query: str, cand: Dict) -> bool:
     if words == 1 and cat not in _AREA_CATEGORIES:
         return False
     if q == n:
+        return True
+    # "Tacloban" -> "Tacloban City", "Siksika" -> "Siksika Nation"
+    if cat in _AREA_CATEGORIES and n.startswith(q + " ") and n[len(q) + 1:] in _GENERIC_SUFFIXES:
         return True
     # Multi-word query contained in an area's name, e.g. "stoney nakoda nation"
     return words >= 2 and cat in _AREA_CATEGORIES and q in n
@@ -224,13 +232,15 @@ def _candidates(name: str, anchor: Optional[Tuple[float, float]], countrycodes: 
         return cands
 
 
-def lookup_nominatim(raw: str, anchor: Optional[Tuple[float, float]]) -> Optional[Dict]:
+def lookup_nominatim(raw: str, anchor: Optional[Tuple[float, float]],
+                     country_first: bool = True) -> Optional[Dict]:
     """
     Cached, rate-limited, thread-safe. Returns {"name", "lat", "lon"} or None.
-    With no anchor yet, the configured country (GEOCODE_COUNTRY_CODES) is tried first.
+    With no anchor and country_first, the configured country (GEOCODE_COUNTRY_CODES) is
+    tried first. World-scope datasets pass country_first=False.
     """
     name = normalize(raw)
-    if anchor is None and GEOCODE_COUNTRY_CODES:
+    if anchor is None and country_first and GEOCODE_COUNTRY_CODES:
         hit = _pick(name, _candidates(name, None, GEOCODE_COUNTRY_CODES), None)
         if hit:
             return hit
@@ -239,7 +249,10 @@ def lookup_nominatim(raw: str, anchor: Optional[Tuple[float, float]]) -> Optiona
 
 def _pick(name: str, cands: List[Dict], anchor: Optional[Tuple[float, float]]) -> Optional[Dict]:
     ok = [c for c in cands if _acceptable(name, c)]
-    if anchor is not None:
+    if anchor is None:
+        # No disaster centre to check against: a street/building name could be anywhere.
+        ok = [c for c in ok if c.get("rank", 0) < 26]
+    else:
         # Streets/buildings (rank >= 26) only make sense close to the disaster.
         ok = [c for c in ok if c.get("rank", 0) < 26
               or abs(c["lat"] - anchor[0]) < STREET_RADIUS and abs(c["lon"] - anchor[1]) < STREET_RADIUS * 1.6]
@@ -252,9 +265,33 @@ def _pick(name: str, cands: List[Dict], anchor: Optional[Tuple[float, float]]) -
     return {"name": c["name"], "lat": c["lat"], "lon": c["lon"]}
 
 
-def is_cached(raw: str, anchor: Optional[Tuple[float, float]]) -> bool:
+def is_cached(raw: str, anchor: Optional[Tuple[float, float]], country_first: bool = True) -> bool:
     """True if looking this name up needs no network request."""
-    return f"{normalize(raw).lower()}|{_box_key(anchor)}" in _cache
+    key = f"{normalize(raw).lower()}|{_box_key(anchor)}"
+    if anchor is None and country_first and GEOCODE_COUNTRY_CODES:
+        return key + f":{GEOCODE_COUNTRY_CODES}" in _cache
+    return key in _cache
+
+
+def _km(a: Tuple[float, float], b: Tuple[float, float]) -> float:
+    from math import asin, cos, radians, sin, sqrt
+    la1, lo1, la2, lo2 = map(radians, (a[0], a[1], b[0], b[1]))
+    h = sin((la2 - la1) / 2) ** 2 + cos(la1) * cos(la2) * sin((lo2 - lo1) / 2) ** 2
+    return 2 * 6371 * asin(sqrt(h))
+
+
+def detect_scope(points: List[Tuple[float, float, int]], min_points: int = 5,
+                 radius_km: float = 1500, regional_share: float = 0.6) -> str:
+    """
+    "regional" if most mention-weight sits within radius_km of the weighted median,
+    else "world". Too few points to judge -> "regional" (the proven default).
+    """
+    if len(points) < min_points:
+        return "regional"
+    centre = weighted_anchor(points)
+    total = sum(w for _, _, w in points)
+    near = sum(w for la, lo, w in points if _km((la, lo), centre) <= radius_km)
+    return "regional" if near / total >= regional_share else "world"
 
 
 def weighted_anchor(points: List[Tuple[float, float, int]]) -> Optional[Tuple[float, float]]:

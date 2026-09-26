@@ -16,6 +16,7 @@ count too, so there are no automatic retries and we stop calling the LLM once
 import hashlib
 import json
 import logging
+import re
 import sys
 import threading
 from collections import Counter
@@ -55,6 +56,49 @@ CATEGORIES = [
     "other_related",          # related but none of the above
 ]
 SEVERITIES = ["low", "medium", "high", "critical"]
+DISASTER_TYPES = ["flood", "storm", "wildfire", "earthquake", "explosion", "shooting",
+                  "transport_accident", "haze", "other", "none"]
+# Shared agreement: "relevant" = FLOOD-related. Tweets about these are never relevant.
+NON_FLOOD_TYPES = {"storm", "wildfire", "earthquake", "explosion", "shooting",
+                   "transport_accident", "haze"}
+
+# Backend keyword rules. Used when neither the LLM nor ai_workflow's rule engine gives a
+# disaster_type, and to decide which tweets are worth an LLM request. Flood wins over
+# other types ("hurricane storm surge floods the city" -> flood).
+_FLOOD_STRONG = re.compile(
+    r"flood|inundat|inondation|inundaci|submerg|under ?water|flash ?flood|storm ?surge|"
+    r"sandbag|levee|dyke|dike (breach|burst)|banjir|hochwasser|überschwemm|alluvione|"
+    r"enchente|洪水|#(ab|yyc|qld|bc|mb|sk|ph)?flood|#rescueph|#floodph", re.IGNORECASE)
+_FLOOD_WEAK = re.compile(
+    r"high water|water ?level|river|overflow|deluge|torrential|heavy rain|rainfall|downpour|"
+    r"monsoon|typhoon|cyclone|hurricane|tropical storm|dam (burst|break|breach|release)|"
+    r"evacuat|landslide|mudslide|#yyc|#abstrong|#highriver", re.IGNORECASE)
+_OTHER_TYPES = [
+    ("explosion", r"explo|bomb|blast|detonat"),
+    ("shooting", r"shoot|shots fired|gunman|gunfire"),
+    ("wildfire", r"wildfire|bushfire|forest fire|\bfire\b|blaze|burning"),
+    ("earthquake", r"earthquake|quake|tsunami|aftershock|magnitude \d"),
+    ("storm", r"hurricane|typhoon|cyclone|tornado|tropical storm|superstorm|blizzard|\bstorm\b"),
+    ("transport_accident", r"derail|plane crash|train crash|helicopter crash|crash landing|capsiz"),
+    ("haze", r"\bhaze\b|smog|\bpsi\b|air quality"),
+]
+_OTHER_TYPES = [(t, re.compile(p, re.IGNORECASE)) for t, p in _OTHER_TYPES]
+
+
+def keyword_disaster_type(text: str) -> str:
+    if _FLOOD_STRONG.search(text or ""):
+        return "flood"
+    for dtype, pattern in _OTHER_TYPES:
+        if pattern.search(text or ""):
+            return dtype
+    return "none"
+
+
+def llm_priority(text: str) -> int:
+    """2 = clear flood signal, 1 = possibly flood-related, 0 = not worth an LLM request."""
+    if _FLOOD_STRONG.search(text or ""):
+        return 2
+    return 1 if _FLOOD_WEAK.search(text or "") else 0
 
 # ai_workflow / LLM categories -> UI categories
 CATEGORY_MAP = {
@@ -175,25 +219,38 @@ _BATCH_SCHEMA = {
             "relevance_confidence": {"type": "number"},
             "category": {"type": "string", "enum": LLM_CATEGORIES + ["none"]},
             "severity": {"type": "string", "enum": SEVERITIES + ["none"]},
+            "disaster_type": {"type": "string", "enum": DISASTER_TYPES},
             "locations": {"type": "array", "items": {"type": "string"}},
             "reasoning": {"type": "string"},
         },
         "required": ["id", "is_relevant", "relevance_confidence", "category", "severity",
-                     "locations", "reasoning"],
+                     "disaster_type", "locations", "reasoning"],
     },
 }
 
 _BATCH_INSTRUCTIONS = """You are a disaster-response analyst helping emergency coordinators monitor social media during an active disaster (flood, wildfire, storm, etc.). Below is a numbered list of tweets from the same time window. Analyze EVERY tweet and return one JSON object per tweet, with the same "id".
 
 For each tweet:
-- is_relevant: true if it describes, reports on, or substantively reacts to the real disaster unfolding (conditions on the ground, impact on people/property/infrastructure, requests for help, evacuations, official updates, relief efforts). false if unrelated, a joke/meme not describing real conditions, an ad or spam. Tweets may be in any language (e.g. French). When genuinely ambiguous, choose false with lower confidence.
+- is_relevant: true ONLY if it is about FLOODING that is really happening (flood conditions, rising/high water, storm surge, flash floods, flood damage, flood evacuations, requests for help, official flood updates, flood relief). false for other disasters (explosions, shootings, fires, earthquakes, haze, and hurricanes/typhoons/tornadoes unless the tweet mentions flooding or water), and for unrelated tweets, jokes, ads or spam. Tweets may be in any language. When genuinely ambiguous, choose false with lower confidence.
+- disaster_type: flood, storm, wildfire, earthquake, explosion, shooting, transport_accident, haze, other, or none (not about any disaster). Use flood whenever the tweet is about flooding, even if caused by a storm.
 - relevance_confidence: 0.0-1.0.
 - category (use "none" if not relevant): infrastructure_damage, evacuation, medical_need, request_for_help, official_update, volunteer_relief_effort, general_concern, other.
 - severity (use "none" if not relevant): critical = immediate danger to life (trapped, injured, missing); high = urgent unmet need or major damage (home flooding, no clean water, road impassable, evacuation order); medium = notable impact, not urgent; low = general commentary, minor impact, secondhand observation.
-- locations: every specific place mentioned (communities, First Nations, neighbourhoods, roads, bridges, rivers, landmarks). Make each as specific as the tweet allows, adding the city/province when it is clear from context, e.g. "Mission, Calgary, Alberta" or "Highway 599 near Pickle Lake, Ontario". Expand hashtags/abbreviations ("#yyc" -> "Calgary, Alberta", "#highriver" -> "High River, Alberta"). Do NOT include bare provinces, countries or vague words like "downtown". Empty list if none or not relevant.
+- locations: every specific place mentioned (communities, First Nations, neighbourhoods, roads, bridges, rivers, landmarks). Make each as specific as the tweet allows, adding the city/province and the COUNTRY (outside Canada) when clear from context, e.g. "Mission, Calgary, Alberta", "Tacloban, Philippines", "Brisbane, Queensland, Australia". Expand hashtags/abbreviations ("#yyc" -> "Calgary, Alberta", "#highriver" -> "High River, Alberta"). Do NOT include bare provinces, countries or vague words like "downtown". Empty list if none or not relevant.
 - reasoning: one short sentence (max 15 words).
 
 TWEETS:
+"""
+
+
+# Appended to ai_workflow's batch prompt until it covers the flood-only rule and disaster_type.
+_PROMPT_ADDENDUM = """
+
+ADDITIONAL RULES (these override anything above):
+- is_relevant means FLOOD-related only. Tweets about other disasters (explosions, shootings, fires, earthquakes, haze, hurricanes/typhoons/tornadoes without flooding or water) are NOT relevant.
+- Add "disaster_type" to every object: flood, storm, wildfire, earthquake, explosion, shooting, transport_accident, haze, other, or none. Use flood whenever the tweet is about flooding, even if caused by a storm.
+- For places outside Canada, include the country in each location, e.g. "Tacloban, Philippines".
+- If is_relevant is false, use "none" for category and severity.
 """
 
 
@@ -202,13 +259,26 @@ def _default_batch_prompt(texts: List[str]) -> str:
     return _BATCH_INSTRUCTIONS + lines
 
 
+def _apply_flood_policy(result: Dict, text: str, given_type: Optional[str]) -> Dict:
+    """Fill disaster_type and enforce: relevant == flood-related."""
+    dtype = given_type if given_type in DISASTER_TYPES else keyword_disaster_type(text)
+    if result["relevant"] and dtype in NON_FLOOD_TYPES and keyword_disaster_type(text) != "flood":
+        result.update(relevant=False, category=None, severity=None, locations=[],
+                      reasoning=f"About a {dtype.replace('_', ' ')}, not flooding.")
+    if result["relevant"]:
+        dtype = "flood"
+    result["disaster_type"] = dtype
+    return result
+
+
 def _nlp(text: str) -> Dict:
     if analyze_tweet_nlp is None:
-        return {"relevant": False, "confidence": 0.0, "category": None, "severity": None,
-                "locations": [], "reasoning": "Analyzer unavailable", "source": "none"}
+        return _apply_flood_policy(
+            {"relevant": False, "confidence": 0.0, "category": None, "severity": None,
+             "locations": [], "reasoning": "Analyzer unavailable", "source": "none"}, text, None)
     res = analyze_tweet_nlp(text)
     relevant = bool(res.get("is_relevant"))
-    return {
+    return _apply_flood_policy({
         "relevant": relevant,
         "confidence": float(res.get("relevance_confidence") or 0.5),
         "category": CATEGORY_MAP.get(res.get("category"), "other_related") if relevant else None,
@@ -216,17 +286,17 @@ def _nlp(text: str) -> Dict:
         "locations": [l.get("raw_text") for l in res.get("locations", []) if l.get("raw_text")],
         "reasoning": res.get("reasoning", ""),
         "source": "rules",
-    }
+    }, text, res.get("disaster_type"))
 
 
-def _from_llm(row: Dict) -> Dict:
+def _from_llm(row: Dict, text: str) -> Dict:
     relevant = bool(row.get("is_relevant"))
     sev = row.get("severity")
     try:
         conf = max(0.0, min(1.0, float(row.get("relevance_confidence"))))
     except (TypeError, ValueError):
         conf = 0.5
-    return {
+    return _apply_flood_policy({
         "relevant": relevant,
         "confidence": conf,
         "category": CATEGORY_MAP.get(row.get("category"), "other_related") if relevant else None,
@@ -234,20 +304,23 @@ def _from_llm(row: Dict) -> Dict:
         "locations": [str(l) for l in (row.get("locations") or []) if l] if relevant else [],
         "reasoning": str(row.get("reasoning") or ""),
         "source": "gemini",
-    }
+    }, text, row.get("disaster_type"))
 
 
 def classify_batch(texts: List[str], use_llm: bool = True) -> List[Dict]:
     """
     One dict per text, same order:
-      {"relevant", "confidence", "category", "severity", "locations": [str], "reasoning", "source"}
-    One LLM request for the whole batch; any tweet the LLM misses falls back to rules.
+      {"relevant", "confidence", "category", "severity", "disaster_type", "locations": [str],
+       "reasoning", "source"}
+    "relevant" means flood-related (shared agreement). One LLM request for the whole batch; any tweet the LLM misses falls back to rules.
     """
     llm_rows: Dict[int, Dict] = {}
     if use_llm and texts and quota.can_spend():
         if format_batch_prompt:
             # Explicit 0-based ids: results are matched back by position.
             prompt = format_batch_prompt([{"id": i, "text": t} for i, t in enumerate(texts)])
+            if "disaster_type" not in prompt:
+                prompt += _PROMPT_ADDENDUM
         else:
             prompt = _default_batch_prompt(texts)
         # Always our schema: the hackathon service returns HTTP 500 for JSON-schema
@@ -263,7 +336,7 @@ def classify_batch(texts: List[str], use_llm: bool = True) -> List[Dict]:
                 log.warning("Could not parse LLM batch output: %s", e)
             if len(llm_rows) < len(texts):
                 log.warning("LLM returned %d/%d rows; rest use rules", len(llm_rows), len(texts))
-    return [_from_llm(llm_rows[i]) if i in llm_rows else _nlp(t) for i, t in enumerate(texts)]
+    return [_from_llm(llm_rows[i], t) if i in llm_rows else _nlp(t) for i, t in enumerate(texts)]
 
 
 # ---------------------------------------------------------------------------
