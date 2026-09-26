@@ -14,7 +14,7 @@ function FlyToHandler({ flyTo }) {
   const map = useMap();
   useEffect(() => {
     if (flyTo && flyTo.lat != null && flyTo.lng != null) {
-      map.flyTo([flyTo.lat, flyTo.lng], 11, { duration: 1.2 });
+      map.flyTo([flyTo.lat, flyTo.lng], 12, { duration: 1.0 });
     }
   }, [flyTo, map]);
   return null;
@@ -38,50 +38,41 @@ function FitBoundsToData({ geojson }) {
   return null;
 }
 
-/** 100% Free, No-API-Key Tile Layer Configurations */
+/** 100% Free, No-API-Key Light GIS Tile Configurations */
 const MAP_STYLES = {
-  dark: {
-    id: 'dark',
-    label: 'Dark Street',
+  osm: {
+    id: 'osm',
+    label: 'OpenStreetMap',
     url: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
     attribution: '&copy; <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors',
     maxZoom: 19,
   },
-  satellite: {
-    id: 'satellite',
-    label: 'Satellite Imagery',
-    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
-    attribution: 'Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and GIS User Community',
-    maxZoom: 19,
-  },
   topo: {
     id: 'topo',
-    label: 'Topo / Terrain',
+    label: 'Esri Topo',
     url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Topo_Map/MapServer/tile/{z}/{y}/{x}',
-    attribution: 'Tiles &copy; Esri &mdash; Esri, DeLorme, NAVTEQ, TomTom, Intermap, iPC, USGS, FAO, NPS, NRCAN, GeoBase, Kadaster NL, Ordnance Survey, Esri Japan, METI, Esri China (Hong Kong), and GIS User Community',
+    attribution: 'Tiles &copy; Esri',
+    maxZoom: 19,
+  },
+  satellite: {
+    id: 'satellite',
+    label: 'Satellite',
+    url: 'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}',
+    attribution: 'Tiles &copy; Esri',
     maxZoom: 19,
   },
 };
-
-function getConfidenceBadge(confidence) {
-  if (confidence >= 0.8)
-    return 'bg-emerald-500/20 text-emerald-300 ring-emerald-500/30';
-  if (confidence >= 0.5)
-    return 'bg-amber-500/20 text-amber-300 ring-amber-500/30';
-  return 'bg-blue-500/20 text-blue-300 ring-blue-500/30';
-}
 
 export default function FloodMap({
   geojson,
   showHeatmap,
   flyTo,
 }) {
-  const [mapStyle, setMapStyle] = useState('dark');
+  const [mapStyle, setMapStyle] = useState('osm');
   const features = geojson?.features || [];
 
   // Jitter/offset markers that share identical or nearby coordinates (e.g. Kashechewan) by ±0.008 deg
   const displayMarkers = useMemo(() => {
-    // 1. Group features within ~0.015 deg of each other
     const clusters = [];
     features.forEach((feature, idx) => {
       const [rawLng, rawLat] = feature.geometry.coordinates;
@@ -102,7 +93,6 @@ export default function FloodMap({
       }
     });
 
-    // 2. Spread overlapping points in a small radius of 0.008 degrees
     const markers = [];
     clusters.forEach((group) => {
       const count = group.items.length;
@@ -126,11 +116,11 @@ export default function FloodMap({
     return markers;
   }, [features]);
 
-  // Cluster locations for heatmap circles (using raw community centroid)
+  // Cluster locations for heatmap concentration circles
   const heatmapData = useMemo(() => {
     const places = {};
     features.forEach((f) => {
-      const place = f.properties.place || f.properties.location_name || 'Location Hotspot';
+      const place = f.properties.place || f.properties.location_name || 'Hotspot';
       const [lng, lat] = f.geometry.coordinates;
       if (!places[place]) {
         places[place] = { lat, lng, count: 0 };
@@ -140,22 +130,22 @@ export default function FloodMap({
     return Object.values(places);
   }, [features]);
 
-  const currentTileConfig = MAP_STYLES[mapStyle] || MAP_STYLES.dark;
+  const currentTileConfig = MAP_STYLES[mapStyle] || MAP_STYLES.osm;
 
   return (
-    <div className="relative w-full h-full rounded-xl overflow-hidden ring-1 ring-slate-800/80 shadow-2xl">
-      {/* Map Style Switcher (Top-Right Corner) */}
-      <div className="absolute top-3 right-3 z-[1000] flex items-center gap-1 bg-slate-950/85 backdrop-blur-md p-1 rounded-lg border border-slate-700/70 shadow-2xl">
+    <div className="relative w-full h-full rounded border border-zinc-200 overflow-hidden bg-zinc-100">
+      {/* Map Style Switcher (Top-Right Corner) - Utilitarian GIS tabs */}
+      <div className="absolute top-2.5 right-2.5 z-[1000] flex items-center bg-white/95 backdrop-blur-sm p-0.5 rounded border border-zinc-300 shadow-sm text-[11px] font-mono">
         {Object.values(MAP_STYLES).map((style) => (
           <button
             key={style.id}
             id={`btn-map-style-${style.id}`}
             type="button"
             onClick={() => setMapStyle(style.id)}
-            className={`px-2.5 py-1 rounded-md text-[11px] font-semibold transition-all ${
+            className={`px-2 py-0.5 rounded transition-colors ${
               mapStyle === style.id
-                ? 'bg-indigo-600 text-white shadow-md shadow-indigo-600/30'
-                : 'text-slate-300 hover:text-white hover:bg-slate-800/70'
+                ? 'bg-zinc-900 text-white font-medium'
+                : 'text-zinc-600 hover:text-zinc-900 hover:bg-zinc-100'
             }`}
           >
             {style.label}
@@ -167,7 +157,7 @@ export default function FloodMap({
         center={[51.05, -114.07]}
         zoom={10}
         preferCanvas={true}
-        className={`w-full h-full map-style-${mapStyle}`}
+        className="w-full h-full"
         scrollWheelZoom={true}
         zoomControl={true}
       >
@@ -180,24 +170,24 @@ export default function FloodMap({
         <FlyToHandler flyTo={flyTo} />
         <FitBoundsToData geojson={geojson} />
 
-        {/* Heatmap / Concentration Circles */}
+        {/* Heatmap / Activity Concentration Circles */}
         {showHeatmap &&
           heatmapData.map((c, i) => (
             <CircleMarker
               key={`heatmap-${i}`}
               center={[c.lat, c.lng]}
-              radius={Math.min(22 + c.count * 8, 65)}
+              radius={Math.min(20 + c.count * 6, 60)}
               pathOptions={{
-                fillColor: '#6366f1',
-                fillOpacity: 0.16 + Math.min(c.count * 0.05, 0.25),
-                color: '#818cf8',
-                weight: 1.5,
-                opacity: 0.35,
+                fillColor: '#3b82f6',
+                fillOpacity: 0.12 + Math.min(c.count * 0.04, 0.2),
+                color: '#2563eb',
+                weight: 1,
+                opacity: 0.4,
               }}
             />
           ))}
 
-        {/* Individual Feature Markers with ±0.008° Jitter and Canvas rendering */}
+        {/* Individual Feature Markers with ±0.008° Jitter and Canvas Rendering */}
         {displayMarkers.map(({ id, lat, lng, feature }) => {
           const p = feature.properties || {};
           const colors = getMarkerColor(p.category);
@@ -208,53 +198,49 @@ export default function FloodMap({
             <CircleMarker
               key={id}
               center={[lat, lng]}
-              radius={8}
+              radius={7}
               pathOptions={{
                 fillColor: colors.fill,
                 fillOpacity: 0.9,
-                color: colors.stroke,
-                weight: 2,
+                color: '#ffffff',
+                weight: 1.5,
                 opacity: 1,
               }}
             >
-              <Popup maxWidth={320} minWidth={240}>
-                <div className="space-y-2 text-slate-100">
+              <Popup maxWidth={300} minWidth={220}>
+                <div className="space-y-1.5 text-zinc-900 font-sans">
                   {/* Location Header */}
-                  <div className="flex items-center gap-2 border-b border-slate-700/60 pb-1.5">
+                  <div className="flex items-center gap-1.5 border-b border-zinc-200 pb-1">
                     <span
-                      className="inline-block w-3 h-3 rounded-full shrink-0 shadow-sm"
+                      className="w-2 h-2 rounded-full shrink-0"
                       style={{ backgroundColor: colors.fill }}
                     />
-                    <span className="font-bold text-sm text-white">
+                    <span className="font-semibold text-xs text-zinc-900">
                       {p.place || p.location_name || 'Ground Location'}
                     </span>
                   </div>
 
-                  {/* Badges */}
-                  <div className="flex flex-wrap items-center gap-1.5">
-                    <span
-                      className={`text-[10px] font-semibold px-2 py-0.5 rounded-full ${categoryBadgeClass}`}
-                    >
+                  {/* Category & Confidence */}
+                  <div className="flex items-center gap-1.5">
+                    <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${categoryBadgeClass}`}>
                       {categoryLabel}
                     </span>
                     {p.confidence != null && (
-                      <span
-                        className={`text-[10px] font-medium px-1.5 py-0.5 rounded ring-1 ${getConfidenceBadge(p.confidence)}`}
-                      >
+                      <span className="text-[10px] font-mono text-zinc-500">
                         {(p.confidence * 100).toFixed(0)}% conf
                       </span>
                     )}
                   </div>
 
                   {/* Tweet Text */}
-                  <p className="text-xs text-slate-200 leading-relaxed pt-1">
+                  <p className="text-xs text-zinc-700 leading-normal pt-0.5">
                     {p.text || p.tweet_text || ''}
                   </p>
 
                   {/* Timestamp */}
                   {p.created_at && (
-                    <p className="text-[10px] text-slate-400 pt-1 border-t border-slate-800">
-                      Reported: {new Date(p.created_at).toLocaleString()}
+                    <p className="text-[10px] font-mono text-zinc-400 pt-1 border-t border-zinc-100">
+                      {new Date(p.created_at).toLocaleString()}
                     </p>
                   )}
                 </div>

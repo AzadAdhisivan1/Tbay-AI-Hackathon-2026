@@ -1,84 +1,54 @@
 import React from 'react';
-import {
-  BarChart3,
-  Signal,
-  ShieldOff,
-  MapPin,
-} from 'lucide-react';
 
 export default function KPIStrip({ total, relevant, noise, withLocation, topLocations }) {
   const relevantPct = total > 0 ? ((relevant / total) * 100).toFixed(1) : '0.0';
   const noisePct = total > 0 ? ((noise / total) * 100).toFixed(1) : '0.0';
   const hotspotLocation = topLocations?.[0]?.name || '—';
 
-  const cards = [
+  const metrics = [
     {
-      icon: BarChart3,
-      label: 'Total Tweets Processed',
-      value: total,
-      sub: null,
-      color: 'text-slate-300',
-      bg: 'bg-slate-800/60',
-      ring: 'ring-slate-700/50',
-      iconBg: 'bg-slate-700/50',
-      iconColor: 'text-slate-300',
+      label: 'Total Tweets',
+      value: (total ?? 0).toLocaleString(),
+      sub: 'Processed dataset',
+      valColor: 'text-zinc-900',
     },
     {
-      icon: Signal,
-      label: 'Relevant Flood Signal',
-      value: relevant,
+      label: 'Relevant Signal',
+      value: (relevant ?? 0).toLocaleString(),
       sub: `${relevantPct}% of total`,
-      color: 'text-emerald-400',
-      bg: 'bg-emerald-950/30',
-      ring: 'ring-emerald-800/40',
-      iconBg: 'bg-emerald-900/40',
-      iconColor: 'text-emerald-400',
+      valColor: 'text-emerald-700',
     },
     {
-      icon: ShieldOff,
-      label: 'Noise Filtered Out',
-      value: noise,
-      sub: `${noisePct}% removed`,
-      color: 'text-amber-400',
-      bg: 'bg-amber-950/20',
-      ring: 'ring-amber-800/30',
-      iconBg: 'bg-amber-900/30',
-      iconColor: 'text-amber-400',
+      label: 'Noise Filtered',
+      value: (noise ?? 0).toLocaleString(),
+      sub: `${noisePct}% excluded`,
+      valColor: 'text-amber-700',
     },
     {
-      icon: MapPin,
-      label: 'Plotted Ground Locations',
-      value: withLocation,
+      label: 'Mapped Ground Points',
+      value: (withLocation ?? 0).toLocaleString(),
       sub: hotspotLocation,
-      color: 'text-blue-400',
-      bg: 'bg-blue-950/20',
-      ring: 'ring-blue-800/30',
-      iconBg: 'bg-blue-900/30',
-      iconColor: 'text-blue-400',
+      valColor: 'text-blue-700',
     },
   ];
 
   return (
-    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
-      {cards.map((card) => (
-        <div
-          key={card.label}
-          className={`${card.bg} rounded-xl p-4 ring-1 ${card.ring} transition-all hover:scale-[1.02]`}
-        >
-          <div className="flex items-center gap-2.5 mb-2">
-            <div className={`w-8 h-8 rounded-lg ${card.iconBg} flex items-center justify-center`}>
-              <card.icon className={`w-4 h-4 ${card.iconColor}`} />
-            </div>
-            <span className="text-[11px] text-slate-400 font-medium leading-tight">
-              {card.label}
+    <div className="grid grid-cols-2 sm:grid-cols-4 divide-x divide-zinc-200 h-full">
+      {metrics.map((m) => (
+        <div key={m.label} className="p-2 sm:px-3 sm:py-1.5 flex flex-col justify-center">
+          <div className="text-[10px] uppercase tracking-wider text-zinc-500 font-mono font-medium truncate leading-tight">
+            {m.label}
+          </div>
+          <div className="flex items-baseline gap-1.5 mt-0.5">
+            <span className={`text-base sm:text-lg font-bold font-mono tabular-nums ${m.valColor} leading-none`}>
+              {m.value}
             </span>
+            {m.sub && (
+              <span className="text-[10px] text-zinc-400 font-mono tabular-nums truncate">
+                {m.sub}
+              </span>
+            )}
           </div>
-          <div className={`text-2xl font-bold ${card.color} font-[Outfit]`}>
-            {(card.value ?? 0).toLocaleString()}
-          </div>
-          {card.sub && (
-            <p className="text-[11px] text-slate-500 mt-0.5 truncate">{card.sub}</p>
-          )}
         </div>
       ))}
     </div>
