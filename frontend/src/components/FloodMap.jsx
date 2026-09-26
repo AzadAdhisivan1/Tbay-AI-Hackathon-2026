@@ -27,6 +27,31 @@ function FlyToHandler({ flyTo }) {
   return null;
 }
 
+/** Invalidate map size on container resize to prevent gray gaps */
+function InvalidateSizeHandler() {
+  const map = useMap();
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      map.invalidateSize();
+    }, 150);
+
+    const container = map.getContainer();
+    let resizeObserver;
+    if (typeof ResizeObserver !== 'undefined' && container) {
+      resizeObserver = new ResizeObserver(() => {
+        map.invalidateSize();
+      });
+      resizeObserver.observe(container);
+    }
+
+    return () => {
+      clearTimeout(timer);
+      if (resizeObserver) resizeObserver.disconnect();
+    };
+  }, [map]);
+  return null;
+}
+
 /** Auto-fit bounds whenever a new dataset or GeoJSON loads, respecting world vs regional scope */
 function FitBoundsToData({ geojson, stats }) {
   const map = useMap();
@@ -235,6 +260,9 @@ export default function FloodMap({
       <MapContainer
         center={defaultCenter}
         zoom={defaultZoom}
+        minZoom={2}
+        maxBounds={[[-85, -180], [85, 180]]}
+        maxBoundsViscosity={1.0}
         preferCanvas={true}
         className="w-full h-full"
         scrollWheelZoom={true}
@@ -246,6 +274,7 @@ export default function FloodMap({
           url={currentTileConfig.url}
           maxZoom={currentTileConfig.maxZoom}
         />
+        <InvalidateSizeHandler />
         <FlyToHandler flyTo={flyTo} />
         <FitBoundsToData geojson={geojson} stats={stats} />
 

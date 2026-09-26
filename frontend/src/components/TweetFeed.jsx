@@ -151,7 +151,7 @@ export default function TweetFeed({
   };
 
   return (
-    <div className="flex flex-col h-full bg-white rounded border border-zinc-200 overflow-hidden">
+    <div className="h-full min-h-0 flex flex-col overflow-hidden bg-white rounded border border-zinc-200">
       {/* Clean Utilitarian Tabs */}
       <div className="flex border-b border-zinc-200 bg-zinc-50 shrink-0">
         <button
@@ -359,7 +359,7 @@ export default function TweetFeed({
       </div>
 
       {/* Flush Divide-y List Rows */}
-      <div className="flex-1 overflow-y-auto divide-y divide-zinc-200">
+      <div className="flex-1 min-h-0 overflow-y-auto divide-y divide-zinc-200">
         {displayTweets.length === 0 && (
           <div className="p-8 text-center text-zinc-400 text-xs font-mono">
             No reports match the active filter criteria.

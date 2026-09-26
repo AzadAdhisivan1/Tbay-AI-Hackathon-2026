@@ -458,7 +458,7 @@ export default function App() {
     : (stats?.by_category ?? {});
 
   return (
-    <div className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
+    <div className="h-screen overflow-hidden bg-zinc-50 text-zinc-900 flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
       {/* Header */}
       <Header
         datasetId={datasetId}
@@ -522,7 +522,7 @@ export default function App() {
       )}
 
       {/* Main Content */}
-      <main className="flex-1 flex flex-col gap-2 p-3 sm:px-4 max-w-[1920px] w-full mx-auto min-h-0">
+      <main className="flex-1 min-h-0 overflow-hidden flex flex-col gap-2 p-2 sm:px-4 max-w-[1920px] w-full mx-auto">
         {/* Data Source & Status Banner */}
         <div className="rounded border border-zinc-200 bg-white px-3 py-1 flex items-center justify-between text-[11px] font-mono tabular-nums text-zinc-500 shrink-0">
           <span className="flex items-center gap-2">
@@ -586,12 +586,12 @@ export default function App() {
           </div>
         </div>
 
-        {/* Split Workspace: Map (60%) + Feed (40%) */}
-        <div className="flex-1 flex flex-col lg:flex-row gap-3 min-h-0" style={{ minHeight: '520px' }}>
-          {/* Map Panel (60%) */}
-          <div className="lg:w-[60%] flex flex-col gap-1.5 min-h-[400px] lg:min-h-0">
+        {/* Split Workspace: Map + Feed */}
+        <div className="flex-1 min-h-0 overflow-hidden grid grid-cols-12 gap-3">
+          {/* Map Panel (Left Column) */}
+          <div className="col-span-12 lg:col-span-7 xl:col-span-8 h-full min-h-0 overflow-hidden flex flex-col gap-1.5">
             {/* Map Toolbar & Legend */}
-            <div className="flex items-center justify-between gap-2 text-xs flex-wrap">
+            <div className="flex items-center justify-between gap-2 text-xs flex-wrap shrink-0">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-zinc-900 text-xs">
                   {stats?.scope === 'world' ? 'World Disaster Map' : 'Flood Map'}
@@ -643,7 +643,7 @@ export default function App() {
             </div>
 
             {/* Map Canvas */}
-            <div className="flex-1 min-h-0">
+            <div className="flex-1 min-h-0 overflow-hidden">
               <FloodMap
                 geojson={displayGeoJSON}
                 showHeatmap={showHeatmap}
@@ -654,8 +654,8 @@ export default function App() {
             </div>
           </div>
 
-          {/* Tweet Feed Panel (40%) */}
-          <div className="lg:w-[40%] min-h-[400px] lg:min-h-0 flex flex-col">
+          {/* Tweet Feed Panel (Right Column) */}
+          <div className="col-span-12 lg:col-span-5 xl:col-span-4 h-full min-h-0 overflow-hidden flex flex-col">
             <TweetFeed
               signalTweets={displaySignal}
               noiseTweets={displayNoise}
