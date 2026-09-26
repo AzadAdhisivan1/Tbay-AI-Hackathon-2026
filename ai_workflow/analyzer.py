@@ -14,10 +14,10 @@ Supports both LLM API mode (Gemini / OpenAI) and high-accuracy offline NLP Rule 
 import os
 import re
 import json
-import logging
-from typing import Dict, Any, List, Optional
-from prompt_template import SYSTEM_PROMPT, format_tweet_prompt
-from geocoder import resolve_locations
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 logger = logging.getLogger(__name__)
 
@@ -220,19 +220,40 @@ def analyze_tweet_llm(tweet_text: str) -> Optional[Dict[str, Any]]:
     """
     Evaluates tweet using Gemini or OpenAI API if keys are available in environment.
     """
-    gemini_key = os.environ.get("GEMINI_API_KEY") or os.environ.get("GOOGLE_API_KEY")
+    gemini_key = (
+        os.environ.get("GEMINI_API_KEY") or
+        os.environ.get("GOOGLE_API_KEY") or
+        os.environ.get("HACKATHON_API_KEY")
+    )
     openai_key = os.environ.get("OPENAI_API_KEY")
     
     prompt = format_tweet_prompt(tweet_text)
     
     if gemini_key:
         try:
+            import requests
+            url = f"https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent?key={gemini_key}"
+            payload = {
+                "contents": [{"parts": [{"text": prompt}]}]
+            }
+            res = requests.post(url, json=payload, timeout=10)
+            if res.status_code == 200:
+                data = res.json()
+                content = data["candidates"][0]["content"]["parts"][0]["text"].strip()
+                if content.startswith("```"):
+                    content = re.sub(r'^```json\s*', '', content)
+                    content = re.sub(r'^```\s*', '', content)
+                    content = re.sub(r'\s*```$', '', content)
+                return json.loads(content)
+        except Exception as e:
+            logger.warning(f"Gemini REST call failed: {e}. Trying SDK or NLP engine.")
+            
+        try:
             import google.generativeai as genai
             genai.configure(api_key=gemini_key)
             model = genai.GenerativeModel('gemini-1.5-flash')
             response = model.generate_content(prompt)
             content = response.text.strip()
-            # Clean markdown code block if returned
             if content.startswith("```"):
                 content = re.sub(r'^```json\s*', '', content)
                 content = re.sub(r'^```\s*', '', content)

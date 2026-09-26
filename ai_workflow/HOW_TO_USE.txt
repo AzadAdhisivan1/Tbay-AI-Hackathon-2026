@@ -1,0 +1,122 @@
+==============================================================================
+AI WORKFLOW MODULE - BACKEND DEVELOPER INTEGRATION GUIDE
+==============================================================================
+
+1. OVERVIEW
+------------------------------------------------------------------------------
+The `ai_workflow` module provides real-time disaster tweet analysis for social
+media monitoring during emergency events (floods, wildfires, storms, etc.). It
+evaluates incoming tweets to filter out noise/sarcasm, classifies relevance,
+determines emergency category and severity levels, extracts raw place mentions,
+and geocodes location coordinates for Leaflet interactive mapping.
+
+
+2. ENVIRONMENT VARIABLES & API KEYS
+------------------------------------------------------------------------------
+To enable real LLM classification via Gemini API, set one of the following
+environment variables in your `.env` file or deployment server (e.g. Render):
+
+  GEMINI_API_KEY=your_gemini_api_key_here
+  or
+  GOOGLE_API_KEY=your_google_api_key_here
+  or
+  HACKATHON_API_KEY=your_hackathon_api_key_here
+
+Where to get a key:
+- Obtain a Gemini API Key from Google AI Studio (https://aistudio.google.com/).
+
+Note: If no API key is set or network calls fail, `ai_workflow` automatically
+falls back to its built-in zero-shot NLP rule engine so the application runs
+reliably offline without crashing.
+
+
+3. REQUIRED DEPENDENCIES
+------------------------------------------------------------------------------
+Install module dependencies using requirements.txt:
+
+  pip install -r ai_workflow/requirements.txt
+
+Core dependencies include:
+- fastapi, uvicorn, pydantic (REST API server)
+- pandas (CSV batch processing)
+- python-dotenv (environment variable loading)
+- requests (Gemini REST API calls & HTTP geocoding)
+
+
+4. HOW TO USE IN BACKEND CODE
+------------------------------------------------------------------------------
+Import the primary entrypoint function `analyze_tweet` or use the batch helpers:
+
+--------------------------------------------------
+A. Single Tweet Analysis: `analyze_tweet(text: str, geocode: bool = True)`
+--------------------------------------------------
+Input:
+  - `tweet_text` (str): Text of the tweet to evaluate.
+  - `geocode` (bool): True to resolve lat/lng coordinates (default: True).
+
+Output Dictionary Format:
+  {
+    "is_relevant": bool,              # True if relevant to disaster
+    "relevance_confidence": float,    # 0.0 to 1.0 confidence score
+    "category": str | None,           # Category ("infrastructure_damage", "evacuation", "request_for_help", "medical_need", "official_update", "volunteer_relief_effort", "general_concern", "other")
+    "severity": str | None,           # Severity ("low", "medium", "high", "critical")
+    "locations": [                    # Extracted and geocoded place mentions
+      {
+        "raw_text": "High River",
+        "location_confidence": 0.9,
+        "geocoded": True,
+        "lat": 50.5806,
+        "lng": -113.8681,
+        "display_name": "High River, AB, Canada"
+      }
+    ],
+    "reasoning": str                  # Short one-sentence justification
+  }
+
+Example Call:
+  import sys
+  sys.path.append("ai_workflow")
+  from analyzer import analyze_tweet
+
+  result = analyze_tweet("Water entering home on Elbow River in High River! Family trapped upstairs #sos #abflood")
+  print(result["is_relevant"])  # True
+  print(result["category"])     # "request_for_help"
+  print(result["severity"])     # "critical"
+
+
+--------------------------------------------------
+B. Batch Tweet Classification for Backend Pipelines
+--------------------------------------------------
+Example Integration in backend/app/ai.py:
+
+  import sys
+  import os
+  sys.path.append(os.path.abspath("ai_workflow"))
+  from analyzer import analyze_tweet
+
+  def classify_batch(texts: list[str]) -> list[dict]:
+      results = []
+      for text in texts:
+          res = analyze_tweet(text, geocode=False)
+          results.append({
+              "relevant": res["is_relevant"],
+              "confidence": res["relevance_confidence"],
+              "category": res["category"],
+              "severity": res["severity"],
+              "locations": [loc["raw_text"] for loc in res["locations"]],
+              "reasoning": res["reasoning"]
+          })
+      return results
+
+
+5. KNOWN LIMITATIONS & TIPS
+------------------------------------------------------------------------------
+1. Geocoding Rate Limits: Nominatim geocoding defaults to 1 request/sec when
+   querying OpenStreetMap. `ai_workflow` includes an offline gazetteer cache
+   for major Canadian disaster locations (Calgary, High River, Fort McMurray,
+   Lethbridge, First Nations communities) to avoid network delays.
+2. Batch Size: When calling Gemini API for batches, evaluate tweets in batches
+   of 50-100 to stay well within free tier API rate limits.
+3. Fallback Guarantee: `analyze_tweet()` will never throw an unhandled exception.
+   If Gemini API returns an error or times out, it automatically falls back
+   to the zero-shot NLP classifier.
