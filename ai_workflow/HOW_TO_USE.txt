@@ -207,13 +207,20 @@ main before changing these files, and keep the names listed in 6.2 stable.
     geocoder.resolve_locations(), batch_processor.py, app.py.
 
 6.4 Things to know when you change prompts
+  - BONUS CHALLENGE UPDATE (CE Strategies 61,159-tweet global dataset):
+    * "is_relevant" now strictly means FLOOD-RELATED for both Alberta & Bonus datasets.
+      Non-flood disasters (explosions, shootings, fires, earthquakes, haze, storms without water) are is_relevant: False.
+    * New field on every output object: "disaster_type" (flood, storm, wildfire, earthquake, explosion, shooting, transport_accident, haze, other, none).
+    * Locations outside Canada MUST include country ("Tacloban, Philippines", "Brisbane, Queensland, Australia").
+    * format_summary_prompt() summarizes BY country/region ("Philippines: ... Australia: ...") in 3-6 sentences of plain prose.
+    * KNOWN_GAZETTEER enriched with major global flood locations (manila, tacloban, brisbane, jakarta, new orleans, bangkok, dhaka, chennai, kerala, etc.).
   - Any edit to analyzer.py, prompt_template.py or geocoder.py changes the
     backend's "fingerprint" and makes backend/data/sample_seed.json stale.
     The deployed server then rebuilds the sample with the free NLP engine
     (never with Gemini, so no quota is spent), and the backend team re-runs
-    the Gemini sample once (~160 requests). Tell the backend team when a
+    the Gemini sample once (~410 requests for Alberta + Bonus). Tell the backend team when a
     prompt change is final, so this only happens once.
   - Batch output must stay a JSON array of
-    {id, is_relevant, relevance_confidence, category, severity, locations: [str], reasoning}.
-  - Locations: specific places, city/province added when clear
-    ("Mission, Calgary, Alberta"). No bare provinces or countries.
+    {id, is_relevant, relevance_confidence, category, severity, disaster_type, locations: [str], reasoning}.
+  - Locations: specific places, city/province/country added when clear
+    ("Mission, Calgary, Alberta", "Tacloban, Philippines"). No bare provinces or countries.
