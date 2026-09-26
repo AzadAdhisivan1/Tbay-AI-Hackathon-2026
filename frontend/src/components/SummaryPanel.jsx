@@ -1,5 +1,6 @@
 import React from 'react';
 import { Loader2 } from 'lucide-react';
+import { ResponsiveContainer, BarChart, Bar, XAxis, Tooltip } from 'recharts';
 import { getCategoryBadge, getCategoryDisplay } from '../utils/categories';
 
 export default function SummaryPanel({
@@ -14,13 +15,13 @@ export default function SummaryPanel({
   setFilterLocation,
   filterCategory,
   setFilterCategory,
+  aiActive = false,
+  stats = null,
+  timeline = null,
 }) {
   const locationList = topLocations || [];
   const categoryEntries = Object.entries(byCategory || {}).sort((a, b) => b[1] - a[1]);
-  const isPlaceholder =
-    !summary ||
-    summary.toLowerCase().includes('[placeholder') ||
-    summary.toLowerCase().includes('placeholder summary');
+  const hasTimeline = stats?.has_timestamps === true && timeline?.buckets?.length > 0;
 
   return (
     <div className="p-2 sm:px-3 sm:py-2 flex flex-col justify-between h-full gap-1.5">
@@ -31,15 +32,15 @@ export default function SummaryPanel({
             Situation Summary
           </span>
 
-          {!isPlaceholder ? (
+          {aiActive ? (
             <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-medium inline-flex items-center gap-1">
               <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
               Gemini Live
             </span>
           ) : (
-            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-amber-50 text-amber-800 border border-amber-200 font-medium inline-flex items-center gap-1">
-              <span className="w-1.5 h-1.5 rounded-full bg-amber-600 inline-block" />
-              Placeholder Summary
+            <span className="text-[9px] font-mono px-1.5 py-0.2 rounded bg-zinc-100 text-zinc-600 border border-zinc-300 font-medium inline-flex items-center gap-1">
+              <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 inline-block" />
+              Offline / Cached Mode
             </span>
           )}
 
@@ -54,22 +55,55 @@ export default function SummaryPanel({
           onClick={onRequestSummary}
           disabled={isLoadingSummary}
           className="text-[10px] font-mono px-2 py-0.5 rounded border border-zinc-300 bg-white hover:bg-zinc-50 text-zinc-700 transition-colors disabled:opacity-50 cursor-pointer flex items-center gap-1"
-          title="Re-generate situational overview"
+          title="Re-generate situational overview from current signal"
         >
           {isLoadingSummary && <Loader2 className="w-2.5 h-2.5 animate-spin" />}
-          <span>{isLoadingSummary ? 'Updating...' : 'Re-generate'}</span>
+          <span>{isLoadingSummary ? 'Updating...' : 'Generate Summary'}</span>
         </button>
       </div>
 
       {/* Un-truncated Summary Text with Scrollable Area */}
-      <div className="max-h-24 overflow-y-auto pr-1">
+      <div className="max-h-20 overflow-y-auto pr-1">
         <p className="text-xs text-zinc-800 leading-snug font-normal">
-          {summary || 'Generating real-time emergency intelligence summary from active flood signals...'}
+          {summary || 'Click "Generate Summary" to create an AI situation overview based on active flood signal.'}
         </p>
       </div>
 
+      {/* Compact Timeline Bar Chart (rendered ONLY if timestamps exist in dataset) */}
+      {hasTimeline && (
+        <div className="h-[70px] w-full pt-1 border-t border-zinc-100 flex flex-col justify-end">
+          <div className="flex items-center justify-between text-[10px] font-mono text-zinc-500 mb-0.5">
+            <span className="font-semibold uppercase text-zinc-600">Activity Timeline</span>
+            <span className="text-zinc-400">{timeline.buckets.length} intervals ({timeline.interval || 'hour'})</span>
+          </div>
+          <div className="h-[46px] w-full">
+            <ResponsiveContainer width="100%" height="100%">
+              <BarChart data={timeline.buckets} margin={{ top: 0, right: 0, left: 0, bottom: 0 }}>
+                <XAxis dataKey="t" hide />
+                <Tooltip
+                  content={({ active, payload }) => {
+                    if (!active || !payload?.length) return null;
+                    const d = payload[0].payload;
+                    const timeLabel = d.t?.replace('T', ' ').replace(':00:00Z', ':00').replace('Z', '') || '';
+                    return (
+                      <div className="bg-zinc-900 text-white text-[10px] font-mono px-2 py-1 rounded shadow-md border border-zinc-700">
+                        <div className="font-bold text-zinc-200">{timeLabel}</div>
+                        <div className="text-emerald-400">Flood Signal: {d.relevant?.toLocaleString() ?? 0}</div>
+                        <div className="text-zinc-400">Total Volume: {d.total?.toLocaleString() ?? 0}</div>
+                      </div>
+                    );
+                  }}
+                />
+                <Bar dataKey="total" fill="#e4e4e7" radius={[1, 1, 0, 0]} stackId="a" />
+                <Bar dataKey="relevant" fill="#10b981" radius={[1, 1, 0, 0]} stackId="a" />
+              </BarChart>
+            </ResponsiveContainer>
+          </div>
+        </div>
+      )}
+
       {/* Interactive Location & Category Pills */}
-      <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 overflow-x-auto whitespace-nowrap pt-0.5">
+      <div className="flex items-center gap-2 text-[10px] font-mono text-zinc-500 overflow-x-auto whitespace-nowrap pt-0.5 border-t border-zinc-100">
         <span className="font-semibold text-zinc-600 shrink-0">Hotspots:</span>
         <div className="flex items-center gap-1 shrink-0">
           {locationList.slice(0, 4).map((loc) => {

@@ -67,6 +67,8 @@ async function postFile(path, file) {
 
 // ── Public API ─────────────────────────────────────────────────────
 
+// ── Public API ─────────────────────────────────────────────────────
+
 /** Quick backend connectivity test. */
 export async function checkHealth() {
   try {
@@ -74,6 +76,15 @@ export async function checkHealth() {
     return true;
   } catch {
     return false;
+  }
+}
+
+/** Check if Gemini LLM is active (for Gemini Live badge). */
+export async function fetchAIStatus() {
+  try {
+    return await get('/api/ai/status');
+  } catch {
+    return { active: false, enabled: false };
   }
 }
 
@@ -86,12 +97,11 @@ export async function fetchCategories() {
 /** List previously processed datasets. */
 export async function fetchDatasets() {
   const data = await get('/api/datasets');
-  return data.datasets; // [{id, name, total, relevant}]
+  return data.datasets || []; // [{id, name, total, relevant, processing}]
 }
 
 /** Upload a CSV file → kicks off async pipeline, returns ids. */
 export async function uploadCSV(file) {
-  // POST /api/datasets  (multipart file)
   return postFile('/api/datasets', file);
   // → {dataset_id, job_id, total}
 }
@@ -99,46 +109,73 @@ export async function uploadCSV(file) {
 /** Poll a background job. Resolves when done, rejects on failure. */
 export async function pollJob(jobId) {
   const data = await get(`/api/jobs/${jobId}`);
-  return data; // {status, stage, processed, total, error?, dataset_id}
+  return data; // {status, stage, processed, total, places_done, places_total, dataset_ready, error?, dataset_id}
 }
 
 /**
- * Helper: upload CSV and poll until the pipeline finishes.
- * Calls `onProgress({status, stage, processed, total})` each tick.
- * Returns the dataset_id on success.
+ * Upload CSV and poll progress every 1s.
+ * Passes full job object to `onProgress`.
+ * Resolves as soon as `job.dataset_ready === true` OR `job.status === 'done' || job.status === 'completed'`.
  */
 export async function uploadAndWait(file, onProgress) {
   const { dataset_id, job_id, total } = await uploadCSV(file);
-  onProgress?.({ status: 'queued', stage: 'queued', processed: 0, total });
+  onProgress?.({
+    status: 'queued',
+    stage: 'classifying',
+    processed: 0,
+    total,
+    places_done: 0,
+    places_total: 0,
+    dataset_ready: false,
+    dataset_id,
+  });
 
   // eslint-disable-next-line no-constant-condition
   while (true) {
     await new Promise((r) => setTimeout(r, 1000));
     const job = await pollJob(job_id);
-    onProgress?.(job);
-    if (job.status === 'done') return dataset_id;
-    if (job.status === 'failed') throw new Error(job.error || 'Job failed');
+    onProgress?.({
+      stage: job.stage,
+      processed: job.processed,
+      total: job.total,
+      places_done: job.places_done ?? 0,
+      places_total: job.places_total ?? 0,
+      dataset_ready: job.dataset_ready,
+      status: job.status,
+      dataset_id,
+      ...job,
+    });
+    if (job.dataset_ready === true || job.status === 'done' || job.status === 'completed') {
+      return dataset_id;
+    }
+    if (job.status === 'failed') {
+      throw new Error(job.error || 'Job failed');
+    }
   }
 }
 
 /** KPI stats for a dataset. */
 export async function fetchStats(datasetId) {
   return get(`/api/datasets/${datasetId}/stats`);
-  // → {name, total, relevant, unrelated, with_location, by_category, top_locations}
+  // → {name, total, relevant, unrelated, with_location, by_category, by_severity, top_locations, anchor, scope, has_timestamps, processing}
 }
 
 /**
- * Filtered tweets.
- * filters: { relevant, category, q, location, min_confidence, has_location, limit, offset }
+ * Filtered tweets with pagination and sort.
+ * filters: { relevant, category, severity, disaster_type, location, q, sort, limit, offset, min_confidence, has_location }
  */
 export async function fetchTweets(datasetId, filters = {}) {
-  return get(`/api/datasets/${datasetId}/tweets`, filters);
-  // → {total, offset, limit, tweets: [{id, text, created_at, relevant, confidence, category, locations, meta}]}
+  const params = {
+    limit: 200,
+    ...filters,
+  };
+  return get(`/api/datasets/${datasetId}/tweets`, params);
+  // → {total, offset, limit, tweets: [...]}
 }
 
 /**
  * GeoJSON FeatureCollection for Leaflet.
- * filters: { category, q, min_confidence }
+ * filters: { category, severity, disaster_type, location, q, min_confidence }
  */
 export async function fetchGeoJSON(datasetId, filters = {}) {
   return get(`/api/datasets/${datasetId}/geojson`, filters);
@@ -146,8 +183,33 @@ export async function fetchGeoJSON(datasetId, filters = {}) {
 }
 
 /**
+ * Tweet counts per hour/day for timeline chart.
+ * filters: { interval: 'hour' | 'day', category, severity }
+ */
+export async function fetchTimeline(datasetId, params = {}) {
+  return get(`/api/datasets/${datasetId}/timeline`, params);
+  // → { available, interval, buckets: [{t, total, relevant, by_category}] }
+}
+
+/**
+ * Get direct download / export URL for filtered tweets as CSV.
+ * filters: { relevant, category, severity, disaster_type, location, q, sort }
+ */
+export function getExportCSVUrl(datasetId, filters = {}) {
+  const base = `${API}/api/datasets/${datasetId}/export.csv`;
+  const url = new URL(base, window.location.origin);
+  const allowed = ['relevant', 'category', 'severity', 'disaster_type', 'location', 'q', 'sort'];
+  Object.entries(filters).forEach(([k, v]) => {
+    if (allowed.includes(k) && v != null && v !== '') {
+      url.searchParams.set(k, v);
+    }
+  });
+  return url.toString();
+}
+
+/**
  * AI summary of filtered tweets.
- * filters: { relevant, category, q, location, min_confidence }
+ * filters: { relevant, category, severity, location, q, min_confidence }
  */
 export async function fetchSummary(datasetId, filters = {}) {
   return post(`/api/datasets/${datasetId}/summary`, {
@@ -159,7 +221,6 @@ export async function fetchSummary(datasetId, filters = {}) {
 
 /**
  * Build a downloadable GeoJSON blob from a FeatureCollection object.
- * (The backend already returns valid GeoJSON, so this just wraps download.)
  */
 export function downloadGeoJSON(featureCollection, filename = 'living_flood_map_export.geojson') {
   const blob = new Blob([JSON.stringify(featureCollection, null, 2)], {

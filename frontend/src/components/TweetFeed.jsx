@@ -37,21 +37,29 @@ function hasCoords(tweet) {
 }
 
 export default function TweetFeed({
-  signalTweets,
-  noiseTweets,
-  signalTotal,
-  noiseTotal,
-  categories,
-  useFallback,
-  onFlyTo,
-  filterCategory,
-  setFilterCategory,
-  filterSearch,
-  setFilterSearch,
-  filterLocation,
-  setFilterLocation,
-  filterHasLocation,
-  setFilterHasLocation,
+  signalTweets = [],
+  noiseTweets = [],
+  signalTotal = 0,
+  noiseTotal = 0,
+  categories = [],
+  stats = null,
+  useFallback = false,
+  onFlyTo = () => {},
+  filterCategory = '',
+  setFilterCategory = () => {},
+  filterSearch = '',
+  setFilterSearch = () => {},
+  filterLocation = '',
+  setFilterLocation = () => {},
+  filterHasLocation = null,
+  setFilterHasLocation = () => {},
+  filterDisasterType = '',
+  setFilterDisasterType = () => {},
+  filterSort = '',
+  setFilterSort = () => {},
+  offset = 0,
+  setOffset = () => {},
+  limit = 200,
   activeTab: propActiveTab,
   setActiveTab: propSetActiveTab,
 }) {
@@ -59,21 +67,16 @@ export default function TweetFeed({
   const activeTab = propActiveTab !== undefined ? propActiveTab : localActiveTab;
   const setActiveTab = propSetActiveTab !== undefined ? propSetActiveTab : setLocalActiveTab;
 
-  // Unique locations for dropdown (from signal tweets)
-  const locations = useMemo(() => {
-    const locs = new Set();
-    signalTweets.forEach((t) => {
-      const name = getLocationName(t);
-      if (name) locs.add(name);
-    });
-    return ['', ...Array.from(locs).sort()];
-  }, [signalTweets]);
-
   // Active set
   const baseTweets = activeTab === 'signal' ? signalTweets : noiseTweets;
 
-  // Filtering for fallback mode or noise tab (and active signal filtering)
+  // Client-side filtering in fallback mode
   const displayTweets = useMemo(() => {
+    if (!useFallback) {
+      // In backend mode, filtering and slicing are handled on the server
+      return baseTweets;
+    }
+
     let result = baseTweets;
 
     if (filterSearch.trim()) {
@@ -104,7 +107,7 @@ export default function TweetFeed({
     }
 
     return result;
-  }, [baseTweets, filterSearch, filterCategory, filterLocation, filterHasLocation, activeTab]);
+  }, [baseTweets, filterSearch, filterCategory, filterLocation, filterHasLocation, activeTab, useFallback]);
 
   // Category filter pills: standard 4 synced categories, plus any extra backend categories
   const categoryPills = useMemo(() => {
@@ -129,36 +132,54 @@ export default function TweetFeed({
     return pills;
   }, [categories]);
 
+  // Non-flood disaster types from stats.by_disaster_type
+  const otherDisasterTypes = useMemo(() => {
+    if (!stats?.by_disaster_type) return [];
+    return Object.entries(stats.by_disaster_type)
+      .filter(([type]) => type.toLowerCase() !== 'flood')
+      .sort((a, b) => b[1] - a[1]);
+  }, [stats?.by_disaster_type]);
+
   const currentTotal = activeTab === 'signal' ? (signalTotal ?? signalTweets.length) : (noiseTotal ?? noiseTweets.length);
+
+  const handleTabChange = (newTab) => {
+    setActiveTab(newTab);
+    setOffset(0);
+    if (newTab === 'signal') {
+      setFilterDisasterType('');
+    }
+  };
 
   return (
     <div className="flex flex-col h-full bg-white rounded border border-zinc-200 overflow-hidden">
-      {/* Clean Utilitarian Tabs - No decorative icons */}
-      <div className="flex border-b border-zinc-200 bg-zinc-50">
+      {/* Clean Utilitarian Tabs */}
+      <div className="flex border-b border-zinc-200 bg-zinc-50 shrink-0">
         <button
           id="tab-signal"
-          onClick={() => setActiveTab('signal')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors ${
+          type="button"
+          onClick={() => handleTabChange('signal')}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
             activeTab === 'signal'
               ? 'bg-white text-zinc-900 border-b-2 border-zinc-900 font-bold'
               : 'text-zinc-500 hover:text-zinc-800'
           }`}
         >
-          <span>Relevant Signal</span>
+          <span>Flood Reports (Signal)</span>
           <span className="text-[10px] font-mono tabular-nums px-1.5 py-0.2 rounded bg-zinc-200/80 text-zinc-800 font-semibold">
             {(signalTotal != null ? signalTotal : signalTweets.length).toLocaleString()}
           </span>
         </button>
         <button
           id="tab-noise"
-          onClick={() => setActiveTab('noise')}
-          className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors ${
+          type="button"
+          onClick={() => handleTabChange('noise')}
+          className={`flex-1 flex items-center justify-center gap-1.5 py-2 text-xs font-semibold transition-colors cursor-pointer ${
             activeTab === 'noise'
               ? 'bg-white text-zinc-900 border-b-2 border-zinc-900 font-bold'
               : 'text-zinc-500 hover:text-zinc-800'
           }`}
         >
-          <span>Filtered Noise</span>
+          <span>Other Disasters / Filtered Out</span>
           <span className="text-[10px] font-mono tabular-nums px-1.5 py-0.2 rounded bg-zinc-200/80 text-zinc-800 font-semibold">
             {(noiseTotal != null ? noiseTotal : noiseTweets.length).toLocaleString()}
           </span>
@@ -166,23 +187,50 @@ export default function TweetFeed({
       </div>
 
       {/* Filter Controls Bar */}
-      <div className="p-2.5 border-b border-zinc-200 space-y-2 bg-zinc-50/50">
-        {/* Search */}
-        <input
-          id="input-search"
-          type="text"
-          placeholder="Filter by keyword or location..."
-          value={filterSearch}
-          onChange={(e) => setFilterSearch(e.target.value)}
-          className="w-full px-2.5 py-1.5 rounded border border-zinc-300 bg-white text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-500 transition-colors"
-        />
+      <div className="p-2.5 border-b border-zinc-200 space-y-2 bg-zinc-50/50 shrink-0">
+        {/* Search & Sort Toggle Row */}
+        <div className="flex items-center gap-2">
+          <input
+            id="input-search"
+            type="text"
+            placeholder="Search keyword or text..."
+            value={filterSearch}
+            onChange={(e) => {
+              setFilterSearch(e.target.value);
+              setOffset(0);
+            }}
+            className="flex-1 px-2.5 py-1 rounded border border-zinc-300 bg-white text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-500 transition-colors"
+          />
 
-        {/* Category Pills - Sharp rounded utilitarian buttons with 6px dot */}
+          {/* Severity Sort Toggle */}
+          <button
+            id="btn-toggle-sort"
+            type="button"
+            onClick={() => {
+              setFilterSort((prev) => (prev === 'severity' ? '' : 'severity'));
+              setOffset(0);
+            }}
+            className={`px-2 py-1 rounded border text-[11px] font-mono whitespace-nowrap transition-colors cursor-pointer ${
+              filterSort === 'severity'
+                ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-100'
+            }`}
+            title="Sort critical and high severity events to top"
+          >
+            {filterSort === 'severity' ? 'Sort: Severity ⚡' : 'Sort: Default'}
+          </button>
+        </div>
+
+        {/* Tab 1: Category Filter Pills */}
         {activeTab === 'signal' && (
           <div className="flex flex-wrap items-center gap-1">
             <button
-              onClick={() => setFilterCategory('')}
-              className={`text-[10px] font-mono px-2 py-0.5 rounded transition-colors ${
+              type="button"
+              onClick={() => {
+                setFilterCategory('');
+                setOffset(0);
+              }}
+              className={`text-[10px] font-mono px-2 py-0.5 rounded transition-colors cursor-pointer ${
                 filterCategory === ''
                   ? 'bg-zinc-900 text-white font-medium'
                   : 'bg-white text-zinc-700 border border-zinc-300 hover:bg-zinc-100'
@@ -195,8 +243,12 @@ export default function TweetFeed({
               return (
                 <button
                   key={cat.key}
-                  onClick={() => setFilterCategory(isSelected ? '' : cat.key)}
-                  className={`text-[10px] font-mono px-2 py-0.5 rounded flex items-center gap-1.5 border transition-colors ${
+                  type="button"
+                  onClick={() => {
+                    setFilterCategory(isSelected ? '' : cat.key);
+                    setOffset(0);
+                  }}
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded flex items-center gap-1.5 border transition-colors cursor-pointer ${
                     isSelected
                       ? 'bg-zinc-900 text-white border-zinc-900 font-medium'
                       : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-100'
@@ -210,57 +262,99 @@ export default function TweetFeed({
           </div>
         )}
 
-        {/* Location Dropdown & Mapped Filter */}
+        {/* Tab 2: Non-Flood Other Disaster Type Chips */}
+        {activeTab === 'noise' && otherDisasterTypes.length > 0 && (
+          <div className="flex items-center gap-1.5 overflow-x-auto whitespace-nowrap py-0.5 scrollbar-thin">
+            <span className="text-[10px] font-mono font-semibold text-zinc-500 uppercase tracking-wider shrink-0">
+              Disasters:
+            </span>
+            <button
+              type="button"
+              onClick={() => {
+                setFilterDisasterType('');
+                setOffset(0);
+              }}
+              className={`text-[10px] font-mono px-2 py-0.5 rounded border transition-colors cursor-pointer shrink-0 ${
+                filterDisasterType === ''
+                  ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                  : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-100'
+              }`}
+            >
+              All Non-Flood
+            </button>
+            {otherDisasterTypes.map(([type, count]) => {
+              const isSelected = filterDisasterType === type;
+              return (
+                <button
+                  key={type}
+                  type="button"
+                  onClick={() => {
+                    setFilterDisasterType(isSelected ? '' : type);
+                    setOffset(0);
+                  }}
+                  className={`text-[10px] font-mono px-2 py-0.5 rounded border transition-colors cursor-pointer shrink-0 flex items-center gap-1 ${
+                    isSelected
+                      ? 'bg-zinc-900 text-white border-zinc-900 font-semibold'
+                      : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-100'
+                  }`}
+                >
+                  <span>{type}</span>
+                  <span className="opacity-70 tabular-nums">({count.toLocaleString()})</span>
+                </button>
+              );
+            })}
+          </div>
+        )}
+
+        {/* Location Datalist Input & Mapped Only Checkbox */}
         <div className="flex items-center gap-2">
-          <select
-            id="select-location"
-            value={filterLocation}
-            onChange={(e) => setFilterLocation(e.target.value)}
-            className="flex-1 px-2 py-1 rounded border border-zinc-300 bg-white text-xs text-zinc-800 focus:outline-none focus:border-zinc-500 cursor-pointer"
-          >
-            {locations.map((loc) => (
-              <option key={loc} value={loc}>
-                {loc === '' ? 'All Locations' : loc}
-              </option>
-            ))}
-          </select>
+          <div className="relative flex-1">
+            <input
+              id="input-location-datalist"
+              type="text"
+              list="top-locations-list"
+              placeholder="Filter place, city, or country..."
+              value={filterLocation}
+              onChange={(e) => {
+                setFilterLocation(e.target.value);
+                setOffset(0);
+              }}
+              className="w-full px-2 py-1 rounded border border-zinc-300 bg-white text-xs text-zinc-900 placeholder:text-zinc-400 focus:outline-none focus:border-zinc-500"
+            />
+            <datalist id="top-locations-list">
+              {(stats?.top_locations || []).map((loc) => (
+                <option key={loc.name} value={loc.name}>
+                  {loc.name} ({loc.count} mentions)
+                </option>
+              ))}
+            </datalist>
+          </div>
+
+          {filterLocation && (
+            <button
+              type="button"
+              onClick={() => {
+                setFilterLocation('');
+                setOffset(0);
+              }}
+              className="text-[10px] font-mono text-zinc-500 hover:text-zinc-900 underline cursor-pointer"
+            >
+              Clear
+            </button>
+          )}
 
           <label className="flex items-center gap-1.5 text-xs text-zinc-700 cursor-pointer select-none whitespace-nowrap bg-white px-2 py-1 rounded border border-zinc-300 hover:bg-zinc-50">
             <input
               type="checkbox"
               checked={filterHasLocation === true}
-              onChange={() => setFilterHasLocation(filterHasLocation ? null : true)}
+              onChange={() => {
+                setFilterHasLocation(filterHasLocation ? null : true);
+                setOffset(0);
+              }}
               className="rounded border-zinc-300 text-zinc-900 focus:ring-0 cursor-pointer"
             />
             <span>Mapped only</span>
           </label>
-        </div>
-
-        {/* Count Subheader - Monospace Tabular Nums */}
-        <div className="flex items-center justify-between text-[11px] font-mono tabular-nums text-zinc-500 pt-0.5">
-          <span>
-            {displayTweets.length < currentTotal ? (
-              <>
-                Showing <strong className="text-zinc-800 font-semibold">{displayTweets.length.toLocaleString()}</strong> of{' '}
-                <strong className="text-zinc-800 font-semibold">{currentTotal.toLocaleString()}</strong> tweets
-              </>
-            ) : (
-              <>
-                Showing <strong className="text-zinc-800 font-semibold">{displayTweets.length.toLocaleString()}</strong> tweets
-              </>
-            )}
-          </span>
-          {filterCategory && (
-            <span className="text-zinc-700">
-              [{filterCategory}]
-              <button
-                onClick={() => setFilterCategory('')}
-                className="ml-1 text-zinc-400 hover:text-zinc-700 underline text-[10px]"
-              >
-                clear
-              </button>
-            </span>
-          )}
         </div>
       </div>
 
@@ -276,6 +370,43 @@ export default function TweetFeed({
           <TweetRow key={tweet.id} tweet={tweet} onFlyTo={onFlyTo} />
         ))}
       </div>
+
+      {/* Pagination Bar */}
+      <div className="p-2 border-t border-zinc-200 bg-zinc-50 flex items-center justify-between text-xs font-mono tabular-nums shrink-0">
+        <span className="text-zinc-600">
+          Showing{' '}
+          <strong className="text-zinc-900">
+            {currentTotal === 0 ? 0 : offset + 1}
+          </strong>
+          –
+          <strong className="text-zinc-900">
+            {Math.min(offset + limit, currentTotal).toLocaleString()}
+          </strong>{' '}
+          of{' '}
+          <strong className="text-zinc-900">
+            {currentTotal.toLocaleString()}
+          </strong>{' '}
+          tweets
+        </span>
+        <div className="flex items-center gap-1">
+          <button
+            type="button"
+            onClick={() => setOffset(Math.max(0, offset - limit))}
+            disabled={offset === 0}
+            className="px-2 py-0.5 rounded border border-zinc-300 bg-white hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed text-zinc-700 font-medium cursor-pointer"
+          >
+            Prev
+          </button>
+          <button
+            type="button"
+            onClick={() => setOffset(offset + limit)}
+            disabled={offset + limit >= currentTotal}
+            className="px-2 py-0.5 rounded border border-zinc-300 bg-white hover:bg-zinc-100 disabled:opacity-40 disabled:cursor-not-allowed text-zinc-700 font-medium cursor-pointer"
+          >
+            Next
+          </button>
+        </div>
+      </div>
     </div>
   );
 }
@@ -285,13 +416,21 @@ function TweetRow({ tweet, onFlyTo }) {
   const coordsAvailable = loc?.lat != null && loc?.lng != null;
   const text = tweet.text || tweet.tweet_text || '';
   const rawCategory = tweet.category || tweet.impact_category || null;
+  const severity = tweet.severity?.toLowerCase();
   const confidence = tweet.confidence ?? null;
   const timestamp = tweet.created_at || tweet.timestamp || null;
   const markerColors = getMarkerColor(rawCategory);
 
+  // Severity color badge
+  let sevClass = 'bg-zinc-100 text-zinc-600 border-zinc-200';
+  if (severity === 'critical') sevClass = 'bg-red-950 text-red-200 border-red-800';
+  else if (severity === 'high') sevClass = 'bg-red-100 text-red-800 border-red-300';
+  else if (severity === 'medium') sevClass = 'bg-amber-100 text-amber-800 border-amber-300';
+  else if (severity === 'low') sevClass = 'bg-zinc-100 text-zinc-600 border-zinc-200';
+
   return (
     <div className="p-2.5 bg-white hover:bg-zinc-50/80 transition-colors">
-      {/* Category line with tiny 6px colored dot (No redundant "RELEVANT" badge) */}
+      {/* Category line & Severity Badge */}
       <div className="flex items-center justify-between gap-2 text-xs">
         <div className="flex items-center gap-1.5 flex-wrap">
           {rawCategory ? (
@@ -306,6 +445,12 @@ function TweetRow({ tweet, onFlyTo }) {
             <span className="inline-flex items-center gap-1.5 text-xs text-zinc-500">
               <span className="w-1.5 h-1.5 rounded-full bg-zinc-400 shrink-0" />
               <span>Report</span>
+            </span>
+          )}
+
+          {severity && (
+            <span className={`text-[10px] font-mono uppercase px-1.5 py-0.2 rounded border font-semibold ${sevClass}`}>
+              {severity}
             </span>
           )}
 

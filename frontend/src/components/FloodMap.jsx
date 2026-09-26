@@ -4,10 +4,17 @@ import {
   MapContainer,
   TileLayer,
   CircleMarker,
-  Popup,
   useMap,
 } from 'react-leaflet';
+import 'leaflet.markercluster';
+import 'leaflet.markercluster/dist/MarkerCluster.css';
+import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
 import { getMarkerColor, getCategoryBadge, getCategoryDisplay } from '../utils/categories';
+
+// Ensure L is on window for leaflet plugins if needed
+if (typeof window !== 'undefined' && !window.L) {
+  window.L = L;
+}
 
 /** Fly the map to given coords */
 function FlyToHandler({ flyTo }) {
@@ -20,21 +27,130 @@ function FlyToHandler({ flyTo }) {
   return null;
 }
 
-/** Auto-fit bounds whenever a new dataset or GeoJSON loads */
-function FitBoundsToData({ geojson }) {
+/** Auto-fit bounds whenever a new dataset or GeoJSON loads, respecting world vs regional scope */
+function FitBoundsToData({ geojson, stats }) {
   const map = useMap();
   useEffect(() => {
-    if (!geojson?.features || geojson.features.length === 0) return;
+    const isWorld = stats?.scope === 'world';
+
+    if (!geojson?.features || geojson.features.length === 0) {
+      if (isWorld) {
+        map.setView([20, 0], 2);
+      } else if (stats?.anchor) {
+        map.setView(stats.anchor, 10);
+      }
+      return;
+    }
+
     try {
       const geoLayer = L.geoJSON(geojson);
       const bounds = geoLayer.getBounds();
       if (bounds && bounds.isValid()) {
-        map.fitBounds(bounds, { padding: [30, 30], maxZoom: 14 });
+        map.fitBounds(bounds, {
+          padding: [30, 30],
+          maxZoom: isWorld ? 6 : 13,
+        });
       }
     } catch (err) {
       console.warn('Could not fit bounds to geojson:', err);
     }
-  }, [geojson, map]);
+  }, [geojson, stats?.scope, stats?.anchor, map]);
+  return null;
+}
+
+/** Smooth Marker Clustering Layer using leaflet.markercluster */
+function ClusterLayer({ geojson, onSelectLocation }) {
+  const map = useMap();
+
+  useEffect(() => {
+    if (!map) return;
+    if (!geojson?.features || geojson.features.length === 0) return;
+
+    // Create marker cluster group with minimalist GIS count badge
+    const clusterGroup = L.markerClusterGroup({
+      maxClusterRadius: 40,
+      showCoverageOnHover: false,
+      chunkedLoading: true,
+      spiderfyOnMaxZoom: true,
+      iconCreateFunction: (cluster) => {
+        const count = cluster.getChildCount();
+        const display = count > 999 ? `${(count / 1000).toFixed(1)}k` : count;
+        return L.divIcon({
+          html: `<div style="background-color: rgba(24, 24, 27, 0.92); color: #ffffff; width: 32px; height: 32px; border-radius: 9999px; display: flex; align-items: center; justify-content: center; font-family: monospace; font-size: 11px; font-weight: 700; border: 2px solid #ffffff; box-shadow: 0 2px 4px rgba(0,0,0,0.25);">${display}</div>`,
+          className: 'gis-cluster-marker',
+          iconSize: L.point(32, 32),
+        });
+      },
+    });
+
+    geojson.features.forEach((feature) => {
+      if (!feature.geometry?.coordinates) return;
+      const [lng, lat] = feature.geometry.coordinates;
+      if (lat == null || lng == null) return;
+
+      const p = feature.properties || {};
+      const colors = getMarkerColor(p.category);
+      const categoryBadge = getCategoryBadge(p.category);
+      const categoryLabel = getCategoryDisplay(p.category);
+      const severity = p.severity?.toLowerCase();
+      const place = p.place || p.location_name || 'Ground Location';
+
+      // Severity badge colors
+      let sevClass = 'bg-zinc-100 text-zinc-700 border-zinc-200';
+      if (severity === 'critical') sevClass = 'bg-red-950 text-red-200 border-red-800';
+      else if (severity === 'high') sevClass = 'bg-red-100 text-red-800 border-red-300';
+      else if (severity === 'medium') sevClass = 'bg-amber-100 text-amber-800 border-amber-300';
+      else if (severity === 'low') sevClass = 'bg-zinc-100 text-zinc-600 border-zinc-200';
+
+      const marker = L.circleMarker([lat, lng], {
+        radius: 6,
+        fillColor: colors.fill,
+        fillOpacity: 0.9,
+        color: '#ffffff',
+        weight: 1.5,
+        opacity: 1,
+      });
+
+      const popupDiv = document.createElement('div');
+      popupDiv.className = 'space-y-1.5 text-zinc-900 font-sans';
+      popupDiv.innerHTML = `
+        <div class="flex items-center gap-1.5 border-b border-zinc-200 pb-1">
+          <span class="w-2 h-2 rounded-full shrink-0" style="background-color: ${colors.fill}"></span>
+          <span class="font-semibold text-xs text-zinc-900">${place}</span>
+        </div>
+        <div class="flex items-center gap-1.5 flex-wrap">
+          <span class="text-[10px] font-mono px-1.5 py-0.2 rounded border ${categoryBadge}">${categoryLabel}</span>
+          ${severity ? `<span class="text-[10px] font-mono uppercase px-1.5 py-0.2 rounded border font-semibold ${sevClass}">${severity}</span>` : ''}
+          ${p.confidence != null ? `<span class="text-[10px] font-mono text-zinc-500">${(p.confidence * 100).toFixed(0)}% conf</span>` : ''}
+        </div>
+        <p class="text-xs text-zinc-700 leading-normal pt-0.5">${p.text || p.tweet_text || ''}</p>
+        <div class="pt-1 border-t border-zinc-100 flex items-center justify-between gap-1 text-[10px] font-mono">
+          <span class="text-zinc-400">${p.created_at ? new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) : ''}</span>
+          <button type="button" class="filter-btn text-zinc-700 hover:text-zinc-900 underline font-medium hover:bg-zinc-100 px-1 py-0.5 rounded cursor-pointer">
+            Filter feed to this location
+          </button>
+        </div>
+      `;
+
+      const btn = popupDiv.querySelector('.filter-btn');
+      if (btn && onSelectLocation) {
+        btn.addEventListener('click', (e) => {
+          e.preventDefault();
+          onSelectLocation(place);
+        });
+      }
+
+      marker.bindPopup(popupDiv, { maxWidth: 300, minWidth: 220 });
+      clusterGroup.addLayer(marker);
+    });
+
+    map.addLayer(clusterGroup);
+
+    return () => {
+      map.removeLayer(clusterGroup);
+    };
+  }, [geojson, map, onSelectLocation]);
+
   return null;
 }
 
@@ -68,61 +184,23 @@ export default function FloodMap({
   showHeatmap,
   flyTo,
   onSelectLocation,
+  stats,
 }) {
   const [mapStyle, setMapStyle] = useState('osm');
   const features = geojson?.features || [];
 
-  // Jitter/offset markers that share identical or nearby coordinates (e.g. Kashechewan) by ±0.008 deg
-  const displayMarkers = useMemo(() => {
-    const clusters = [];
-    features.forEach((feature, idx) => {
-      const [rawLng, rawLat] = feature.geometry.coordinates;
-      let added = false;
-      for (const group of clusters) {
-        const [gLng, gLat] = group.centroid;
-        if (Math.hypot(rawLat - gLat, rawLng - gLng) < 0.015) {
-          group.items.push({ feature, idx, rawLat, rawLng });
-          added = true;
-          break;
-        }
-      }
-      if (!added) {
-        clusters.push({
-          centroid: [rawLng, rawLat],
-          items: [{ feature, idx, rawLat, rawLng }],
-        });
-      }
-    });
-
-    const markers = [];
-    clusters.forEach((group) => {
-      const count = group.items.length;
-      group.items.forEach(({ feature, idx, rawLat, rawLng }, i) => {
-        let lat = rawLat;
-        let lng = rawLng;
-        if (count > 1) {
-          const angle = (i * 2 * Math.PI) / count;
-          lat = rawLat + Math.sin(angle) * 0.008;
-          lng = rawLng + Math.cos(angle) * 0.008;
-        }
-        markers.push({
-          id: feature.properties?.tweet_id ?? `feat-${idx}`,
-          lat,
-          lng,
-          feature,
-        });
-      });
-    });
-
-    return markers;
-  }, [features]);
+  const isWorld = stats?.scope === 'world';
+  const defaultCenter = isWorld ? [20, 0] : (stats?.anchor || [51.05, -114.07]);
+  const defaultZoom = isWorld ? 2 : 10;
 
   // Cluster locations for heatmap concentration circles
   const heatmapData = useMemo(() => {
     const places = {};
     features.forEach((f) => {
-      const place = f.properties.place || f.properties.location_name || 'Hotspot';
+      const place = f.properties?.place || f.properties?.location_name || 'Hotspot';
+      if (!f.geometry?.coordinates) return;
       const [lng, lat] = f.geometry.coordinates;
+      if (lat == null || lng == null) return;
       if (!places[place]) {
         places[place] = { lat, lng, count: 0 };
       }
@@ -155,8 +233,8 @@ export default function FloodMap({
       </div>
 
       <MapContainer
-        center={[51.05, -114.07]}
-        zoom={10}
+        center={defaultCenter}
+        zoom={defaultZoom}
         preferCanvas={true}
         className="w-full h-full"
         scrollWheelZoom={true}
@@ -169,7 +247,7 @@ export default function FloodMap({
           maxZoom={currentTileConfig.maxZoom}
         />
         <FlyToHandler flyTo={flyTo} />
-        <FitBoundsToData geojson={geojson} />
+        <FitBoundsToData geojson={geojson} stats={stats} />
 
         {/* Heatmap / Activity Concentration Circles */}
         {showHeatmap &&
@@ -188,80 +266,8 @@ export default function FloodMap({
             />
           ))}
 
-        {/* Individual Feature Markers with ±0.008° Jitter and Canvas Rendering */}
-        {displayMarkers.map(({ id, lat, lng, feature }) => {
-          const p = feature.properties || {};
-          const colors = getMarkerColor(p.category);
-          const categoryBadgeClass = getCategoryBadge(p.category);
-          const categoryLabel = getCategoryDisplay(p.category);
-
-          return (
-            <CircleMarker
-              key={id}
-              center={[lat, lng]}
-              radius={7}
-              pathOptions={{
-                fillColor: colors.fill,
-                fillOpacity: 0.9,
-                color: '#ffffff',
-                weight: 1.5,
-                opacity: 1,
-              }}
-            >
-              <Popup maxWidth={300} minWidth={220}>
-                <div className="space-y-1.5 text-zinc-900 font-sans">
-                  {/* Location Header */}
-                  <div className="flex items-center gap-1.5 border-b border-zinc-200 pb-1">
-                    <span
-                      className="w-2 h-2 rounded-full shrink-0"
-                      style={{ backgroundColor: colors.fill }}
-                    />
-                    <span className="font-semibold text-xs text-zinc-900">
-                      {p.place || p.location_name || 'Ground Location'}
-                    </span>
-                  </div>
-
-                  {/* Category & Confidence */}
-                  <div className="flex items-center gap-1.5">
-                    <span className={`text-[10px] font-mono px-1.5 py-0.2 rounded ${categoryBadgeClass}`}>
-                      {categoryLabel}
-                    </span>
-                    {p.confidence != null && (
-                      <span className="text-[10px] font-mono text-zinc-500">
-                        {(p.confidence * 100).toFixed(0)}% conf
-                      </span>
-                    )}
-                  </div>
-
-                  {/* Tweet Text */}
-                  <p className="text-xs text-zinc-700 leading-normal pt-0.5">
-                    {p.text || p.tweet_text || ''}
-                  </p>
-
-                  {/* Timestamp & Location Filter Action */}
-                  <div className="pt-1 border-t border-zinc-100 flex items-center justify-between gap-1 text-[10px] font-mono">
-                    {p.created_at ? (
-                      <span className="text-zinc-400">
-                        {new Date(p.created_at).toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' })}
-                      </span>
-                    ) : <span />}
-
-                    {(p.place || p.location_name) && onSelectLocation && (
-                      <button
-                        type="button"
-                        onClick={() => onSelectLocation(p.place || p.location_name)}
-                        className="text-zinc-700 hover:text-zinc-900 underline font-medium hover:bg-zinc-100 px-1 py-0.5 rounded cursor-pointer"
-                        title="Filter triage feed to this place"
-                      >
-                        Filter feed to this location
-                      </button>
-                    )}
-                  </div>
-                </div>
-              </Popup>
-            </CircleMarker>
-          );
-        })}
+        {/* Clustered Feature Markers */}
+        <ClusterLayer geojson={geojson} onSelectLocation={onSelectLocation} />
       </MapContainer>
     </div>
   );

@@ -2,9 +2,12 @@ import React, { useRef } from 'react';
 import { Loader2 } from 'lucide-react';
 
 export default function Header({
-  onLoadDataset,
+  datasetId,
+  datasets = [],
+  onSelectDataset,
   onUploadCSV,
   onExportGeoJSON,
+  onExportCSV,
   isLoading,
   hasData,
 }) {
@@ -32,6 +35,23 @@ export default function Header({
     e.stopPropagation();
   };
 
+  // Build clean list of datasets including built-ins
+  const datasetOptions = [
+    { id: 'sample', label: 'Alberta Floods 2013' },
+    { id: 'bonus', label: 'World Disasters (Bonus)' },
+  ];
+
+  // Merge any dynamically registered / uploaded datasets from backend
+  datasets.forEach((d) => {
+    if (!datasetOptions.some((opt) => opt.id === d.id)) {
+      datasetOptions.push({
+        id: d.id,
+        label: d.name || `Dataset: ${d.id}`,
+        count: d.total,
+      });
+    }
+  });
+
   return (
     <header className="border-b border-zinc-200 bg-white sticky top-0 z-50">
       <div className="max-w-[1920px] mx-auto px-4 py-2.5">
@@ -55,23 +75,32 @@ export default function Header({
             onDrop={handleDrop}
             onDragOver={handleDragOver}
           >
-            {/* Load Provided Dataset */}
-            <button
-              id="btn-load-dataset"
-              onClick={onLoadDataset}
-              disabled={isLoading}
-              className="px-3 py-1.5 rounded bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed flex items-center gap-1.5"
-            >
-              {isLoading && <Loader2 className="w-3 h-3 animate-spin" />}
-              <span>{isLoading ? 'Loading...' : 'Load Dataset'}</span>
-            </button>
+            {/* Dataset Switcher Dropdown */}
+            <div className="flex items-center gap-1.5 bg-zinc-50 border border-zinc-300 rounded px-2.5 py-1.5">
+              <span className="text-[10px] uppercase font-mono font-semibold text-zinc-500">Dataset:</span>
+              <select
+                id="select-dataset"
+                value={datasetId || 'sample'}
+                onChange={(e) => onSelectDataset(e.target.value)}
+                disabled={isLoading}
+                className="bg-transparent text-xs font-semibold text-zinc-900 focus:outline-none cursor-pointer"
+              >
+                {datasetOptions.map((opt) => (
+                  <option key={opt.id} value={opt.id}>
+                    {opt.label} {opt.count ? `(${opt.count.toLocaleString()})` : ''}
+                  </option>
+                ))}
+              </select>
+              {isLoading && <Loader2 className="w-3 h-3 animate-spin text-zinc-500 ml-1" />}
+            </div>
 
             {/* Upload Custom CSV */}
             <button
               id="btn-upload-csv"
+              type="button"
               onClick={() => fileInputRef.current?.click()}
               disabled={isLoading}
-              className="px-3 py-1.5 rounded bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
             >
               Upload CSV
             </button>
@@ -83,12 +112,26 @@ export default function Header({
               onChange={handleFileSelect}
             />
 
+            {/* Export CSV */}
+            <button
+              id="btn-export-csv"
+              type="button"
+              onClick={onExportCSV}
+              disabled={!hasData}
+              className="px-3 py-1.5 rounded bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              title="Download currently filtered tweets as CSV"
+            >
+              Export CSV
+            </button>
+
             {/* Export GeoJSON */}
             <button
               id="btn-export-geojson"
+              type="button"
               onClick={onExportGeoJSON}
               disabled={!hasData}
-              className="px-3 py-1.5 rounded bg-white hover:bg-zinc-50 border border-zinc-300 text-zinc-700 text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+              className="px-3 py-1.5 rounded bg-zinc-900 hover:bg-zinc-800 text-white text-xs font-medium transition-colors disabled:opacity-50 disabled:cursor-not-allowed cursor-pointer"
+              title="Download filtered ground points as GeoJSON for MapAki"
             >
               Export GeoJSON (MapAki)
             </button>

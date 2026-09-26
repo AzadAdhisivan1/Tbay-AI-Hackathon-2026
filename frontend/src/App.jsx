@@ -6,11 +6,14 @@ import FloodMap from './components/FloodMap';
 import TweetFeed from './components/TweetFeed';
 import {
   checkHealth,
+  fetchAIStatus,
   fetchCategories,
   fetchDatasets,
   fetchStats,
   fetchTweets,
   fetchGeoJSON,
+  fetchTimeline,
+  getExportCSVUrl,
   fetchSummary,
   uploadAndWait,
   downloadGeoJSON,
@@ -25,11 +28,13 @@ const SAMPLE_DATASET_ID = 'sample';
 export default function App() {
   // ── Connection & loading state ──
   const [backendOnline, setBackendOnline] = useState(null); // null = checking
+  const [aiActive, setAiActive] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [jobProgress, setJobProgress] = useState(null); // {status, stage, processed, total}
+  const [jobProgress, setJobProgress] = useState(null); // {status, stage, processed, total, places_done, places_total, dataset_ready}
 
   // ── Active dataset ──
-  const [datasetId, setDatasetId] = useState(null);
+  const [datasetId, setDatasetId] = useState(SAMPLE_DATASET_ID);
+  const [datasets, setDatasets] = useState([]);
   const [dataSource, setDataSource] = useState('fallback'); // 'backend' | 'upload' | 'fallback'
 
   // ── Data from backend ──
@@ -39,6 +44,7 @@ export default function App() {
   const [signalTotal, setSignalTotal] = useState(0);
   const [noiseTotal, setNoiseTotal] = useState(0);
   const [geojson, setGeojson] = useState(null);
+  const [timeline, setTimeline] = useState(null);
   const [summary, setSummary] = useState(FALLBACK_SUMMARY);
   const [categories, setCategories] = useState([]);
   const [isLoadingSummary, setIsLoadingSummary] = useState(false);
@@ -46,11 +52,15 @@ export default function App() {
   // ── Active tab (signal vs noise) ──
   const [activeTab, setActiveTab] = useState('signal');
 
-  // ── Filters (shared between tweet list and map) ──
+  // ── Filters & pagination ──
   const [filterCategory, setFilterCategory] = useState('');
   const [filterSearch, setFilterSearch] = useState('');
   const [filterLocation, setFilterLocation] = useState('');
   const [filterHasLocation, setFilterHasLocation] = useState(null);
+  const [filterDisasterType, setFilterDisasterType] = useState('');
+  const [filterSort, setFilterSort] = useState('');
+  const [offset, setOffset] = useState(0);
+  const limit = 200;
 
   // Auto-reset all filter states back to default
   const resetFilters = useCallback(() => {
@@ -59,11 +69,15 @@ export default function App() {
     setFilterSearch('');
     setFilterLocation('');
     setFilterHasLocation(null);
+    setFilterDisasterType('');
+    setFilterSort('');
+    setOffset(0);
   }, []);
 
   const handleSelectLocation = useCallback((loc) => {
     setFilterLocation((prev) => (prev === loc ? '' : loc));
     setActiveTab('signal');
+    setOffset(0);
   }, []);
 
   // ── Fallback mode data ──
@@ -145,7 +159,47 @@ export default function App() {
     })),
   }), [fallbackFilteredMapped]);
 
-  // ── Startup: check backend health ──
+  // ── Load a dataset by id from the backend ──
+  const loadDataset = useCallback(async (dsId, source = 'backend') => {
+    resetFilters();
+    setIsLoading(true);
+    setUseFallback(false);
+    try {
+      const [st, signalRes, noiseRes, gj] = await Promise.all([
+        fetchStats(dsId),
+        fetchTweets(dsId, { relevant: true, limit: 200, offset: 0 }),
+        fetchTweets(dsId, { relevant: false, limit: 200, offset: 0 }),
+        fetchGeoJSON(dsId),
+      ]);
+      setStats(st);
+      setSignalTweets(signalRes.tweets || []);
+      setNoiseTweets(noiseRes.tweets || []);
+      setSignalTotal(signalRes.total ?? st.relevant ?? (signalRes.tweets || []).length);
+      setNoiseTotal(noiseRes.total ?? st.noise ?? st.unrelated ?? (noiseRes.tweets || []).length);
+      setGeojson(gj);
+      setDatasetId(dsId);
+      setDataSource(source);
+
+      // Load timeline if dataset contains timestamped tweets
+      if (st.has_timestamps) {
+        fetchTimeline(dsId).then(setTimeline).catch(() => setTimeline(null));
+      } else {
+        setTimeline(null);
+      }
+
+      showToast({ type: 'success', text: `Dataset "${st.name || dsId}" loaded — ${st.total.toLocaleString()} tweets.` });
+    } catch (err) {
+      if (err.message?.includes('409')) {
+        showToast({ type: 'info', text: 'Dataset is still processing in the background.' });
+      } else {
+        showToast({ type: 'warning', text: `Could not load dataset "${dsId}": ${err.message}` });
+      }
+    } finally {
+      setIsLoading(false);
+    }
+  }, [resetFilters, showToast]);
+
+  // ── Startup: check backend health, AI status, and list datasets ──
   useEffect(() => {
     let cancelled = false;
     (async () => {
@@ -153,16 +207,28 @@ export default function App() {
       if (cancelled) return;
       setBackendOnline(ok);
       if (ok) {
-        // Grab categories
+        // AI status for Gemini Live badge
         try {
-          const cats = await fetchCategories();
-          if (!cancelled) setCategories(cats);
+          const aiStat = await fetchAIStatus();
+          if (!cancelled) setAiActive(aiStat.active === true);
         } catch { /* ignore */ }
-        // Try auto-loading the sample dataset
+
+        // Categories & datasets list
+        try {
+          const [cats, dsList] = await Promise.all([
+            fetchCategories().catch(() => []),
+            fetchDatasets().catch(() => []),
+          ]);
+          if (!cancelled) {
+            setCategories(cats);
+            setDatasets(dsList);
+          }
+        } catch { /* ignore */ }
+
+        // Auto-load sample dataset
         try {
           await loadDataset(SAMPLE_DATASET_ID, 'backend');
         } catch {
-          // sample doesn't exist yet — show fallback
           if (!cancelled) {
             setUseFallback(true);
             setDataSource('fallback');
@@ -177,110 +243,84 @@ export default function App() {
       }
     })();
     return () => { cancelled = true; };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [loadDataset, showToast]);
 
-  // ── Load a dataset by id from the backend ──
-  const loadDataset = async (dsId, source = 'backend') => {
-    resetFilters();
-    setIsLoading(true);
-    setUseFallback(false);
-    try {
-      const [st, signalRes, noiseRes, gj] = await Promise.all([
-        fetchStats(dsId),
-        fetchTweets(dsId, { relevant: true, limit: 1000 }),
-        fetchTweets(dsId, { relevant: false, limit: 1000 }),
-        fetchGeoJSON(dsId),
-      ]);
-      setStats(st);
-      setSignalTweets(signalRes.tweets || []);
-      setNoiseTweets(noiseRes.tweets || []);
-      setSignalTotal(signalRes.total ?? st.relevant ?? (signalRes.tweets || []).length);
-      setNoiseTotal(noiseRes.total ?? st.noise ?? st.unrelated ?? (noiseRes.tweets || []).length);
-      setGeojson(gj);
-      setDatasetId(dsId);
-      setDataSource(source);
+  // ── LIVE GEOCODING REFRESH: poll every 5s while stats.processing === true ──
+  useEffect(() => {
+    if (!stats?.processing || !datasetId || useFallback) return;
 
-      // Fire off summary request (non-blocking)
-      fetchSummary(dsId, {})
-        .then((s) => setSummary(s.summary))
-        .catch(() => setSummary('AI summary unavailable — the summarize() function may not be implemented yet.'));
-
-      showToast({ type: 'success', text: `Dataset "${st.name || dsId}" loaded — ${st.total} tweets.` });
-    } catch (err) {
-      // If 409, dataset is still processing — try finding its job
-      if (err.message?.includes('409')) {
-        showToast({ type: 'info', text: 'Dataset is still processing. Try again in a moment.' });
-      } else {
-        throw err;
+    const interval = setInterval(async () => {
+      try {
+        const [newStats, newGj] = await Promise.all([
+          fetchStats(datasetId),
+          fetchGeoJSON(datasetId, {
+            category: filterCategory,
+            location: filterLocation,
+            disaster_type: filterDisasterType,
+            q: filterSearch,
+          }),
+        ]);
+        setStats(newStats);
+        setGeojson(newGj);
+      } catch {
+        /* best-effort live geocoding refresh */
       }
-    } finally {
-      setIsLoading(false);
-    }
-  };
+    }, 5000);
 
-  // ── Reload data when filters change (backend-mode only) ──
+    return () => clearInterval(interval);
+  }, [stats?.processing, datasetId, useFallback, filterCategory, filterLocation, filterDisasterType, filterSearch]);
+
+  // ── Reload tweets and geojson when filters, disaster type, sort, or pagination change ──
   useEffect(() => {
     if (!datasetId || useFallback) return;
     let cancelled = false;
 
-    const params = {};
-    if (filterCategory) params.category = filterCategory;
+    const params = {
+      relevant: activeTab === 'signal' ? 'true' : 'false',
+      limit,
+      offset,
+    };
+    if (filterCategory && activeTab === 'signal') params.category = filterCategory;
     if (filterSearch) params.q = filterSearch;
     if (filterLocation) params.location = filterLocation;
     if (filterHasLocation != null) params.has_location = filterHasLocation;
+    if (filterDisasterType && activeTab === 'noise') params.disaster_type = filterDisasterType;
+    if (filterSort) params.sort = filterSort;
+
+    const geoParams = {};
+    if (filterCategory) geoParams.category = filterCategory;
+    if (filterSearch) geoParams.q = filterSearch;
+    if (filterLocation) geoParams.location = filterLocation;
+    if (filterDisasterType) geoParams.disaster_type = filterDisasterType;
 
     const reload = async () => {
       try {
-        const [signalRes, gj] = await Promise.all([
-          fetchTweets(datasetId, { relevant: true, limit: 1000, ...params }),
-          fetchGeoJSON(datasetId, params),
+        const [tweetsRes, gj] = await Promise.all([
+          fetchTweets(datasetId, params),
+          fetchGeoJSON(datasetId, geoParams),
         ]);
         if (cancelled) return;
-        setSignalTweets(signalRes.tweets || []);
-        setSignalTotal(signalRes.total ?? (signalRes.tweets || []).length);
+        if (activeTab === 'signal') {
+          setSignalTweets(tweetsRes.tweets || []);
+          setSignalTotal(tweetsRes.total ?? (tweetsRes.tweets || []).length);
+        } else {
+          setNoiseTweets(tweetsRes.tweets || []);
+          setNoiseTotal(tweetsRes.total ?? (tweetsRes.tweets || []).length);
+        }
         setGeojson(gj);
-      } catch { /* best-effort */ }
+      } catch {
+        /* best-effort filter reload */
+      }
     };
 
-    // Debounce for search input
-    const timer = setTimeout(reload, 300);
-    return () => { cancelled = true; clearTimeout(timer); };
-  }, [datasetId, useFallback, filterCategory, filterSearch, filterLocation, filterHasLocation]);
+    const timer = setTimeout(reload, filterSearch ? 250 : 0);
+    return () => {
+      cancelled = true;
+      clearTimeout(timer);
+    };
+  }, [datasetId, useFallback, activeTab, filterCategory, filterSearch, filterLocation, filterHasLocation, filterDisasterType, filterSort, offset]);
 
   // ── Handlers ──
-
-  const handleLoadDataset = async () => {
-    resetFilters();
-    if (!backendOnline) {
-      setUseFallback(true);
-      setDataSource('fallback');
-      setSummary(FALLBACK_SUMMARY);
-      showToast({ type: 'warning', text: 'Backend offline — showing built-in demo data.' });
-      return;
-    }
-    try {
-      // Try sample first, then fall back to listing datasets
-      await loadDataset(SAMPLE_DATASET_ID, 'backend');
-    } catch {
-      try {
-        const { datasets } = await fetchDatasets();
-        if (datasets.length > 0) {
-          await loadDataset(datasets[0].id, 'backend');
-        } else {
-          setUseFallback(true);
-          setDataSource('fallback');
-          setSummary(FALLBACK_SUMMARY);
-          showToast({ type: 'info', text: 'No datasets on server. Loaded built-in demo.' });
-        }
-      } catch {
-        setUseFallback(true);
-        setDataSource('fallback');
-        setSummary(FALLBACK_SUMMARY);
-        showToast({ type: 'error', text: 'Could not load dataset. Using fallback.' });
-      }
-    }
-  };
 
   const handleUploadCSV = async (file) => {
     resetFilters();
@@ -289,14 +329,21 @@ export default function App() {
       return;
     }
     setIsLoading(true);
-    setJobProgress({ status: 'uploading', stage: 'uploading', processed: 0, total: 0 });
+    setJobProgress({ status: 'uploading', stage: 'uploading', processed: 0, total: 0, places_done: 0, places_total: 0, dataset_ready: false });
     try {
       const dsId = await uploadAndWait(file, (progress) => {
         setJobProgress(progress);
+        // If dataset is ready, dismiss blocking overlay early so user can interact
+        if (progress.dataset_ready) {
+          setIsLoading(false);
+        }
       });
       setJobProgress(null);
       await loadDataset(dsId, 'upload');
-      showToast({ type: 'success', text: `CSV "${file.name}" processed!` });
+
+      // Refresh list of datasets
+      fetchDatasets().then(setDatasets).catch(() => {});
+      showToast({ type: 'success', text: `CSV "${file.name}" ready!` });
     } catch (err) {
       setJobProgress(null);
       showToast({ type: 'error', text: `CSV upload failed: ${err.message}` });
@@ -311,35 +358,60 @@ export default function App() {
       if (useFallback) {
         gj = fallbackGeoJSON;
       } else if (datasetId) {
-        gj = await fetchGeoJSON(datasetId);
+        gj = await fetchGeoJSON(datasetId, {
+          category: filterCategory,
+          location: filterLocation,
+          disaster_type: filterDisasterType,
+          q: filterSearch,
+        });
       } else {
         gj = fallbackGeoJSON;
       }
       downloadGeoJSON(gj);
-      showToast({ type: 'success', text: 'GeoJSON exported!' });
+      showToast({ type: 'success', text: 'GeoJSON exported for MapAki!' });
     } catch (err) {
       showToast({ type: 'error', text: `Export failed: ${err.message}` });
     }
   };
 
+  const handleExportCSV = () => {
+    if (useFallback || !datasetId) {
+      showToast({ type: 'info', text: 'CSV export available for active backend datasets.' });
+      return;
+    }
+    const filters = {
+      relevant: activeTab === 'signal' ? 'true' : 'false',
+      category: filterCategory,
+      disaster_type: filterDisasterType,
+      location: filterLocation,
+      q: filterSearch,
+      sort: filterSort,
+    };
+    const exportUrl = getExportCSVUrl(datasetId, filters);
+    window.open(exportUrl, '_blank');
+    showToast({ type: 'success', text: 'Downloading filtered tweets as CSV...' });
+  };
+
+  // QUOTA RULE: only called on explicit user button click!
   const handleRequestSummary = async () => {
     setIsLoadingSummary(true);
     if (backendOnline && datasetId && !useFallback) {
       try {
-        const params = {};
+        const params = {
+          relevant: activeTab === 'signal',
+        };
         if (filterCategory) params.category = filterCategory;
         if (filterSearch) params.q = filterSearch;
         if (filterLocation) params.location = filterLocation;
         const res = await fetchSummary(datasetId, params);
         setSummary(res.summary);
-        showToast({ type: 'success', text: `AI summary updated from ${res.tweet_count} verified signals.` });
+        showToast({ type: 'success', text: `AI summary generated from ${res.tweet_count} verified signals.` });
       } catch (err) {
         showToast({ type: 'warning', text: `Summary request: ${err.message}` });
       } finally {
         setIsLoadingSummary(false);
       }
     } else {
-      // In fallback mode, simulate AI re-generation with updated timestamp and analysis
       setTimeout(() => {
         setIsLoadingSummary(false);
         setSummary(
@@ -359,7 +431,6 @@ export default function App() {
 
   // ── Determine what data to show in each section ──
 
-  // Active tweets for the feed
   const displaySignal = useFallback ? fallbackFilteredRelevant : signalTweets;
   const displayNoise = useFallback ? fallbackNoise : noiseTweets;
   const displaySignalTotal = useFallback ? fallbackRelevant.length : (signalTotal || stats?.relevant || signalTweets.length);
@@ -390,8 +461,11 @@ export default function App() {
     <div className="min-h-screen bg-zinc-50 text-zinc-900 flex flex-col font-sans selection:bg-zinc-900 selection:text-white">
       {/* Header */}
       <Header
-        onLoadDataset={handleLoadDataset}
+        datasetId={datasetId}
+        datasets={datasets}
+        onSelectDataset={(newId) => loadDataset(newId, 'backend')}
         onUploadCSV={handleUploadCSV}
+        onExportCSV={handleExportCSV}
         onExportGeoJSON={handleExportGeoJSON}
         isLoading={isLoading}
         hasData={useFallback || datasetId != null}
@@ -416,14 +490,14 @@ export default function App() {
         </div>
       )}
 
-      {/* Job Progress Overlay */}
-      {jobProgress && jobProgress.status !== 'done' && (
+      {/* Job Progress Overlay (Dismissed immediately once dataset_ready === true) */}
+      {jobProgress && jobProgress.status !== 'done' && !jobProgress.dataset_ready && (
         <div className="fixed inset-0 z-40 bg-zinc-900/40 backdrop-blur-[2px] flex items-center justify-center">
           <div className="bg-white rounded border border-zinc-300 p-6 max-w-sm w-full mx-4 shadow-xl text-center space-y-3">
             <Loader2 className="w-8 h-8 text-zinc-700 animate-spin mx-auto" />
-            <h3 className="text-base font-bold text-zinc-900">Processing Ingestion Pipeline</h3>
-            <p className="text-xs text-zinc-600 capitalize font-mono">
-              {jobProgress.stage || jobProgress.status}
+            <h3 className="text-base font-bold text-zinc-900">Processing Dataset Pipeline</h3>
+            <p className="text-xs text-zinc-600 uppercase tracking-wider font-mono">
+              Stage: <strong className="text-zinc-900">{jobProgress.stage || jobProgress.status}</strong>
             </p>
             {jobProgress.total > 0 && (
               <>
@@ -438,23 +512,35 @@ export default function App() {
                 </p>
               </>
             )}
+            {jobProgress.places_total > 0 && (
+              <p className="text-[10px] text-zinc-400 font-mono tabular-nums">
+                Geocoding: {jobProgress.places_done.toLocaleString()} / {jobProgress.places_total.toLocaleString()} places
+              </p>
+            )}
           </div>
         </div>
       )}
 
       {/* Main Content */}
       <main className="flex-1 flex flex-col gap-2 p-3 sm:px-4 max-w-[1920px] w-full mx-auto min-h-0">
-        {/* Data Source Banner */}
+        {/* Data Source & Status Banner */}
         <div className="rounded border border-zinc-200 bg-white px-3 py-1 flex items-center justify-between text-[11px] font-mono tabular-nums text-zinc-500 shrink-0">
-          <span>
-            Data Source:{' '}
-            <strong className="text-zinc-800 font-semibold">
-              {dataSource === 'backend'
-                ? `Backend API (Dataset: ${datasetId})`
-                : dataSource === 'upload'
-                ? `Custom CSV (Dataset: ${datasetId})`
-                : 'Built-in Demo Dataset (First Nations Emergency Reports)'}
-            </strong>
+          <span className="flex items-center gap-2">
+            <span>
+              Data Source:{' '}
+              <strong className="text-zinc-800 font-semibold">
+                {dataSource === 'backend'
+                  ? `Backend API (Dataset: ${datasetId})`
+                  : dataSource === 'upload'
+                  ? `Custom CSV (Dataset: ${datasetId})`
+                  : 'Built-in Demo Dataset (First Nations Emergency Reports)'}
+              </strong>
+            </span>
+            {stats?.processing && (
+              <span className="text-amber-600 animate-pulse font-semibold ml-2">
+                ● Geocoding live: {stats.with_location ?? 0} places mapped...
+              </span>
+            )}
           </span>
           <span className="flex items-center gap-1.5">
             <span
@@ -466,7 +552,7 @@ export default function App() {
           </span>
         </div>
 
-        {/* Combined Horizontal Intelligence & KPI Strip (Single screen, no scrolling) */}
+        {/* Combined Horizontal Intelligence & KPI Strip */}
         <div className="bg-white border border-zinc-200 rounded divide-y lg:divide-y-0 lg:divide-x divide-zinc-200 grid grid-cols-1 lg:grid-cols-12 shadow-sm shrink-0">
           {/* Left: KPIs (4 cells) */}
           <div className="lg:col-span-5 h-full">
@@ -479,7 +565,7 @@ export default function App() {
             />
           </div>
 
-          {/* Right: Situation Summary & Hotspots */}
+          {/* Right: Situation Summary & Hotspots & Timeline */}
           <div className="lg:col-span-7 h-full">
             <SummaryPanel
               summary={summary}
@@ -493,6 +579,9 @@ export default function App() {
               setFilterLocation={handleSelectLocation}
               filterCategory={filterCategory}
               setFilterCategory={setFilterCategory}
+              aiActive={aiActive}
+              stats={stats}
+              timeline={timeline}
             />
           </div>
         </div>
@@ -505,11 +594,16 @@ export default function App() {
             <div className="flex items-center justify-between gap-2 text-xs flex-wrap">
               <div className="flex items-center gap-2">
                 <span className="font-semibold text-zinc-900 text-xs">
-                  Flood Map
+                  {stats?.scope === 'world' ? 'World Disaster Map' : 'Flood Map'}
                 </span>
                 {displayGeoJSON && (
                   <span className="text-[11px] font-mono tabular-nums text-zinc-500 font-normal">
-                    ({displayGeoJSON.features?.length ?? 0} mapped)
+                    ({displayGeoJSON.features?.length ?? 0} points)
+                  </span>
+                )}
+                {stats?.scope === 'world' && (
+                  <span className="text-[10px] font-mono bg-blue-50 text-blue-700 border border-blue-200 px-1.5 py-0.2 rounded">
+                    World View
                   </span>
                 )}
               </div>
@@ -536,8 +630,9 @@ export default function App() {
 
               <button
                 id="btn-toggle-heatmap"
+                type="button"
                 onClick={() => setShowHeatmap(!showHeatmap)}
-                className={`px-2 py-0.5 rounded border text-[11px] font-mono transition-colors ${
+                className={`px-2 py-0.5 rounded border text-[11px] font-mono transition-colors cursor-pointer ${
                   showHeatmap
                     ? 'bg-zinc-900 text-white border-zinc-900'
                     : 'bg-white text-zinc-700 border-zinc-300 hover:bg-zinc-50'
@@ -554,6 +649,7 @@ export default function App() {
                 showHeatmap={showHeatmap}
                 flyTo={flyTo}
                 onSelectLocation={handleSelectLocation}
+                stats={stats}
               />
             </div>
           </div>
@@ -566,6 +662,7 @@ export default function App() {
               signalTotal={displaySignalTotal}
               noiseTotal={displayNoiseTotal}
               categories={categories}
+              stats={stats}
               useFallback={useFallback}
               onFlyTo={handleFlyTo}
               filterCategory={filterCategory}
@@ -576,6 +673,13 @@ export default function App() {
               setFilterLocation={setFilterLocation}
               filterHasLocation={filterHasLocation}
               setFilterHasLocation={setFilterHasLocation}
+              filterDisasterType={filterDisasterType}
+              setFilterDisasterType={setFilterDisasterType}
+              filterSort={filterSort}
+              setFilterSort={setFilterSort}
+              offset={offset}
+              setOffset={setOffset}
+              limit={limit}
               activeTab={activeTab}
               setActiveTab={setActiveTab}
             />
@@ -589,7 +693,7 @@ export default function App() {
           <p>&copy; 2026 CE Strategies &bull; ThunderBay AI Emergency Intelligence</p>
           <p className="flex items-center gap-1.5 text-zinc-400">
             <span className="w-1.5 h-1.5 rounded-full bg-emerald-600 inline-block" />
-            React + Leaflet GIS + Canvas Engine
+            React + Leaflet Cluster + Recharts Engine
           </p>
         </div>
       </footer>
