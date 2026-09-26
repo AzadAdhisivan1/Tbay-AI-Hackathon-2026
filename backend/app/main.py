@@ -10,10 +10,12 @@ from typing import Dict, List, Optional
 
 from fastapi import FastAPI, File, HTTPException, Query, UploadFile
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 from pydantic import BaseModel
 
 from . import ai, pipeline, store
-from .config import ALLOWED_ORIGINS, MAX_SUMMARY_TWEETS, MAX_UPLOAD_MB, SAMPLE_CSV, SAMPLE_DATASET_ID
+from .config import (ALLOWED_ORIGINS, FRONTEND_DIST, MAX_SUMMARY_TWEETS, MAX_UPLOAD_MB,
+                     SAMPLE_CSV, SAMPLE_DATASET_ID)
 from .csv_loader import CSVError, parse_tweets_csv
 
 logging.basicConfig(level=logging.INFO)
@@ -197,3 +199,8 @@ def get_summary(dataset_id: str, filters: FilterParams):
     except Exception as e:  # noqa: BLE001
         raise HTTPException(502, f"Summary failed: {e}")
     return {"summary": summary, "tweet_count": len(rows)}
+
+
+# Serve the built frontend at "/" (must be registered after the API routes).
+if FRONTEND_DIST.is_dir():
+    app.mount("/", StaticFiles(directory=FRONTEND_DIST, html=True), name="frontend")
